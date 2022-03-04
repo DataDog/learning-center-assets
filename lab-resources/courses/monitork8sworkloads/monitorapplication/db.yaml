@@ -1,0 +1,175 @@
+apiVersion: v1
+data:
+  createdatadoguser: |
+    CREATE USER datadog WITH PASSWORD 'datadog';
+    GRANT pg_monitor to datadog;
+    GRANT SELECT ON pg_stat_database to datadog;
+    CREATE SCHEMA datadog;
+    GRANT USAGE ON SCHEMA datadog TO datadog;
+    GRANT USAGE ON SCHEMA public TO datadog;
+    GRANT pg_monitor TO datadog;
+    CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+    CREATE OR REPLACE FUNCTION datadog.explain_statement (
+      l_query text,
+      out explain JSON
+    )
+    RETURNS SETOF JSON AS
+    $$
+    BEGIN
+      RETURN QUERY EXECUTE 'EXPLAIN (FORMAT JSON) ' || l_query;
+    END;
+    $$
+    LANGUAGE 'plpgsql'
+    RETURNS NULL ON NULL INPUT
+    SECURITY DEFINER;
+kind: ConfigMap
+metadata:
+  name: postgres-initdb-configmap
+---
+apiVersion: v1
+data:
+  postgresql.conf: |
+    listen_addresses = '*'
+    track_activity_query_size = 4096	# (change requires restart)
+    shared_preload_libraries = 'pg_stat_statements'
+kind: ConfigMap
+metadata:
+  name: postgresconfig-configmap
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: postgres
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-password
+  labels:
+    app: ecommerce
+    service: db
+type: Opaque
+data:
+  pw: password
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: task-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: "/mnt/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: task-pvc-volume
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: manual
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    ad.datadoghq.com/postgres.check_names: '["postgres"]'
+    ad.datadoghq.com/postgres.init_configs: '[{}]'
+    ad.datadoghq.com/postgres.instances: '[{"host": "%%host%%", "port": "%%port%%","username": "datadog","password": "datadog" }]'
+    ad.datadoghq.com/postgres.logs: '[{"source":"postgres","service":"db"}]'
+  labels:
+    service: db
+    app: ecommerce
+    tags.datadoghq.com/env: "production"
+    tags.datadoghq.com/service: "db"
+    tags.datadoghq.com/version: "1.0"
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: db
+      app: ecommerce
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        tags.datadoghq.com/env: "production"
+        tags.datadoghq.com/service: "db"
+        tags.datadoghq.com/version: "1.0"
+        service: db
+        app: ecommerce
+    spec:
+      containers:
+        - image: postgres:11-alpine
+          name: postgres
+          securityContext:
+            privileged: true
+          ports:
+            - containerPort: 5432
+          env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: pw
+                name: db-password
+          - name: POSTGRES_USER
+            value: "user"
+          - name: PGDATA
+            value: "/var/lib/postgresql/data/mydata"
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgresdb
+            - name: postgres-initdb-configmap
+              mountPath: /docker-entrypoint-initdb.d/
+            - name: postgresconfig-configmap
+              mountPath: /var/lib/postgresql/postgresql.conf
+              subPath: postgresql.conf
+      serviceAccountName: postgres
+      volumes:
+        - name: postgresdb
+          persistentVolumeClaim:
+            claimName: task-pvc-volume
+        - name: postgresconfig-configmap
+          configMap:
+            name: postgresconfig-configmap
+            items:
+              - key: postgresql.conf
+                path: postgresql.conf
+        - name: postgres-initdb-configmap
+          configMap:
+            name: postgres-initdb-configmap
+            items:
+              - key: createdatadoguser
+                path: createdatadoguser.sql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ecommerce
+    service: db
+  name: db
+spec:
+  ports:
+    - port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    app: ecommerce
+    service: db
+status:
+  loadBalancer: {}

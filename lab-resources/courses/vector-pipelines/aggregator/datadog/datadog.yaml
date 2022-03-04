@@ -1,0 +1,7 @@
+logs_config:
+  # Send logs to the Vector Aggregator instead of Datadog
+  logs_dd_url: "vector_aggregator:8080"
+  logs_no_ssl: true
+  use_http: true
+
+logs_enabled: true

@@ -1,0 +1,422 @@
+{
+  "status": "live",
+  "tags": [],
+  "locations": [
+    "aws:eu-west-1",
+    "aws:us-west-1"
+  ],
+  "message": "",
+  "name": "Storedog Checkout",
+  "type": "browser",
+  "steps": [
+    {
+      "name": "Click on span \"Datadog Tote\"",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<span class=\"info mt-3 d-block\" itemprop=\"name\" title=\"Datadog Tote\">Datadog Tote</span>",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"a\"][1]/*[local-name()=\"span\"][1]",
+            "co": "[{\"text\":\"datadog tote\",\"textType\":\"directText\"}]",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" mt-4 \")][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" info \")]",
+            "at": "/descendant::*[@title=\"Datadog Tote\"]",
+            "clt": "/descendant::*[text()[normalize-space(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞŸŽŠŒ', 'abcdefghijklmnopqrstuvwxyzàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿžšœ')) = \"datadog tote\"]]",
+            "ro": "//*[text()[normalize-space(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞŸŽŠŒ', 'abcdefghijklmnopqrstuvwxyzàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿžšœ')) = \"datadog tote\"]]"
+          }
+        }
+      },
+      "type": "click"
+    },
+    {
+      "name": "Click on button #add-to-cart-button",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<button name=\"button\" type=\"submit\" class=\"btn btn-success\" id=\"add-to-cart-button\">\n               ...",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"form\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"button\"][1]",
+            "co": "[{\"text\":\"add to cart\",\"textType\":\"directText\"}]",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" input-group-append \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" btn \")]",
+            "at": "/descendant::*[@name=\"button\"]",
+            "clt": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" input-group-append \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" btn \")]",
+            "ro": "//*[local-name()=\"button\"]"
+          }
+        }
+      },
+      "type": "click"
+    },
+    {
+      "name": "Click on button #checkout-link",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<button name=\"checkout\" type=\"submit\" onclick=\"window.DD_RUM &amp;&amp; window.DD_RUM.addUserAction( ...",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"form\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"button\"][2]",
+            "co": "[{\"text\":\"checkout\",\"textType\":\"directText\"}]",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" btn-lg \")]",
+            "at": "/descendant::*[@name=\"checkout\"]",
+            "clt": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" btn-lg \")]",
+            "ro": "//*[@id=\"checkout-link\"]"
+          }
+        }
+      },
+      "type": "click"
+    },
+    {
+      "name": "Type text on input #order_email",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "value": "customer@example.com",
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<input class=\"form-control title\" placeholder=\"Email\" type=\"email\" name=\"order[email]\" id=\"order_ema ...",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"form\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"input\"][1]",
+            "co": "[{\"text\":\"email\",\"textType\":\"innerText\"},{\"relation\":\"PARENT OF\",\"tagName\":\"DIV\",\"text\":\" checkout as a guest email \",\"textType\":\"innerText\"}]",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" title \")]",
+            "at": "/descendant::*[@name=\"order[email]\"]",
+            "clt": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" title \")]",
+            "ro": "//*[@id=\"order_email\"]"
+          }
+        }
+      },
+      "type": "typeText"
+    },
+    {
+      "name": "Click on input \"commit\"",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<input type=\"submit\" name=\"commit\" value=\"Continue\" class=\"btn btn-lg btn-success btn-block\" ...",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"form\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"input\"][1]",
+            "co": "",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" edit_order \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" btn \")]",
+            "at": "/descendant::*[@value=\"Continue\"]",
+            "clt": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" edit_order \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" btn \")]",
+            "ro": "//*[@value=\"Continue\"]"
+          }
+        }
+      },
+      "type": "click"
+    },
+    {
+      "name": "Type text on input #order_bill_address_attribute ...",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "value": "Firsty",
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<input class=\"required form-control\" required=\"required\" type=\"text\" name=\"order[bill_address_attrib ...",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"form\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"input\"][1]",
+            "co": "[{\"text\":\"first name\",\"textType\":\"innerText\"},{\"relation\":\"PARENT OF\",\"tagName\":\"DIV\",\"text\":\" billing address \",\"textType\":\"innerText\"}]",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" edit_order \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" inner \")][1]/*[local-name()=\"div\"][1]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" form-control \")]",
+            "at": "/descendant::*[@name=\"order[bill_address_attributes][firstname]\"]",
+            "clt": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" edit_order \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" inner \")][1]/*[local-name()=\"div\"][1]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" form-control \")]",
+            "ro": "//*[@id=\"order_bill_address_attributes_firstname\"]"
+          }
+        }
+      },
+      "type": "typeText"
+    },
+    {
+      "name": "Type text on input #order_bill_address_attribute ...",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "value": "McLast",
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<input class=\"required form-control\" required=\"required\" type=\"text\" name=\"order[bill_address_attrib ...",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"form\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"input\"][1]",
+            "co": "[{\"text\":\"last name\",\"textType\":\"innerText\"},{\"relation\":\"PARENT OF\",\"tagName\":\"DIV\",\"text\":\" billing address \",\"textType\":\"innerText\"}]",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" edit_order \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" inner \")][1]/*[local-name()=\"div\"][2]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" form-control \")]",
+            "at": "/descendant::*[@name=\"order[bill_address_attributes][lastname]\"]",
+            "clt": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" edit_order \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" inner \")][1]/*[local-name()=\"div\"][2]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" form-control \")]",
+            "ro": "//*[@id=\"order_bill_address_attributes_lastname\"]"
+          }
+        }
+      },
+      "type": "typeText"
+    },
+    {
+      "name": "Type text on input #order_bill_address_attribute ...",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "value": "123 St. Street",
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<input class=\"required form-control\" required=\"required\" type=\"text\" name=\"order[bill_address_attrib ...",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"form\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][3]/*[local-name()=\"input\"][1]",
+            "co": "[{\"text\":\"address\",\"textType\":\"innerText\"},{\"relation\":\"PARENT OF\",\"tagName\":\"DIV\",\"text\":\" billing address \",\"textType\":\"innerText\"}]",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" edit_order \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" inner \")][1]/*[local-name()=\"div\"][3]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" form-control \")]",
+            "at": "/descendant::*[@name=\"order[bill_address_attributes][address1]\"]",
+            "clt": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" edit_order \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" inner \")][1]/*[local-name()=\"div\"][3]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" form-control \")]",
+            "ro": "//*[@id=\"order_bill_address_attributes_address1\"]"
+          }
+        }
+      },
+      "type": "typeText"
+    },
+    {
+      "name": "Type text on input #order_bill_address_attribute ...",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "value": "North Townville",
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<input class=\"required form-control\" required=\"required\" type=\"text\" name=\"order[bill_address_attrib ...",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"form\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][5]/*[local-name()=\"input\"][1]",
+            "co": "[{\"text\":\"city\",\"textType\":\"innerText\"},{\"relation\":\"PARENT OF\",\"tagName\":\"DIV\",\"text\":\" billing address \",\"textType\":\"innerText\"}]",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" edit_order \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" inner \")][1]/*[local-name()=\"div\"][5]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" form-control \")]",
+            "at": "/descendant::*[@name=\"order[bill_address_attributes][city]\"]",
+            "clt": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" edit_order \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" inner \")][1]/*[local-name()=\"div\"][5]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" form-control \")]",
+            "ro": "//*[@id=\"order_bill_address_attributes_city\"]"
+          }
+        }
+      },
+      "type": "typeText"
+    },
+    {
+      "name": "Select option on select #order_bill_address_attribut ...",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "value": "3344",
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<select class=\"form-control required\" name=\"order[bill_address_attributes][state_id]\" id=\"order_bill ...",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"form\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][6]/*[local-name()=\"select\"][1]",
+            "co": "[{\"relation\":\"AFTER\",\"tagName\":\"SELECT\",\"text\":\"*\",\"textType\":\"innerText\"},{\"relation\":\"PARENT OF\",\"tagName\":\"DIV\",\"text\":\" billing address \",\"textType\":\"innerText\"}]",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" edit_order \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" inner \")][1]/*[local-name()=\"div\"][6]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" form-control \")]",
+            "at": "/descendant::*[@name=\"order[bill_address_attributes][state_id]\"]",
+            "clt": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" edit_order \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" inner \")][1]/*[local-name()=\"div\"][6]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" form-control \")]",
+            "ro": "//*[@id=\"order_bill_address_attributes_state_id\"]"
+          }
+        }
+      },
+      "type": "selectOption"
+    },
+    {
+      "name": "Type text on input #order_bill_address_attribute ...",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "value": "95123",
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<input class=\"required form-control\" required=\"\" type=\"text\" name=\"order[bill_address_attributes][zi ...",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"form\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][7]/*[local-name()=\"input\"][1]",
+            "co": "[{\"text\":\"zip code\",\"textType\":\"innerText\"},{\"relation\":\"PARENT OF\",\"tagName\":\"DIV\",\"text\":\" billing address \",\"textType\":\"innerText\"}]",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" edit_order \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" inner \")][1]/*[local-name()=\"div\"][7]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" form-control \")]",
+            "at": "/descendant::*[@name=\"order[bill_address_attributes][zipcode]\"]",
+            "clt": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" edit_order \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" inner \")][1]/*[local-name()=\"div\"][7]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" form-control \")]",
+            "ro": "//*[@id=\"order_bill_address_attributes_zipcode\"]"
+          }
+        }
+      },
+      "type": "typeText"
+    },
+    {
+      "name": "Type text on input #order_bill_address_attribute ...",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "value": "617555124",
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<input class=\"required form-control\" required=\"required\" type=\"text\" name=\"order[bill_address_attrib ...",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"form\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][9]/*[local-name()=\"input\"][1]",
+            "co": "[{\"text\":\"phone\",\"textType\":\"innerText\"},{\"relation\":\"PARENT OF\",\"tagName\":\"DIV\",\"text\":\" billing address \",\"textType\":\"innerText\"}]",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" edit_order \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" inner \")][1]/*[local-name()=\"div\"][9]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" form-control \")]",
+            "at": "/descendant::*[@name=\"order[bill_address_attributes][phone]\"]",
+            "clt": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" edit_order \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" inner \")][1]/*[local-name()=\"div\"][9]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" form-control \")]",
+            "ro": "//*[@id=\"order_bill_address_attributes_phone\"]"
+          }
+        }
+      },
+      "type": "typeText"
+    },
+    {
+      "name": "Click on input \"commit\"",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<input type=\"submit\" name=\"commit\" value=\"Save and Continue\" class=\"btn btn-lg btn-success\" ...",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"form\"][1]/*[local-name()=\"div\"][3]/*[local-name()=\"div\"][1]/*[local-name()=\"input\"][1]",
+            "co": "",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" btn-lg \")]",
+            "at": "/descendant::*[@name=\"commit\"]",
+            "clt": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" btn-lg \")]",
+            "ro": "//*[@name=\"commit\"]"
+          }
+        }
+      },
+      "type": "click"
+    },
+    {
+      "name": "Click on input \"commit\"",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<input type=\"submit\" name=\"commit\" value=\"Save and Continue\" class=\"btn btn-lg btn-success\" ...",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"form\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"input\"][1]",
+            "co": "",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" btn-lg \")]",
+            "at": "/descendant::*[@name=\"commit\"]",
+            "clt": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" btn-lg \")]",
+            "ro": "//*[@name=\"commit\"]"
+          }
+        }
+      },
+      "type": "click"
+    },
+    {
+      "name": "Click on input #order_payments_attributes__p ...",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<input type=\"radio\" name=\"order[payments_attributes][][payment_method_id]\" id=\"order_payments_attrib ...",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"form\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"ul\"][1]/*[local-name()=\"li\"][2]/*[local-name()=\"label\"][1]/*[local-name()=\"input\"][1]",
+            "co": "[{\"text\":\" check \",\"textType\":\"innerText\"}]",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" list-group \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" list-group-item \")][2]/*[local-name()=\"label\"][1]/*[local-name()=\"input\"][1]",
+            "at": "/descendant::*[@value=\"3\"]",
+            "clt": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" list-group \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" list-group-item \")][2]/*[local-name()=\"label\"][1]/*[local-name()=\"input\"][1]",
+            "ro": "//*[@id=\"order_payments_attributes__payment_method_id_3\"]"
+          }
+        }
+      },
+      "type": "click"
+    },
+    {
+      "name": "Click on input \"commit\"",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<input type=\"submit\" name=\"commit\" value=\"Save and Continue\" class=\"btn btn-lg btn-success primary\" ...",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"form\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"input\"][1]",
+            "co": "",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" btn-lg \")]",
+            "at": "/descendant::*[@name=\"commit\"]",
+            "clt": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" btn-lg \")]",
+            "ro": "//*[@name=\"commit\"]"
+          }
+        }
+      },
+      "type": "click"
+    },
+    {
+      "name": "Test order number",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "check": "matchRegex",
+        "value": "Order [A-Z0-9]{10}",
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<h1>Order R944680135</h1>",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"fieldset\"][1]/*[local-name()=\"h1\"][1]",
+            "co": "[{\"text\":\"order r944680135\",\"textType\":\"directText\"}]",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" mt-4 \")][1]/*[local-name()=\"fieldset\"][1]/*[local-name()=\"h1\"][1]",
+            "at": "/*[local-name()=\"html\"]/*[local-name()=\"body\"]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"fieldset\"][1]/*[local-name()=\"h1\"][1]",
+            "clt": "/descendant::*[text()[normalize-space(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞŸŽŠŒ', 'abcdefghijklmnopqrstuvwxyzàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿžšœ')) = \"order r944680135\"]]",
+            "ro": "//*[local-name()=\"h1\"]"
+          }
+        }
+      },
+      "type": "assertElementContent"
+    },
+    {
+      "name": "Test order total",
+      "noScreenshot": false,
+      "allowFailure": false,
+      "params": {
+        "check": "contains",
+        "value": "$21.79",
+        "element": {
+          "url": "BROWSER_TEST_URL",
+          "targetOuterHTML": "<span id=\"order_total\" class=\"lead text-primary\">\n            $21.79\n          </span>",
+          "multiLocator": {
+            "ab": "/*[local-name()=\"html\"][1]/*[local-name()=\"body\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"fieldset\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"table\"][1]/*[local-name()=\"tfoot\"][1]/*[local-name()=\"tr\"][1]/*[local-name()=\"td\"][2]/*[local-name()=\"span\"][1]",
+            "co": "[{\"text\":\"$21.79\",\"textType\":\"directText\"}]",
+            "cl": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" table-warning \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" lead \")]",
+            "at": "/*[local-name()=\"html\"]/*[local-name()=\"body\"]/*[local-name()=\"div\"][2]/*[local-name()=\"div\"][1]/*[local-name()=\"main\"][1]/*[local-name()=\"fieldset\"][1]/*[local-name()=\"div\"][1]/*[local-name()=\"div\"][2]/*[local-name()=\"table\"][1]/*[local-name()=\"tfoot\"][1]/*[local-name()=\"tr\"][1]/*[local-name()=\"td\"][2]/*[local-name()=\"span\"][1]",
+            "clt": "/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" table-warning \")]/descendant::*[contains(concat(' ', normalize-space(@class), ' '), \" lead \")]",
+            "ro": "//*[@id=\"order_total\"]"
+          }
+        }
+      },
+      "type": "assertElementContent"
+    }
+  ],
+  "config": {
+    "variables": [],
+    "setCookie": "",
+    "request": {
+      "url": "BROWSER_TEST_URL",
+      "headers": {},
+      "method": "GET"
+    },
+    "assertions": [],
+    "configVariables": []
+  },
+  "options": {
+    "retry": {
+      "count": 0,
+      "interval": 300
+    },
+    "min_location_failed": 1,
+    "min_failure_duration": 900,
+    "noScreenshot": false,
+    "tick_every": 300,
+    "forwardProxy": false,
+    "disableCsp": false,
+    "disableCors": false,
+    "device_ids": [
+      "chrome.laptop_large",
+      "firefox.laptop_large"
+    ],
+    "monitor_options": {
+      "notify_audit": false,
+      "locked": false,
+      "include_tags": true,
+      "new_host_delay": 300,
+      "notify_no_data": false,
+      "renotify_interval": 0
+    },
+    "ignoreServerCertificateError": false
+  }
+}

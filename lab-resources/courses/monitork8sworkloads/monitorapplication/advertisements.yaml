@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: advertisements
+    app: ecommerce
+    tags.datadoghq.com/env: "production"
+    tags.datadoghq.com/service: "advertisements-service"
+    tags.datadoghq.com/version: "1.0"
+  name: advertisements
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: advertisements
+      app: ecommerce
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        service: advertisements
+        app: ecommerce
+        tags.datadoghq.com/env: "production"
+        tags.datadoghq.com/service: "advertisements-service"
+        tags.datadoghq.com/version: "1.0"
+    spec:
+      containers:
+        - image: ddtraining/advertisements:latest
+          name: advertisements
+          command: ["ddtrace-run"]
+          args: ["flask", "run", "--port=5002", "--host=0.0.0.0"]
+          env:
+            - name: FLASK_APP
+              value: "ads.py"
+            - name: FLASK_DEBUG
+              value: "1"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: pw
+                  name: db-password
+            - name: POSTGRES_USER
+              value: "user"
+            - name: POSTGRES_HOST
+              value: "db"
+            - name: DD_SERVICE
+              value: "advertisements-service"
+            - name: DD_ENV
+              value: "production"
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: DD_LOGS_INJECTION
+              value: "true"
+            - name: DD_ANALYTICS_ENABLED
+              value: "true"
+            - name: DD_PROFILING_ENABLED
+              value: "true"
+          ports:
+            - containerPort: 5002
+          resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: advertisements
+    app: ecommerce
+  name: advertisements
+spec:
+  ports:
+    - port: 5002
+      protocol: TCP
+      targetPort: 5002
+  selector:
+    service: advertisements
+    app: ecommerce
+status:

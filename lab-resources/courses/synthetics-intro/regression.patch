@@ -1,0 +1,10 @@
+79,80c79,80
+< @app.route('/discount/<id>', methods=['DELETE'])
+< def delete_discount(id):
+---
+> @app.route('/discount', methods=['DELETE'])
+> def delete_discount():
+82c82
+< 
+---
+>     id = request.args.get('id')

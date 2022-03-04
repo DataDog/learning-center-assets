@@ -1,0 +1,7 @@
+#! /usr/bin/env bash
+
+printf "\ndocker kill flog\n"
+docker kill flog
+
+printf "\ndocker run --name flog -d --label com.datadoghq.ad.logs='[{"source": "apache", "service": "apache"}]' -it --rm mingrammer/flog -f apache_combined -l -n 100000 -d 0.2\n"
+docker run --name flog -d --label com.datadoghq.ad.logs='[{"source": "apache", "service": "apache"}]' -it --rm mingrammer/flog -f apache_combined -l -n 100000 -d 0.2

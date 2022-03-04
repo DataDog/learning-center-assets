@@ -1,0 +1,84 @@
+---
+kind: pipeline
+type: docker
+name: build
+
+steps:
+  - name: docker
+    image: plugins/docker
+    settings:
+      username: labuser
+      repo: registry:5000/labuser/discounts-service
+      tags: latest
+      registry: registry:5000
+      insecure: true
+---
+kind: pipeline
+type: exec
+name: deploy-staging
+
+platform:
+  os: linux
+  arch: amd64
+
+clone:
+  skip_verify: true
+
+steps:
+  - name: pull
+    commands:
+    - cd /root/lab/storedog
+    - docker-compose pull discounts
+  - name: restart
+    commands:
+    - cd /root/lab/storedog
+    - docker-compose up -d --no-deps discounts-staging
+    - while [ $(curl -I localhost:5151 -o /dev/null -w '%{http_code}\n' -s) != "200" ]; do sleep 3; done;
+
+depends_on:
+  - build
+---
+kind: pipeline
+type: docker
+name: test-staging
+
+steps:
+  - name: datadog-synthetics
+    image: node:15-alpine3.10
+    environment:
+        DD_API_KEY:
+          from_secret: DD_API_KEY
+        DD_APP_KEY:
+          from_secret: DD_APP_KEY
+        DD_TEST_PUBLIC_ID:
+          from_secret: DD_TEST_PUBLIC_ID
+    commands:
+      - yarn add --dev @datadog/datadog-ci
+      - yarn datadog-ci synthetics run-tests --public-id $DD_TEST_PUBLIC_ID  --apiKey $DD_API_KEY --appKey $DD_APP_KEY
+
+depends_on:
+  - deploy-staging
+---
+kind: pipeline
+type: exec
+name: deploy-production
+
+platform:
+  os: linux
+  arch: amd64
+
+clone:
+  skip_verify: true
+
+steps:
+  - name: pull
+    commands:
+    - cd /root/lab/storedog
+    - docker-compose pull discounts
+  - name: restart
+    commands:
+    - cd /root/lab/storedog
+    - docker-compose up -d --no-deps discounts
+
+depends_on:
+  - test-staging

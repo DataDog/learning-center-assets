@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-podnew
+  annotations:
+    ad.datadoghq.com/tags: '{"environment": "qa", "office": "boston", "team": "community", "role": "db", "color": "yellow", "owner":"training"}'
+spec:
+  containers:
+    - name: my-container
+      image: ubuntu
+      imagePullPolicy: IfNotPresent
+      command: ["/bin/bash", "-ec", "sleep infinity"] 
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-podnew2
+  annotations:
+    ad.datadoghq.com/tags: '{"environment": "qa", "office": "boston", "team": "community", "role": "db", "color": "yellow", "owner":"community"}'
+spec:
+  containers:
+    - name: my-container
+      image: ubuntu
+      imagePullPolicy: IfNotPresent
+      command: ["/bin/bash", "-ec", "sleep infinity"] 

@@ -1,0 +1,10 @@
+{
+    "name": "synthetics-cid",
+    "version": "1.0.0",
+    "description": "Datadog synthetics API client",
+    "main": "index.js",
+    "license": "MIT",
+    "devDependencies": {
+      "@datadog/datadog-ci": "0.17.6"
+    }
+  }

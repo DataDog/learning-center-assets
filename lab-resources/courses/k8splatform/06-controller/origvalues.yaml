@@ -1,0 +1,146 @@
+datadog:
+  clusterName: trainingcluster
+  logLevel: INFO
+  kubeStateMetricsEnabled: true
+  clusterChecks:
+    enabled: false
+  dogstatsd:
+    port: 8125
+  logs:
+    enabled: false
+  apm:
+    enabled: false
+    port: 8126
+  criSocketPath: /var/run/docker.sock
+  processAgent:
+    enabled: false
+  systemProbe:
+    enabled: false
+    debugPort: 0
+    enableConntrack: true
+    seccomp: localhost/system-probe
+    seccompRoot: /var/lib/kubelet/seccomp
+    bpfDebug: false
+    apparmor: unconfined
+
+clusterAgent:
+  enabled: false
+  image:
+    repository: datadog/cluster-agent
+    tag: 1.5.2
+    pullPolicy: IfNotPresent
+  token: ""
+  replicas: 1
+  rbac:
+    create: true
+    serviceAccountName: default
+  metricsProvider:
+    enabled: false
+    service:
+      type: ClusterIP
+      port: 443
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+  healthPort: 8080
+  livenessProbe:
+    httpGet:
+      port: 5000
+      path: /metrics
+      scheme: HTTP
+  readinessProbe:
+    httpGet:
+      port: 5000
+      path: /metrics
+      scheme: HTTP
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+
+kubeStateMetrics:
+  enabled: true
+
+agents:
+  enabled: true
+  image:
+    repository: datadog/agent
+    tag: "7"
+    pullPolicy: IfNotPresent
+  rbac:
+    create: true
+    serviceAccountName: default
+  containers:
+    agent:
+      env:
+        - name: DD_KUBELET_TLS_VERIFY
+          value: "false"
+      resources: {}
+      livenessProbe:
+        httpGet:
+          path: /health
+          port: 5555
+        initialDelaySeconds: 15
+        periodSeconds: 15
+        timeoutSeconds: 5
+        successThreshold: 1
+        failureThreshold: 6
+    processAgent:
+      resources: {}
+    traceAgent:
+      resources: {}
+      livenessProbe:
+        tcpSocket:
+          port: 8126
+        initialDelaySeconds: 15
+        periodSeconds: 15
+        timeoutSeconds: 5
+    systemProbe:
+      resources: {}
+    initContainers:
+      resources: {}
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
+    - key: CriticalAddonsOnly
+      operator: Exists
+  nodeSelector:
+    node-role.kubernetes.io/master: ""
+  # affinity: {}
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: "10%"
+
+clusterChecksRunner:
+  enabled: false
+  image:
+    repository: datadog/agent
+    tag: "7"
+    pullPolicy: IfNotPresent
+    # pullSecrets:
+    #   - name: "<REG_SECRET>"
+  rbac:
+    create: true
+    dedicated: false
+    serviceAccountName: default
+  replicas: 2
+  resources: {}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+
+kube-state-metrics:
+  rbac:
+    create: true
+
+  serviceAccount:
+    create: true
+    name:

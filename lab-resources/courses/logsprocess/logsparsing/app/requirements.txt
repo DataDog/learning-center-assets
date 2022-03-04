@@ -1,0 +1,6 @@
+Flask==1.0
+aiohttp==2.3.10
+blinker==1.4
+ddtrace==0.43.0
+requests==2.20.0
+redis==2.10.6
