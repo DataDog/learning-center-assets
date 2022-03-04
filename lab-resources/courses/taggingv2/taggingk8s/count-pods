@@ -1,0 +1,3 @@
+#! /usr/bin/env bash
+
+kubectl get pods --no-headers | awk {'print $3'}| datamash -s -g 1 count 1

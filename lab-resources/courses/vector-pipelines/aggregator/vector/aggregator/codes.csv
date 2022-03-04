@@ -1,0 +1,6 @@
+code,message
+1,"device battery full"
+2,"device battery good"
+3,"device battery ok"
+4,"device battery low"
+5,"device battery critical"

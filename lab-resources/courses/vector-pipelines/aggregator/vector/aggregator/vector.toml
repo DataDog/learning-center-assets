@@ -1,0 +1,26 @@
+# This enables some features that require the Vector API to be enabled
+[api]
+enabled = true
+address = "0.0.0.0:8686"
+
+#insert-vector-agent-source
+
+#insert-datadog-agent-source
+
+#insert-blackhole-sink
+
+#insert-enrichment-tables-config
+
+#insert-enrichment-transform
+
+#insert-redaction-transform
+
+#insert-route-transform
+
+#insert-s3-sink
+
+#insert-datadog-sink
+
+#insert-vector-internal
+
+#insert-aggregator-sink

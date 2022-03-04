@@ -1,0 +1,63 @@
+apiVersion: audit.k8s.io/v1beta1
+kind: Policy
+rules:
+  # non relevant rules
+  - level: None
+    nonResourceURLs:
+      - "/healthz*"
+      - "/logs"
+      - "/metrics"
+      - "/swagger*"
+      - "/version"
+
+  # extended audit of auth delegation
+  - level: RequestResponse
+    omitStages:
+      - RequestReceived
+    resources:
+      - group: authorization.k8s.io
+        resources:
+          - subjectaccessreviews
+
+  # catch nodes update/patch at a metadata level
+  # nodes are updating their status periodically
+  - level: Metadata
+    verbs:
+      - update
+      - patch
+    omitStages:
+      - RequestReceived
+    userGroups:
+      - "system:nodes"
+
+  - level: Metadata
+    verbs:
+      - update
+      - patch
+    omitStages:
+      - RequestReceived
+    resources:
+      - group: ""
+        resources:
+          - configmaps
+          - endpoints
+        namespaces:
+          - kube-system
+        resourceNames:
+          - kube-scheduler
+          - kube-controller-manager
+
+  # the content of the request for all these verbs for everything
+  - level: Request
+    verbs:
+      - update
+      - patch
+      - create
+      - delete
+    omitStages:
+      - RequestReceived
+
+  # everything left
+  - level: Metadata
+    omitStages:
+      - RequestReceived

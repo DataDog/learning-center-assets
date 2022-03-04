@@ -1,0 +1,238 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Stately!</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            /*! normalize.css v3.0.2 | MIT License | git.io/normalize */html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block;vertical-align:baseline}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background-color:transparent}a:active,a:hover{outline:0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:700}dfn{font-style:italic}h1{font-size:2em;margin:.67em 0}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-.5em}sub{bottom:-.25em}img{border:0}svg:not(:root){overflow:hidden}figure{margin:1em 40px}hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}pre{overflow:auto}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}button,input,optgroup,select,textarea{color:inherit;font:inherit;margin:0}button{overflow:visible}button,select{text-transform:none}button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}input{line-height:normal}input[type=checkbox],input[type=radio]{box-sizing:border-box;padding:0}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{height:auto}input[type=search]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration{-webkit-appearance:none}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{border:0;padding:0}textarea{overflow:auto}optgroup{font-weight:700}table{border-collapse:collapse;border-spacing:0}td,th{padding:0}
+        </style>
+        <style>
+            html{color:#222;font-size:1em;line-height:1.4}::-moz-selection{background:#b3d4fc;text-shadow:none}::selection{background:#b3d4fc;text-shadow:none}hr{display:block;height:1px;border:0;border-top:1px solid #ccc;margin:1em 0;padding:0}audio,canvas,iframe,img,svg,video{vertical-align:middle}fieldset{border:0;margin:0;padding:0}textarea{resize:vertical}.browserupgrade{margin:.2em 0;background:#ccc;color:#000;padding:.2em 0}body{font:16px/26px Helvetica,Helvetica Neue,Arial}.wrapper{width:90%;margin:0 5%}.header-container{border-bottom:20px solid #967db4}.footer-container,.main aside{border-top:20px solid #967db4}.footer-container,.header-container,.main aside{background:#632ca6}.title{color:#fff}nav ul{margin:0;padding:0;list-style-type:none}nav a{display:block;margin-bottom:10px;padding:15px 0;text-align:center;text-decoration:none;font-weight:700;color:#fff;background:#632ca6}nav a:hover,nav a:visited{color:#fff}nav a:hover{text-decoration:underline}.main{padding:30px 0}.main article h1{font-size:2em}.main aside{color:#fff;padding:0 5% 10px}.footer-container footer{color:#fff;padding:20px 0}.ie7 .title{padding-top:20px}@media only screen and (min-width:480px){nav a{float:left;width:27%;margin:0 1.7%;padding:25px 2%;margin-bottom:0}nav li:first-child a{margin-left:0}nav li:last-child a{margin-right:0}nav ul li{display:inline}.oldie nav a{margin:0 .7%}}@media only screen and (min-width:768px){.header-container,.main aside{-webkit-box-shadow:0 5px 10px #aaa;-moz-box-shadow:0 5px 10px #aaa;box-shadow:0 5px 10px #aaa}.title{float:left}nav{float:right;width:38%}.main article{float:left;width:57%}.main aside{float:right;width:28%}}@media only screen and (min-width:1140px){.wrapper{width:1026px;margin:0 auto}}.hidden{display:none!important;visibility:hidden}.visuallyhidden{border:0;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px}.visuallyhidden.focusable:active,.visuallyhidden.focusable:focus{clip:auto;height:auto;margin:0;overflow:visible;position:static;width:auto}.invisible{visibility:hidden}.clearfix:after,.clearfix:before{content:" ";display:table}.clearfix:after{clear:both}@media print{*,:after,:before{background:0 0!important;color:#000!important;box-shadow:none!important;text-shadow:none!important}a,a:visited{text-decoration:underline}a[href]:after{content:" (" attr(href) ")"}abbr[title]:after{content:" (" attr(title) ")"}a[href^="#"]:after,a[href^="javascript:"]:after{content:""}blockquote,pre{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}img,tr{page-break-inside:avoid}img{max-width:100%!important}h2,h3,p{orphans:3;widows:3}h2,h3{page-break-after:avoid}}
+        </style>
+        <style>
+            .state-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                align-items: stretch;
+                align-content: stretch;
+                width: 50%;
+                height: 260px;
+                margin: 10px auto 10px;
+                border: 1px solid black;
+            }
+            .state-item {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: 1px solid black;
+                text-transform: uppercase;
+            }
+
+            a.light-text:visited {
+                color: #d7c3eb
+            }
+
+            .light-text {
+                color: #fff;
+            }
+
+            .state-item.off {
+                background-color: #fff;
+                color: black;
+            }
+
+            .state-item.on {
+                background-color:black;
+                color: rgb(150, 125, 180)
+            }
+
+        </style>
+        <!--@todo add RUM! -->
+    </head>
+    <body>
+        <div class="header-container">
+            <header class="wrapper clearfix">
+                <h1 class="title">Stately!</h1>
+            </header>
+        </div>
+
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+
+                <article>
+                    <header>
+                        <h1>Configure Your State</h1>
+                        <p>Set your preferred state by clicking on the boxes below. Click to set, click again to unset. Your state will be automatically
+                            saved on our backend for five minutes or until you delete our cookie (<code>stately</code>), whichever comes first.</p>
+                    </header>
+                    <section>
+                        <div class="state-container">
+                            <div class="state-item off">OFF</div>
+                            <div class="state-item off">OFF</div>
+                            <div class="state-item off">OFF</div>
+
+                            <div class="state-item off">OFF</div>
+                            <div class="state-item off">OFF</div>
+                            <div class="state-item off">OFF</div>
+
+                            <div class="state-item off">OFF</div>
+                            <div class="state-item off">OFF</div>
+                            <div class="state-item off">OFF</div>
+                        </div>
+                    </section>
+                </article>
+
+                <aside>
+                    <h3>About</h3>
+                    <p>This is a demonstration frontend that saves state to a <a class="light-text" href="https://redis.io/">Redis</a> data store via a simple Python backend application. We will not share your state with anyone but you.</p>
+                    <!-- @todo link to repo -->
+                </aside>
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+        <div class="footer-container">
+            <footer class="wrapper">
+                <h3>&copy;<span id="copyright">2021</span> Datadog</h3>
+            </footer>
+        </div>
+
+        <script>
+        const getStateUrl = "/state";
+        const postStateUrl = "/state";
+        document.onreadystatechange = function () {
+          if (document.readyState == "interactive") {
+            setCopyright();
+            startSession();
+
+            const stateItems = document.getElementsByClassName("state-item")
+
+            loadState(stateItems);
+            addStateClickHandlers(stateItems);
+
+            function setCopyright() {
+              document.getElementById("copyright").textContent = new Date().getFullYear();
+            }
+
+            function startSession() {
+                // I'm going see if there's a cookie
+                //   - (true) try to load state (loadState()) from the state server using the cookie value
+                //     - (true) console.log that the state was persisted on the backend and the session is created
+                //     - (false) console.log that it's not possible to restore currently. (future: PWA with local storage)
+                //   - (false) try to write state to the state server under the cookie 'state'
+                //     - (true) console.log that state was persisted
+                //     - (false) console.log that state cannot be persisted currently.
+            }
+
+            function applyNewState(stateItems, state) {
+              const states = state.split('');
+              for (i=0; i < states.length; i++) {
+                  stateItems[i].classList.remove("on", "off"); 
+                  stateItems[i].classList.add(parseInt(states[i]) ? "on" : "off"); 
+              }
+              console.log(stateItems);
+            }
+
+            function loadState(stateItems) {
+              let state;
+              try {
+                  state = getState(function(session) {
+                      // @todo session.user has the user/session id
+                      applyNewState(stateItems, session.state);
+                  });
+              } catch(e) {
+                  console.log("Couldn't get state!");
+                  console.log(e.message);
+                  return false;
+              }
+            }
+
+            function saveState(stateItems) {
+              const state = [];
+              Array.prototype.forEach.call(stateItems, function(item) {
+                  state.push(item.classList.contains("on") ? 1 : 0); 
+              });
+              persistState(state);
+            }
+
+            function addStateClickHandlers(stateItems) {
+              Array.prototype.forEach.call(stateItems, function(item) {
+                item.addEventListener("click", function(event) {
+                    toggleClassName(event.target);
+                    saveState(stateItems);
+                });
+              });
+            }
+
+            function toggleClassName(el) {
+              if (el.classList.contains("off")) {
+                el.classList.remove("off");
+                el.classList.add("on");
+                el.textContent="on";
+              } else {
+                el.classList.remove("on");
+                el.classList.add("off");
+                el.textContent="off";
+              }
+            }
+
+            // @todo upgrade to fetch
+            function getState(callback) {
+              xhr = new XMLHttpRequest();
+              xhr.onerror = function(e) {
+                console.log('Inside the onload event');
+                const xhr = e.target;
+                throw new Error(`Error attempting to get state from API: ${xhr.target.response}`)
+              }
+              xhr.onload = function (e) {
+                console.log('Inside the onload event');
+                const xhr = e.target;
+                if (xhr.responseType === 'json') {
+                  console.log(xhr.response);
+                  callback(xhr.response);
+                } else {
+                  console.log(JSON.parse(xhr.responseText).message);
+                }
+              };
+              xhr.onreadystatechange = function () {
+                  if (xhr.readyState === XMLHttpRequest.DONE) {
+                  }
+              };
+              xhr.open('GET', getStateUrl, true);
+              xhr.responseType = 'json';
+              xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+              xhr.setRequestHeader('x-stately-frontend', '1.0');
+              xhr.send();
+            }
+
+            // @todo upgrade to fetch
+            function persistState(state) {
+              xhr = new XMLHttpRequest();
+              xhr.onload = function (e) {
+                var xhr = e.target;
+                console.log('Inside the onload event');
+                if (xhr.responseType === 'json') {
+                  console.log(xhr.response);
+                } else {
+                  console.log(JSON.parse(xhr.responseText).message);
+                }
+              };
+              xhr.onerror = function(e) {
+                console.log('Inside the onload event');
+                const xhr = e.target;
+                throw new Error(`Error attempting to get state from API: ${xhr.target.response}`)
+              }
+              xhr.open('POST', postStateUrl, true);
+              xhr.responseType = 'json';
+              xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+              xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+              xhr.setRequestHeader('x-stately-frontend', '1.0');
+              xhr.send(JSON.stringify(state));
+            }
+        }
+    }
+        </script>
+    </body>
+</html>

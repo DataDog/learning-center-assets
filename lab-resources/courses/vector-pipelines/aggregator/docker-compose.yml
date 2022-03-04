@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+  # Vector Agents
+  vector_agents:
+    image: timberio/vector:nightly-alpine
+    volumes:
+      - ./vector/agent:/etc/vector:ro
+      - ./logs/iot:/tmp/logs/iot
+    depends_on:
+      - aggregator
+  # Datadog Agents
+  datadog_agents:
+    image: gcr.io/datadoghq/agent:7
+    privileged: true
+    environment:
+      - DD_API_KEY
+    volumes:
+      - ./datadog:/etc/datadog-agent
+      - ./logs:/tmp/logs:ro
+    depends_on:
+      - sensitive_user_logs
+      - aggregator
+  # The Vector Aggregator
+  aggregator:
+    container_name: vector_aggregator
+    image: timberio/vector:nightly-alpine
+    ports:
+      # GraphQL API for vector tap
+      - 8686:8686
+      # Datadog Agents
+      - 8080:8080
+      # Vector Agents
+      - 9000:9000
+    environment:
+      LOG: info
+    volumes:
+      - ./vector/aggregator:/etc/vector:ro
+  
+  # Processes generating logs (ignore this)
+  sensitive_user_logs:
+    image: lucperkins/rando:latest
+    command: [ "logs", "--kind", "sensitive", "--interval", "1s", "--file", "/tmp/logs/transaction/out.log" ]
+    volumes:
+      - ./logs/transaction:/tmp/logs/transaction
+  
+  iot_logs:
+    image: lucperkins/rando:latest
+    command: [ "logs", "--kind", "iot", "--interval", "1s", "--file", "/tmp/logs/iot/out.log" ]
+    volumes:
+      - ./logs/iot:/tmp/logs/iot

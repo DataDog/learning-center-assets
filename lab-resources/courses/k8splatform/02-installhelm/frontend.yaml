@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: frontend
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - args:
+        - docker-entrypoint.sh
+        command:
+        - sh
+        env:
+        - name: DB_USERNAME
+          value: user
+        - name: DB_PASSWORD
+          value: password
+        - name: DD_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: DD_LOGS_INJECTION
+          value: "true"
+        - name: DD_ANALYTICS_ENABLED
+          value: "true"
+        image: arapulido/ecommerce-spree-observability:dev
+        imagePullPolicy: Always
+        name: ecommerce-spree-observability
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: frontend
+  name: frontend
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: frontend
+  type: ClusterIP

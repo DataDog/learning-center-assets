@@ -1,0 +1,11 @@
+[sources.file_in]
+type = "file"
+include = ["/tmp/logs/iot/*.log"]
+read_from = "beginning"
+
+[sinks.aggregator]
+type = "vector"
+inputs = ["file_in"]
+address = "vector_aggregator:9000"
+version = "2"
+healthcheck = { enabled = true }

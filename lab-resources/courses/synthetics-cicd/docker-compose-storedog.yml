@@ -1,0 +1,165 @@
+version: '3'
+services:
+  agent:
+    image: "datadog/agent:7.21.0"
+    environment:
+      - DD_API_KEY
+      - DD_APM_ENABLED=true
+      - DD_LOGS_ENABLED=true
+      - DD_PROCESS_AGENT_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+      - DD_ENV=synthetics-cicd
+      - DD_SYSTEM_PROBE_ENABLED=true 
+    ports:
+      - "8126:8126"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /sys/kernel/debug:/sys/kernel/debug 
+    cap_add:
+      - SYS_ADMIN 
+      - SYS_RESOURCE 
+      - SYS_PTRACE 
+      - NET_ADMIN 
+      - IPC_LOCK 
+    security_opt:
+      - apparmor:unconfined  
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "agent", "service": "agent"}]'
+  discounts:
+    environment:
+      - FLASK_APP=discounts.py
+      - FLASK_DEBUG=1
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - DD_AGENT_HOST=agent
+      - DD_LOGS_INJECTION=true
+      - DD_TRACE_ANALYTICS_ENABLED=true
+      - DD_SERVICE=discounts-service
+      - DD_VERSION=1.0
+      - DD_ENV=synthetics-cicd
+    image: "localhost:5000/labuser/discounts-service:latest"
+    command: [sh, -c, "pip install ddtrace -U && ddtrace-run flask run --port=5001 --host=0.0.0.0"]
+    ports:
+      - "5001:5001"
+    depends_on:
+      - agent
+      - db
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "python", "service": "discounts-service"}]'
+      com.datadoghq.tags.service: 'discounts-service'
+      com.datadoghq.tags.env: 'synthetics-cicd'
+  discounts-staging:
+    environment:
+      - FLASK_APP=discounts.py
+      - FLASK_DEBUG=1
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - DD_AGENT_HOST=agent
+      - DD_LOGS_INJECTION=true
+      - DD_TRACE_ANALYTICS_ENABLED=true
+      - DD_SERVICE=discounts-service-staging
+      - DD_VERSION=1.0
+      - DD_ENV=synthetics-cicd
+    image: "localhost:5000/labuser/discounts-service:latest"
+    command: [sh, -c, "pip install ddtrace -U && ddtrace-run flask run --port=5151 --host=0.0.0.0"]
+    ports:
+      - "5151:5151"
+    depends_on:
+      - agent
+      - db
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "python", "service": "discounts-service-staging"}]'
+      com.datadoghq.tags.service: 'discounts-service-staging'
+      com.datadoghq.tags.env: 'synthetics-cicd'
+  frontend:
+    environment:
+      - DD_AGENT_HOST=agent
+      - DD_LOGS_INJECTION=true
+      - DD_TRACE_ANALYTICS_ENABLED=true
+      - DB_USERNAME
+      - DB_PASSWORD
+      - DD_CLIENT_TOKEN
+      - DD_APPLICATION_ID
+      - DD_SERVICE=store-frontend
+      - DD_VERSION=1.0
+      - DD_ENV=synthetics-cicd
+    image: "ddtraining/ecommerce-frontend:latest"
+    command: sh docker-entrypoint.sh
+    ports:
+      - "3030:3000"
+    depends_on:
+      - agent
+      - db
+      - discounts
+      - advertisements
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-frontend"}]'
+      com.datadoghq.tags.service: 'store-frontend'
+      com.datadoghq.tags.env: 'synthetics-cicd'
+  frontend-staging:
+    environment:
+      - DD_AGENT_HOST=agent
+      - DD_LOGS_INJECTION=true
+      - DD_TRACE_ANALYTICS_ENABLED=true
+      - DB_USERNAME
+      - DB_PASSWORD
+      - DD_CLIENT_TOKEN
+      - DD_APPLICATION_ID
+      - DD_SERVICE=store-frontend-staging
+      - DD_VERSION=1.0
+      - DD_ENV=synthetics-cicd
+    image: "ddtraining/ecommerce-frontend:latest"
+    command: sh docker-entrypoint.sh
+    ports:
+      - "3031:3000"
+    volumes:
+      # point to the staging version of discounts service
+      - /root/lab/staging/discounts_controller.rb:/spree/store-frontend/app/controllers/discounts_controller.rb
+      - /root/lab/staging/frontend_helper.rb:/spree/store-frontend/app/helpers/spree/frontend_helper.rb
+    depends_on:
+      - agent
+      - db
+      - discounts
+      - advertisements
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-frontend-staging"}]'
+      com.datadoghq.tags.service: 'store-frontend-staging'
+      com.datadoghq.tags.env: 'synthetics-cicd'
+  advertisements:
+    environment:
+      - FLASK_APP=ads.py
+      - FLASK_DEBUG=1
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - DD_AGENT_HOST=agent
+      - DD_LOGS_INJECTION=true
+      - DD_TRACE_ANALYTICS_ENABLED=true
+      - DD_SERVICE=advertisements-service
+      - DD_VERSION=1.0
+      - DD_ENV=synthetics-cicd
+    image: "ddtraining/advertisements-fixed:1.0.0"
+    command: [sh, -c, "pip install ddtrace -U && ddtrace-run flask run --port=5002 --host=0.0.0.0"]
+    ports:
+      - "5002:5002"
+    depends_on:
+      - agent
+      - db
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "python", "service": "advertisements-service"}]'
+      com.datadoghq.tags.service: 'advertisements-service'
+      com.datadoghq.tags.env: 'synthetics-cicd'
+  db:
+    image: postgres:11-alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - DD_SERVICE=postgres
+      - DD_VERSION=1.0
+      - DD_ENV=synthetics-cicd
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "postgresql", "service": "postgres"}]'
+      com.datadoghq.tags.service: 'advertisements-service'
+      com.datadoghq.tags.env: 'synthetics-cicd'

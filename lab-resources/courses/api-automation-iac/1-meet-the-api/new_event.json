@@ -1,0 +1,7 @@
+{
+  "title": "Congratulations!",
+  "text": "You found the event that was created when this lab started up. Nice work.",
+  "tags": [
+    "env:api-course"
+  ]
+}

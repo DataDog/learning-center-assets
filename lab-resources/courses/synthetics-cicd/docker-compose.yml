@@ -1,0 +1,89 @@
+version: '3.8'
+
+networks:
+  labnet:
+    name: labnet
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: "0.0.0.0"
+      com.docker.network.bridge.enable_icc: "true"
+      com.docker.network.bridge.name: "lab-bridge-0"
+      com.docker.network.bridge.enable_ip_masquerade: "true"
+
+services:
+  db:
+    container_name: cicd-db
+    image: postgres:13.2-alpine
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "gogs"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "gogs"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    # Dump file from pg_dump to seed the DB
+    volumes:
+      - /root/lab/cicd/seed.sql:/docker-entrypoint-initdb.d/seed.sql
+    networks:
+      - labnet
+  gogs:
+    container_name: gogs
+    image: gogs/gogs:0.12.3
+    depends_on:
+      - db
+    ports:
+      - "8300:3000"
+      - "8322:22"
+    # Configuration file and starter repo
+    volumes:
+      - /root/lab/cicd/gogs.app.ini:/data/gogs/conf/app.ini
+      - /root/lab/cicd/labuser.git:/data/git/gogs-repositories/labuser
+    networks:
+      - labnet
+  drone-server:
+    container_name: drone_server
+    image: drone/drone:1.10.1
+    environment:
+      - DRONE_AGENTS_ENABLED=true
+      - DRONE_GOGS_SERVER # protocol://sub.host.tld:port
+      - DRONE_RPC_SECRET=verysecret
+      - DRONE_SERVER_HOST=drone-server
+      - DRONE_SERVER_PROTO=http
+      - DRONE_GOGS_SKIP_VERIFY=true
+      - DRONE_WEBHOOK_SKIP_VERIFY=true
+    ports:
+      - "8800:80"
+    # Note: We could use the postgres database for this, but it's too slow to start
+    volumes:
+      - /root/lab/cicd/droneio.database.sqlite:/data/database.sqlite
+    networks:
+      - labnet
+  drone-runner:
+    container_name: drone_runner
+    image: drone/drone-runner-docker:1.6.3
+    depends_on:
+      - drone-server
+    environment:
+      - DRONE_RPC_HOST=drone-server
+      - DRONE_RPC_PROTO=http
+      - DRONE_RPC_SECRET=verysecret
+      - DRONE_RUNNER_CAPACITY=2
+      # Child runners get their own Docker networks. Set this to `basename $PWD`_default to add them to the
+      # default network instead. This allows access to other containers, such as registry
+      - DRONE_RUNNER_NETWORKS=labnet
+    ports:
+      - "7300:3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - labnet
+  registry:
+    container_name: registry
+    image: registry:2.6.2
+    # restart: unless-stopped
+    ports:
+      - "5000:5000"
+    networks:
+      - labnet

@@ -1,0 +1,4 @@
+logs:
+  - type: file
+    path: "/tmp/logs/transaction/*.log"
+    service: "datadog-agent"

@@ -1,0 +1,74 @@
+version: '3'
+services:
+  datadog:
+    image: "datadog/agent:7.21.0"
+    environment:
+      - DD_API_KEY
+      - DD_HOSTNAME=datadog
+      - DD_LOGS_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+      - DD_TAGS='env:logparsing'
+    ports:
+      - 10520:10520
+    volumes:
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /opt/datadog-agent/run:/opt/datadog-agent/run:rw
+      - /etc/passwd:/etc/passwd:ro
+    depends_on:
+      - webserver
+      - api
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "agent", "service": "agent"}]'
+  
+  api:
+    container_name: thinker-api
+    build: ./app/.
+    environment:
+      - FLASK_APP=api.py
+    command: flask run --host=0.0.0.0
+    volumes:
+      - ./app:/usr/src/app/
+    depends_on:
+      - thinker
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "webapp", "service": "thinker-api"}]'
+  
+  thinker:
+    container_name: thinker-microservice
+    build: ./app/.
+    environment:
+      - FLASK_APP=api.py
+    command: python thinker.py
+    volumes:
+      - ./app:/usr/src/app/
+    depends_on:
+      - docdb
+    ports:
+      - "5001:8000"
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "webapp", "service": "thinker-microservice"}]'
+
+  docdb:
+    image: redis:6.0.9
+    container_name: docker-docdb
+    ports:
+        - "6379:6379"
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./conf.d/redis/redis.conf:/usr/local/etc/redis/redis.conf
+
+  webserver:
+    image: "nginx:1.18.0"
+    container_name: docker-webserver
+    ports:
+      - "8080:80"
+    volumes:
+      - ./conf.d/nginx/:/etc/nginx/conf.d
+    depends_on:
+      - api
+    labels:
+      com.datadoghq.ad.check_names: '["nginx"]'
+      com.datadoghq.ad.init_configs: '[{}]'
+      com.datadoghq.ad.instances: '[{"nginx_status_url": "http://%%host%%:%%port%%/nginx_status"}]'
