@@ -89,7 +89,7 @@ services:
       - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_PROFILING_ENABLED=true
     image: "ddtraining/advertisements-fixed:2.1.2"
-    command: [sh, -c, "pip install ddtrace -U && ddtrace-run flask run --port=5002 --host=0.0.0.0"]
+    command: [sh, -c, "pip install -r requirements.txt && ddtrace-run flask run --port=5001 --host=0.0.0.0"]
     ports:
       - "5002:5002"
     volumes:
