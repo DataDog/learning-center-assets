@@ -1,0 +1,11 @@
+[Unit]
+Description=code-server
+After=network.target
+
+[Service]
+Type=exec
+ExecStart=/usr/bin/code-server /root/lab --bind-addr 0.0.0.0:8080
+Restart=always
+
+[Install]
+WantedBy=default.target
