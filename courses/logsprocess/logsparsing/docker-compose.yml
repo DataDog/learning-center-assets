@@ -46,7 +46,7 @@ services:
       - docdb
       - datadog
     ports:
-      - "5001:8000"
+      - "5000:8000"
     labels:
       com.datadoghq.ad.logs: '[{"source": "webapp", "service": "thinker-microservice"}]'
 
