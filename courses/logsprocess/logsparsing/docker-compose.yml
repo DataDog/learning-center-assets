@@ -1,13 +1,15 @@
 version: '3'
 services:
   datadog:
-    image: "datadog/agent:7.21.0"
+    image: "datadog/agent:7.31.0"
     environment:
       - DD_API_KEY
-      - DD_HOSTNAME=datadog
       - DD_LOGS_ENABLED=true
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+      - DD_PROCESS_AGENT_ENABLED=true
+      - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
       - DD_TAGS='env:logparsing'
+      - DD_APM_NON_LOCAL_TRAFFIC=true
     ports:
       - 10520:10520
     volumes:
@@ -21,7 +23,7 @@ services:
       - api
     labels:
       com.datadoghq.ad.logs: '[{"source": "agent", "service": "agent"}]'
-  
+
   api:
     container_name: thinker-api
     build: ./app/.
@@ -34,7 +36,7 @@ services:
       - thinker
     labels:
       com.datadoghq.ad.logs: '[{"source": "webapp", "service": "thinker-api"}]'
-  
+
   thinker:
     container_name: thinker-microservice
     build: ./app/.
@@ -45,6 +47,7 @@ services:
       - ./app:/usr/src/app/
     depends_on:
       - docdb
+      - datadog
     ports:
       - "5001:8000"
     labels:
@@ -54,7 +57,7 @@ services:
     image: redis:6.0.9
     container_name: docker-docdb
     ports:
-        - "6379:6379"
+      - "6379:6379"
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
       - ./conf.d/redis/redis.conf:/usr/local/etc/redis/redis.conf
@@ -68,6 +71,7 @@ services:
       - ./conf.d/nginx/:/etc/nginx/conf.d
     depends_on:
       - api
+      - datadog
     labels:
       com.datadoghq.ad.check_names: '["nginx"]'
       com.datadoghq.ad.init_configs: '[{}]'
