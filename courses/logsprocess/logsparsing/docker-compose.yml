@@ -18,9 +18,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /opt/datadog-agent/run:/opt/datadog-agent/run:rw
       - /etc/passwd:/etc/passwd:ro
-    depends_on:
-      - webserver
-      - api
     labels:
       com.datadoghq.ad.logs: '[{"source": "agent", "service": "agent"}]'
 
