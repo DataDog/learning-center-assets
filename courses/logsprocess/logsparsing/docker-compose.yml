@@ -63,7 +63,7 @@ services:
     image: "nginx:1.18.0"
     container_name: docker-webserver
     ports:
-      - "8080:80"
+      - "3000:80"
     volumes:
       - ./conf.d/nginx/:/etc/nginx/conf.d
     depends_on:
