@@ -4,6 +4,7 @@ services:
     image: 'datadog/agent:7.31.1'
     environment:
       - DD_API_KEY
+      - DD_HOSTNAME=dd101-sre-host
       - DD_LOGS_ENABLED=true
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_PROCESS_AGENT_ENABLED=true
@@ -42,7 +43,7 @@ services:
       - DD_TRACE_SAMPLE_RATE=1
       - DD_PROFILING_ENABLED=true
       - DD_AGENT_HOST=datadog 
-    image: 'ddtraining/discounts:2.1.2'
+    image: 'ddtraining/discounts:2.1.4'
     command:
       [
         sh,
@@ -94,7 +95,7 @@ services:
       - DD_TRACE_SAMPLE_RATE=1
       - DD_PROFILING_ENABLED=true
       - DD_AGENT_HOST=datadog 
-    image: 'ddtraining/advertisements:2.1.2'
+    image: 'ddtraining/advertisements:2.1.4'
     command:
       [
         sh,
