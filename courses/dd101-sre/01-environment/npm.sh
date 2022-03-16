@@ -2,6 +2,7 @@
 docker run -d --network=lab_default \
 --env-file /root/lab/.env \
 -e DD_API_KEY \
+-e DD_HOSTNAME=dd101-sre-host \
 -e DD_APM_ENABLED=false \
 -e DD_SYSTEM_PROBE_ENABLED=true \
 -e DD_PROCESS_AGENT_ENABLED=true \
