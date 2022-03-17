@@ -21,7 +21,6 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
       - POSTGRES_HOST=db
-      - DD_ENV
     image: 'ddtraining/discounts:2.1.4'
     entrypoint:
       []
@@ -55,7 +54,6 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
       - POSTGRES_HOST=db
-      - DD_ENV
     image: 'ddtraining/advertisements:2.1.4'
     entrypoint:
       []
