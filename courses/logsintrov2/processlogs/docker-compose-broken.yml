@@ -10,6 +10,7 @@ services:
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
       - DD_TAGS='env:intro-to-logs'
+      - DD_HOSTNAME=intro-logs-host
     ports:
       - "8126:8126"
     volumes:
