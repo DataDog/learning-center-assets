@@ -9,7 +9,7 @@ services:
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
-      - DD_TAGS='env:intro-to-slo'
+      - DD_TAGS='env:ruby-shop'
       - DD_HOSTNAME=intro-slo-host
     ports:
       - "8126:8126"
@@ -32,7 +32,7 @@ services:
       - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_PROFILING_ENABLED=true
       - DD_VERSION=2.1.2
-      - DD_ENV=intro-to-slo
+      - DD_ENV=ruby-shop
     image: "ddtraining/discounts:2.1.2"
     ports:
       - "5001:5001"
@@ -40,7 +40,7 @@ services:
       - datadog
       - db
     labels:
-      com.datadoghq.tags.env: 'intro-to-slo'
+      com.datadoghq.tags.env: 'ruby-shop'
       com.datadoghq.tags.service: 'discounts-service'
       com.datadoghq.tags.version: '2.1.2'
       my.custom.label.team: 'discounts'
@@ -56,7 +56,7 @@ services:
       - DD_VERSION=2.1.2
       - DD_CLIENT_TOKEN
       - DD_APPLICATION_ID
-      - DD_ENV=intro-to-slo
+      - DD_ENV=ruby-shop
       - DD_SITE=datadoghq.com
     image: "ddtraining/storefront:2.1.2"
     ports:
@@ -67,7 +67,7 @@ services:
       - discounts
       - advertisements
     labels:
-      com.datadoghq.tags.env: 'intro-to-slo'
+      com.datadoghq.tags.env: 'ruby-shop'
       com.datadoghq.tags.service: 'store-frontend'
       com.datadoghq.tags.version: '2.1.2'
       my.custom.label.team: 'frontend'
@@ -85,7 +85,7 @@ services:
       - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_PROFILING_ENABLED=true
       - DD_VERSION=2.1.2
-      - DD_ENV=intro-to-slo
+      - DD_ENV=ruby-shop
     image: "ddtraining/advertisements:2.1.2"
     ports:
       - "5002:5002"
@@ -93,7 +93,7 @@ services:
       - datadog
       - db
     labels:
-      com.datadoghq.tags.env: 'intro-to-slo'
+      com.datadoghq.tags.env: 'ruby-shop'
       com.datadoghq.tags.service: 'advertisements-service'
       com.datadoghq.tags.version: '2.1.2'
       my.custom.label.team: 'advertisements'
@@ -107,7 +107,7 @@ services:
     ports:
       - '5432:5432'
     labels:
-      com.datadoghq.tags.env: 'intro-to-slo'
+      com.datadoghq.tags.env: 'ruby-shop'
       com.datadoghq.tags.service: 'database'
       com.datadoghq.tags.version: '11'
       my.custom.label.team: 'database'
