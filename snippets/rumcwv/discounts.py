@@ -26,9 +26,7 @@ def hello():
 @app.route('/discount', methods=['GET', 'POST'])
 def status():
     if flask_request.method == 'GET':
-        # the below calls create an n+1, unless
-        #discounts = Discount.query.options(joinedload('*')).all()
-        discounts = Discount.query.all()
+        discounts = Discount.query.options(joinedload('*')).all()
         app.logger.info(f"Discounts available: {len(discounts)}")
 
         influencer_count = 0
