@@ -36,6 +36,8 @@ services:
     depends_on:
       - datadog
       - db
+    volumes:
+      - '/ecommworkshop/discounts-service:/app'
     labels:
       com.datadoghq.ad.logs: '[{"source": "python", "service": "discounts-service"}]'
       com.datadoghq.tags.env: 'dd101-dev'
@@ -87,6 +89,10 @@ services:
       - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_PROFILING_ENABLED=true
     image: 'ddtraining/advertisements:2.1.4'
+    ports:
+      - '5002:5002'
+    volumes:
+      - '/ecommworkshop/ads-service:/app'
     depends_on:
       - datadog
       - db
