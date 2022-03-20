@@ -30,7 +30,7 @@ services:
       - DD_LOGS_INJECTION=true
       - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_PROFILING_ENABLED=true
-    image: 'ddtraining/discounts:2.1.4'
+    image: 'ddtraining/discounts:2.1.2'
     ports:
       - '5001:5001'
     depends_on:
@@ -88,7 +88,7 @@ services:
       - DD_LOGS_INJECTION=true
       - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_PROFILING_ENABLED=true
-    image: 'ddtraining/advertisements:2.1.4'
+    image: 'ddtraining/advertisements:2.1.2'
     ports:
       - '5002:5002'
     volumes:
