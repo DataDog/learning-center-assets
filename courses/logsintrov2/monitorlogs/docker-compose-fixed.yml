@@ -34,11 +34,14 @@ services:
       - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_PROFILING_ENABLED=true
     image: "ddtraining/discounts-fixed:2.1.2"
-    command: [sh, -c, "ddtrace-run flask run --port=5001 --host=0.0.0.0"]
+    command:
+      [
+        sh,
+        -c,
+        "ddtrace-run flask run --port=5001 --host=0.0.0.0"
+      ]
     ports:
       - "5001:5001"
-    volumes:
-      - "/ecommworkshop/discounts-service-fixed:/app"
     depends_on:
       - agent
       - db
@@ -64,8 +67,6 @@ services:
     command: sh docker-entrypoint.sh
     ports:
       - "3000:3000"
-    volumes:
-      - "/ecommworkshop/store-frontend-instrumented-fixed:/spree"
     depends_on:
       - agent
       - db
@@ -92,11 +93,14 @@ services:
       - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_PROFILING_ENABLED=true
     image: "ddtraining/advertisements-fixed:2.1.2"
-    command: [sh, -c, "ddtrace-run flask run --port=5002 --host=0.0.0.0"]
+    command:
+      [
+        sh,
+        -c,
+        "ddtrace-run flask run --port=5002 --host=0.0.0.0"
+      ]
     ports:
       - "5002:5002"
-    volumes:
-      - "/ecommworkshop/ads-service-fixed:/app"
     depends_on:
       - agent
       - db
