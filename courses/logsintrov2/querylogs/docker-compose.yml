@@ -39,6 +39,8 @@ services:
       ]
     ports:
       - '5001:5001'
+    volumes:
+      - /root/discounts.py:/app/discounts.py
     depends_on:
       - datadog
       - db
@@ -92,6 +94,8 @@ services:
       ]
     ports:
       - '5002:5002'
+    volumes:
+      - /root/ads.py:/app/ads.py
     depends_on:
       - datadog
       - db
