@@ -27,7 +27,7 @@ services:
       - DD_SERVICE=discounts-service
       - DD_ENV=intro-to-logs
       - DD_LOGS_INJECTION=true
-      - DD_TRACE_SAMPLE_RATE=1
+      - DD_TRACE_SAMPLE_RATE=1.0
       - DD_PROFILING_ENABLED=true
       - DD_AGENT_HOST=datadog
     image: 'ddtraining/discounts:2.1.2'
@@ -55,7 +55,7 @@ services:
       - DD_SERVICE=store-frontend
       - DD_ENV=intro-to-logs
       - DD_LOGS_INJECTION=true
-      - DD_TRACE_SAMPLE_RATE=1
+      - DD_TRACE_SAMPLE_RATE=1.0
       - DD_PROFILING_ENABLED=true
       - DD_AGENT_HOST=datadog
     image: 'ddtraining/storefront-fixed:2.1.2'
@@ -82,7 +82,7 @@ services:
       - DD_SERVICE=advertisements-service
       - DD_ENV=intro-to-logs
       - DD_LOGS_INJECTION=true
-      - DD_TRACE_SAMPLE_RATE=1
+      - DD_TRACE_SAMPLE_RATE=1.0
       - DD_PROFILING_ENABLED=true
       - DD_AGENT_HOST=datadog
     image: 'ddtraining/advertisements:2.1.2'
