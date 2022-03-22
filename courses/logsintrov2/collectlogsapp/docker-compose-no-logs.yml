@@ -5,7 +5,7 @@ services:
     environment:
       - DD_API_KEY
       - DD_APM_ENABLED=true
-# add agent env variables
+      # add agent env variables
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
       - DD_TAGS='env:intro-to-logs'
@@ -16,7 +16,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /proc/:/host/proc/:ro
       - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
-# add agent log labels
+  # add agent log labels
   discounts:
     environment:
       - FLASK_APP=discounts.py
@@ -28,14 +28,16 @@ services:
       - DD_SERVICE=discounts-service
       - DD_VERSION=1.1
       - DD_AGENT_HOST=agent
-# add discounts env variables
-      - DD_TRACE_ANALYTICS_ENABLED=true
+      # add discounts env variables
+      - DD_TRACE_SAMPLE_RATE=1.0
       - DD_PROFILING_ENABLED=true
     image: "ddtraining/discounts:2.1.2"
-    command: [
-      sh, 
-      -c, 
-      "ddtrace-run flask run --port=5001 --host=0.0.0.0"]
+    command:
+      [
+        sh,
+        -c,
+        "ddtrace-run flask run --port=5001 --host=0.0.0.0"
+      ]
     ports:
       - "5001:5001"
     volumes:
@@ -44,7 +46,7 @@ services:
       - agent
       - db
     labels:
-# add discounts log labels 
+      # add discounts log labels 
       com.datadoghq.tags.env: "intro-to-logs"
       com.datadoghq.tags.service: "discounts-service"
       com.datadoghq.tags.version: "1.1"
@@ -52,7 +54,7 @@ services:
   frontend:
     environment:
       - DD_AGENT_HOST=agent
-      - DD_TRACE_ANALYTICS_ENABLED=true
+      - DD_TRACE_SAMPLE_RATE=1.0
       - DD_ENV=intro-to-logs
       - DD_SERVICE=store-frontend
       - DD_VERSION=1.1
@@ -72,7 +74,7 @@ services:
       - discounts
       - advertisements
     labels:
-# add frontend log labels
+      # add frontend log labels
       com.datadoghq.tags.env: "intro-to-logs"
       com.datadoghq.tags.service: "store-frontend"
       com.datadoghq.tags.version: "1.1"
@@ -88,11 +90,16 @@ services:
       - DD_SERVICE=advertisements-service
       - DD_VERSION=1.1
       - DD_AGENT_HOST=agent
-# add ads env variables
-      - DD_TRACE_ANALYTICS_ENABLED=true
+      # add ads env variables
+      - DD_TRACE_SAMPLE_RATE=1.0
       - DD_PROFILING_ENABLED=true
     image: "ddtraining/advertisements:2.1.2"
-    command: [sh, -c, "ddtrace-run flask run --port=5002 --host=0.0.0.0"]
+    command:
+      [
+        sh,
+        -c,
+        "ddtrace-run flask run --port=5002 --host=0.0.0.0"
+      ]
     ports:
       - "5002:5002"
     volumes:
@@ -101,7 +108,7 @@ services:
       - agent
       - db
     labels:
-# add ads log labels
+      # add ads log labels
       com.datadoghq.tags.env: "intro-to-logs"
       com.datadoghq.tags.service: "advertisements-service"
       com.datadoghq.tags.version: "1.1"
