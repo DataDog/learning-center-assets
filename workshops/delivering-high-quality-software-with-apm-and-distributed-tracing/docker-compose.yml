@@ -126,3 +126,14 @@ services:
     volumes:
       - /root/postgres:/var/lib/postgresql/data
       - /root/dd_agent.sql:/docker-entrypoint-initdb.d/dd_agent.sql
+  puppeteer:
+    image: buildkite/puppeteer:10.0.0
+    volumes:
+      - /root/puppeteer-mobile.js:/puppeteer.js
+      - /root/puppeteer.sh:/puppeteer.sh
+    environment:
+      - STOREDOG_URL
+      - PUPPETEER_TIMEOUT
+    depends_on:
+      - frontend
+    command: bash puppeteer.sh
