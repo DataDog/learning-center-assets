@@ -16,25 +16,31 @@ spec:
     metadata:
       labels:
         app: postgres
-    #      annotations:
-    #        ad.datadoghq.com/postgres.check_names: '["postgres"]'
-    #        ad.datadoghq.com/postgres.init_configs: '[{}]'
-    #        ad.datadoghq.com/postgres.instances: '[{"host": "%%host%%", "port": "%%port%%","username": "datadog","password": "datadog" }]'
+#      annotations:
+#        ad.datadoghq.com/postgres.check_names: '["postgres"]'
+#        ad.datadoghq.com/postgres.init_configs: '[{}]'
+#        ad.datadoghq.com/postgres.instances: '[{"host": "%%host%%", "port": "%%port%%","username": "datadog","password": "datadog" }]'
     spec:
       containers:
-        - name: postgres
-          image: postgres:10.4
-          imagePullPolicy: IfNotPresent
-          env:
-            - name: POSTGRES_USER
-              value: "datadog"
-            - name: POSTGRES_PASSWORD
-              value: "datadog-password"
-          ports:
-            - containerPort: 5432
-              hostPort: 5432
-              name: postgresport
-              protocol: TCP
+      - name: postgres
+        image: postgres:10.4
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-user
+              key: token
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-password
+              key: token
+        ports:
+        - containerPort: 5432
+          hostPort: 5432
+          name: postgresport
+          protocol: TCP
 ---
 apiVersion: v1
 kind: Service
@@ -44,7 +50,7 @@ spec:
   selector:
     app: postgres
   ports:
-    - name: postgresport
-      protocol: TCP
-      port: 5432
-      targetPort: 5432
+  - name: postgresport
+    protocol: TCP
+    port: 5432
+    targetPort: 5432
