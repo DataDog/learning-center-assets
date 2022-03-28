@@ -196,9 +196,9 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
- name: my-pod12
- annotations:
-   ad.datadoghq.com/tags: '{"office": "lax", "team": "dev"}'
+  name: my-pod12
+  annotations:
+    ad.datadoghq.com/tags: '{"office": "lax", "team": "dev"}'
 spec:
   containers:
     - name: my-container
