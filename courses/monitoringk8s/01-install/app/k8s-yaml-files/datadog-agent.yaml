@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: datadog
+  name: datadog-agent
   namespace: default
   labels: {}
 spec:
   selector:
     matchLabels:
-      app: datadog
+      app: datadog-agent
   template:
     metadata:
       labels:
-        app: datadog
-      name: datadog
+        app: datadog-agent
+      name: datadog-agent
       annotations: {}
     spec:
       containers:
