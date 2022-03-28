@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-api
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: node-api
+  template:
+    metadata:
+      labels:
+        app: node-api
+    spec:
+      containers:
+      - name: node-api
+        image: burningion/k8s-distributed-tracing-users:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5004
+          name: node-port
+          hostPort: 5004
+        env:
+        - name: DD_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: DOGSTATSD_HOST_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: DD_SERVICE_NAME
+          value: 'users-api'
+        - name: DD_LOGS_INJECTION
+          value: 'true'
+        - name: DD_ANALYTICS_ENABLED
+          value: 'true'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-api
+spec:
+  selector:
+    app: node-api
+  ports:
+  - name: http
+    protocol: TCP
+    port: 5004
+  type: NodePort
