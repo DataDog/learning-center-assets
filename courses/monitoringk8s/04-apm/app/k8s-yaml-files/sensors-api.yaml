@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sensors-api
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: sensors-api
+  template:
+    metadata:
+      labels:
+        app: sensors-api
+    spec:
+      containers:
+        - name: sensors-api
+          image: burningion/k8s-distributed-tracing-sensors:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5002
+          env:
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: DOGSTATSD_HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            # - name: DATADOG_SERVICE_NAME
+            #   value: 'sensors-api'
+            # - name: DD_LOGS_INJECTION
+            #   value: 'true'
+            # - name: DD_TRACE_ANALYTICS_ENABLED
+            #   value: 'true'
+            - name: FLASK_APP
+              value: 'sensors'
+            - name: FLASK_DEBUG
+              value: '1'
+            - name: FLASK_RUN_PORT
+              value: '5002'
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-user
+                  key: token
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-password
+                  key: token
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sensors-api
+spec:
+  selector:
+    app: sensors-api
+  ports:
+    - name: http
+      protocol: TCP
+      port: 5002
+  type: NodePort

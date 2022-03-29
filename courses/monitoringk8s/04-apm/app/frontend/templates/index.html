@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title>Hello from Flask</title>
+    </head>
+<body>
+{% if sensors['sensor_count'] != 0 %}
+    <h1>Sensors</h1>
+    {{ sensors }}
+{% else %}
+<h1>Create a Sensor</h1>
+<button>Add Sensor</button>
+{% endif %}
+</body>
+</html>

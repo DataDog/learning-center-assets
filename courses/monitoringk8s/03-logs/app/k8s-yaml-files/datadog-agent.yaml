@@ -39,6 +39,8 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.hostIP
+            - name: DD_HOSTNAME
+              value: 'intro-to-monitoring-k8s-host'
             - name: KUBERNETES
               value: 'yes'
             - name: DD_LOG_LEVEL
