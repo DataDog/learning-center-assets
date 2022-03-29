@@ -61,9 +61,6 @@ spec:
               value: 'true'
             - name: DD_APM_NON_LOCAL_TRAFFIC
               value: 'true'
-            # For Trace Search
-            - name: DD_APM_ANALYZED_SPANS
-              value: 'users-api|express.request=1,sensors-api|flask.request=1,pumps-service|flask.request=1,iot-frontend|flask.request=1'
             # For dogstatsd
             - name: DD_DOGSTATSD_NON_LOCAL_TRAFFIC
               value: 'true'
