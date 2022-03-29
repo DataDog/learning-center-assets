@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:5.0.3-alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 6379
+          hostPort: 6379
+          name: redisport
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  selector:
+    app: redis
+  ports:
+  - name: redisport
+    protocol: TCP
+    port: 6379
+    targetPort: 6379
