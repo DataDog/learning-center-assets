@@ -25,6 +25,10 @@ spec:
             - containerPort: 8125
               name: dogstatsdport
               protocol: UDP
+            - containerPort: 8126
+              hostPort: 8126
+              name: traceport
+              protocol: TCP
           env:
             - name: GODEBUG
               value: x509ignoreCN=0
