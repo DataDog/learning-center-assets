@@ -1,0 +1,229 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: datadog-agent
+  namespace: default
+  labels: {}
+spec:
+  selector:
+    matchLabels:
+      app: datadog-agent
+  template:
+    metadata:
+      labels:
+        app: datadog-agent
+      name: datadog-agent
+      annotations: {}
+    spec:
+      containers:
+        - image: datadog/agent:7.31.1
+          imagePullPolicy: IfNotPresent
+          name: datadog-agent
+          ports:
+            - containerPort: 8125
+              hostPort: 8125
+              name: dogstatsdport
+              protocol: UDP
+            - containerPort: 8126
+              hostPort: 8126
+              name: traceport
+              protocol: TCP
+          env:
+            - name: GODEBUG
+              value: x509ignoreCN=0
+            - name: DD_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: 'datadog-api'
+                  key: token
+            - name: DD_KUBERNETES_KUBELET_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: DD_HOSTNAME
+              value: 'intro-to-monitoring-k8s-host'
+            - name: KUBERNETES
+              value: 'yes'
+            - name: DD_LOG_LEVEL
+              value: 'INFO'
+            - name: DD_DOGSTATSD_PORT
+              value: '8125'
+            - name: DD_DOGSTATSD_NON_LOCAL_TRAFFIC
+              value: 'true'
+            - name: DD_LEADER_ELECTION
+              value: 'true'
+            - name: DD_COLLECT_KUBERNETES_EVENTS
+              value: 'true'
+            # - name: DD_APM_ENABLED
+            #   value: 'true'
+            # - name: DD_APM_NON_LOCAL_TRAFFIC
+            #   value: 'true'
+            - name: DD_LOGS_ENABLED
+              value: 'true'
+            - name: DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL
+              value: 'true'
+            - name: DD_LOGS_CONFIG_K8S_CONTAINER_USE_FILE
+              value: 'true'
+            - name: DD_LOGS_CONFIG_AUTO_MULTI_LINE_DETECTION
+              value: 'false'
+            - name: DD_HEALTH_PORT
+              value: '5555'
+            - name: DD_DOGSTATSD_SOCKET
+              value: '/var/run/datadog/dsd.socket'
+            - name: DD_EXPVAR_PORT
+              value: '6000'
+          volumeMounts:
+            - name: logdatadog
+              mountPath: /var/log/datadog
+            - name: tmpdir
+              mountPath: /tmp
+              readOnly: false
+            - name: config
+              mountPath: /etc/datadog-agent
+            - name: runtimesocketdir
+              mountPath: /host/var/run
+              mountPropagation: None
+              readOnly: true
+            - name: dsdsocket
+              mountPath: /var/run/datadog
+            - name: procdir
+              mountPath: /host/proc
+              mountPropagation: None
+              readOnly: true
+            - name: cgroups
+              mountPath: /host/sys/fs/cgroup
+              mountPropagation: None
+              readOnly: true
+            - name: pointerdir
+              mountPath: /opt/datadog-agent/run
+              mountPropagation: None
+            - name: logpodpath
+              mountPath: /var/log/pods
+              mountPropagation: None
+              readOnly: true
+            - name: logscontainerspath
+              mountPath: /var/log/containers
+              mountPropagation: None
+              readOnly: true
+            - name: logdockercontainerpath
+              mountPath: /var/lib/docker/containers
+              mountPropagation: None
+              readOnly: true
+          livenessProbe:
+            failureThreshold: 6
+            httpGet:
+              path: /live
+              port: 5555
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 5
+          readinessProbe:
+            failureThreshold: 6
+            httpGet:
+              path: /ready
+              port: 5555
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 5
+      initContainers:
+        - name: init-volume
+          image: datadog/agent:7.31.1
+          imagePullPolicy: IfNotPresent
+          command: ['bash', '-c']
+          args:
+            - cp -r /etc/datadog-agent /opt
+          volumeMounts:
+            - name: config
+              mountPath: /opt/datadog-agent
+          resources: {}
+        - name: init-config
+          image: datadog/agent:7.31.1
+          imagePullPolicy: IfNotPresent
+          command: ['bash', '-c']
+          args:
+            - for script in $(find /etc/cont-init.d/ -type f -name '*.sh' | sort) ; do bash $script ; done
+          volumeMounts:
+            - name: logdatadog
+              mountPath: /var/log/datadog
+            - name: config
+              mountPath: /etc/datadog-agent
+            - name: procdir
+              mountPath: /host/proc
+              mountPropagation: None
+              readOnly: true
+            - name: runtimesocketdir
+              mountPath: /host/var/run
+              mountPropagation: None
+              readOnly: true
+          env:
+            # Needs to be removed when Agent N-2 is built with Golang 1.17
+            - name: GODEBUG
+              value: x509ignoreCN=0
+            - name: DD_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: 'datadog-api'
+                  key: token
+            - name: DD_KUBERNETES_KUBELET_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: KUBERNETES
+              value: 'yes'
+            - name: DD_LEADER_ELECTION
+              value: 'true'
+          resources: {}
+      volumes:
+        - name: installinfo
+          configMap:
+            name: datadog-installinfo
+        - name: config
+          emptyDir: {}
+        - name: logdatadog
+          emptyDir: {}
+        - name: tmpdir
+          emptyDir: {}
+        - hostPath:
+            path: /proc
+          name: procdir
+        - hostPath:
+            path: /sys/fs/cgroup
+          name: cgroups
+        - hostPath:
+            path: /var/run/datadog/
+            type: DirectoryOrCreate
+          name: dsdsocket
+        - hostPath:
+            path: /var/run/datadog/
+            type: DirectoryOrCreate
+          name: apmsocket
+        - name: s6-run
+          emptyDir: {}
+        - hostPath:
+            path: /var/lib/datadog-agent/logs
+          name: pointerdir
+        - hostPath:
+            path: /var/log/pods
+          name: logpodpath
+        - hostPath:
+            path: /var/log/containers
+          name: logscontainerspath
+        - hostPath:
+            path: /var/lib/docker/containers
+          name: logdockercontainerpath
+        - hostPath:
+            path: /var/run
+          name: runtimesocketdir
+      tolerations:
+      affinity: {}
+      serviceAccountName: 'datadog-agent'
+      nodeSelector:
+        kubernetes.io/os: linux
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 10%
+    type: RollingUpdate

@@ -1,83 +1,94 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: datadog-agent
+  namespace: default
 spec:
+  selector:
+    matchLabels:
+      app: datadog-agent
   template:
     metadata:
       labels:
         app: datadog-agent
       name: datadog-agent
     spec:
+      serviceAccountName: datadog
       containers:
-      - image: datadog/agent:6.10.2
-        imagePullPolicy: Always
-        name: datadog-agent
-        ports:
-          - containerPort: 8125
-            hostPort: 8125
-            name: dogstatsdport
-            protocol: UDP
-          - containerPort: 8126
-            hostPort: 8126
-            name: traceport
-            protocol: TCP
-        env:
-          - name: DD_API_KEY
-            valueFrom:
-              secretKeyRef:
-                name: datadog-api
-                key: token
-          - name: KUBERNETES
-            value: "true"
-          - name: DD_KUBERNETES_POD_LABELS_AS_TAGS
-            value: "true"
-          - name: DD_KUBERNETES_KUBELET_HOST
-            valueFrom:
-              fieldRef:
-                fieldPath: status.hostIP
-          # Logs
-          - name: DD_LOGS_ENABLED
-            value: "true"
-          - name: DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL
-            value: "true"
-          - name: DD_PROCESS_AGENT_ENABLED
-            value: "true"
-          # APM
-          - name: DD_APM_ENABLED
-            value: "true"
-          - name: DD_APM_NON_LOCAL_TRAFFIC
-            value: "true"
-          # For Trace Search
-          - name: DD_APM_ANALYZED_SPANS
-            value: "users-api|express.request=1,sensors-api|flask.request=1,pumps-service|flask.request=1,iot-frontend|flask.request=1"
-          # For dogstatsd
-          - name: DD_DOGSTATSD_NON_LOCAL_TRAFFIC
-            value: "true"
-          - name: DD_TAGS
-            value: "env:k8s-apm-workshop"
-          - name: DD_KUBELET_TLS_VERIFY
-            value: "false"
-          - name: DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL
-            value: "true"
-        volumeMounts:
-          - name: dockersocket
-            mountPath: /var/run/docker.sock
-          - name: procdir
-            mountPath: /host/proc
-            readOnly: true
-          - name: cgroups
-            mountPath: /host/sys/fs/cgroup
-            readOnly: true
-          - name: passwd
-            mountPath: /etc/passwd
-            readOnly: true
-          - name: pointerdir
-            mountPath: /opt/datadog-agent/run
+        - image: datadog/agent:7.31.1
+          imagePullPolicy: IfNotPresent
+          name: datadog-agent
+          ports:
+            - containerPort: 8125
+              hostPort: 8125
+              name: dogstatsdport
+              protocol: UDP
+            - containerPort: 8126
+              hostPort: 8126
+              name: traceport
+              protocol: TCP
+          env:
+            - name: DD_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: datadog-api
+                  key: token
+            - name: DD_COLLECT_KUBERNETES_EVENTS
+              value: 'true'
+            - name: DD_LEADER_ELECTION
+              value: 'true'
+            - name: KUBERNETES
+              value: 'true'
+            - name: DD_HEALTH_PORT
+              value: '5555'
+            - name: DD_KUBELET_TLS_VERIFY
+              value: 'false'
+            - name: DD_KUBERNETES_KUBELET_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: DD_KUBERNETES_POD_LABELS_AS_TAGS
+              value: 'true'
+            # Logs
+            - name: DD_LOGS_ENABLED
+              value: 'true'
+            - name: DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL
+              value: 'true'
+            - name: DD_PROCESS_AGENT_ENABLED
+              value: 'true'
+            # APM
+            - name: DD_APM_ENABLED
+              value: 'true'
+            - name: DD_APM_NON_LOCAL_TRAFFIC
+              value: 'true'
+            # For dogstatsd
+            - name: DD_DOGSTATSD_NON_LOCAL_TRAFFIC
+              value: 'true'
+            - name: DD_TAGS
+              value: 'env:intro-to-monitoring-k8s'
+            - name: DD_KUBELET_TLS_VERIFY
+              value: 'false'
+            - name: DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL
+              value: 'true'
+          volumeMounts:
+            - name: dockersocket
+              mountPath: /var/run/docker.sock
+            - name: procdir
+              mountPath: /host/proc
+              readOnly: true
+            - name: cgroups
+              mountPath: /host/sys/fs/cgroup
+              readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5555
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
       volumes:
-        - hostPath:
-            path: /opt/datadog-agent/run
-          name: pointerdir
         - hostPath:
             path: /var/run/docker.sock
           name: dockersocket
@@ -87,6 +98,3 @@ spec:
         - hostPath:
             path: /sys/fs/cgroup
           name: cgroups
-        - hostPath:
-            path: /etc/passwd
-          name: passwd

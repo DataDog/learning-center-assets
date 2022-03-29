@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-service
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: frontend-service
+  template:
+    metadata:
+      labels:
+        app: frontend-service
+    spec:
+      containers:
+        - name: frontend-service
+          image: burningion/k8s-distributed-tracing-frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5005
+              hostPort: 5005
+              name: frontendport
+              protocol: TCP
+          env:
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: DOGSTATSD_HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            # - name: DD_LOGS_INJECTION
+            #   value: 'true'
+            # - name: DD_TRACE_ANALYTICS_ENABLED
+            #   value: 'true'
+            # - name: DATADOG_SERVICE_NAME
+            #   value: 'frontend-service'
+            - name: FLASK_APP
+              value: 'api'
+            - name: FLASK_DEBUG
+              value: '1'
+            - name: FLASK_RUN_PORT
+              value: '5005'
+            - name: DATADOG_PATCH_MODULES
+              value: 'requests:true'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend-service
+  ports:
+    - name: http
+      protocol: TCP
+      port: 5005
+      nodePort: 30001
+  type: NodePort
