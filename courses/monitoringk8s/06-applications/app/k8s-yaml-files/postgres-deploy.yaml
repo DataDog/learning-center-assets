@@ -16,10 +16,10 @@ spec:
     metadata:
       labels:
         app: postgres
-      annotations:
-        ad.datadoghq.com/postgres.check_names: '["postgres"]'
-        ad.datadoghq.com/postgres.init_configs: '[{}]'
-        ad.datadoghq.com/postgres.instances: '[{"host": "%%host%%", "port": "%%port%%","username": "datadog","password": "postgres" }]'
+      # annotations:
+      #   ad.datadoghq.com/postgres.check_names: '["postgres"]'
+      #   ad.datadoghq.com/postgres.init_configs: '[{}]'
+      #   ad.datadoghq.com/postgres.instances: '[{"host": "%%host%%", "port": "%%port%%","username": "datadog","password": "postgres" }]'
     spec:
       containers:
         - name: postgres
