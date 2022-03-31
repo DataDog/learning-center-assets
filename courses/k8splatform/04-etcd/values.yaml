@@ -16,7 +16,7 @@ fullnameOverride: # ""
 ## Set the target OS for this deployment
 ## Possible values: linux, windows
 #
-targetSystem: "linux"
+targetSystem: 'linux'
 
 datadog:
   ## @param apiKey - string - required
@@ -229,11 +229,14 @@ datadog:
   ## Enable apm agent and provide custom configs
   #
   apm:
-    ## @param enabled - boolean - optional - default: false
-    ## Enable this to enable APM and tracing, on port 8126
+    # datadog.apm.portEnabled -- Enable APM over TCP communication (port 8126 by default)
+    ## ref: https://docs.datadoghq.com/agent/kubernetes/apm/
+    portEnabled: true
+
+    # datadog.apm.enabled -- Enable this to enable APM and tracing, on port 8126
+    # DEPRECATED. Use datadog.apm.portEnabled instead
     ## ref: https://github.com/DataDog/docker-dd-agent#tracing-from-the-host
-    #
-    enabled: true
+    enabled: false
 
     ## @param port - integer - optional - default: 8126
     ## Override the trace Agent port.
@@ -263,7 +266,7 @@ datadog:
   #
   env:
     - name: DD_KUBELET_TLS_VERIFY
-      value: "false"
+      value: 'false'
 
   ## @param confd - list of objects - optional
   ## Provide additional check configurations (static and Autodiscovery)
@@ -381,7 +384,7 @@ clusterAgent:
   ## @param enabled - boolean - required
   ## Set this to true to enable Datadog Cluster Agent
   #
-  enabled: false
+  enabled: true
 
   ## @param image - object - required
   ## Define the Datadog Cluster-Agent image to work with.
@@ -419,7 +422,7 @@ clusterAgent:
   ## It is a preshared key between the node agents and the cluster agent
   ## ref:
   #
-  token: ""
+  token: ''
 
   ## @param replicas - integer - required
   ## Specify the of cluster agent replicas, if > 1 it allow the cluster agent to
@@ -854,7 +857,7 @@ agents:
       - cluster.local
     options:
       - name: ndots
-        value: "5"
+        value: '5'
   #  options:
   #  - name: ndots
   #    value: "1"
@@ -883,7 +886,7 @@ agents:
   ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
   #
   nodeSelector:
-    node-role.kubernetes.io/master: "" # {}
+    node-role.kubernetes.io/master: '' # {}
 
   ## @param affinity - object - optional
   ## Allow the DaemonSet to schedule using affinity rules
@@ -898,7 +901,7 @@ agents:
   updateStrategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: "10%"
+      maxUnavailable: '10%'
 
   ## @param priorityClassName - string - optional
   ## Sets PriorityClassName if defined.
