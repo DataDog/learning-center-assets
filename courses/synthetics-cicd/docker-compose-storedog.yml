@@ -119,8 +119,8 @@ services:
       - "3031:3000"
     volumes:
       # point to the staging version of discounts service
-      - /root/lab/staging/discounts_controller.rb:/app/controllers/discounts_controller.rb
-      - /root/lab/staging/frontend_helper.rb:/app/helpers/spree/frontend_helper.rb
+      - /root/lab/staging/discounts_controller.rb:/app/app/controllers/discounts_controller.rb
+      - /root/lab/staging/frontend_helper.rb:/app/app/helpers/spree/frontend_helper.rb
     depends_on:
       - agent
       - db
