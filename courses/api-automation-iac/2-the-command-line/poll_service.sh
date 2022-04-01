@@ -23,8 +23,7 @@ EVENT_RESPONSE=$(curl -s -X POST "https://api.datadoghq.com/api/v1/events" \
   "text": "The service polling script detected $DD_QUERY_METRIC from $DD_SERVICE in $DD_ENV.",
   "tags" : [
     "env:$DD_ENV",
-    "service:$DD_SERVICE",
-    "host:$(hostname)" 
+    "service:$DD_SERVICE"
   ]
 }
 EOF

@@ -12,6 +12,7 @@ services:
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_SYSTEM_PROBE_ENABLED=true 
       - DD_ENV=api-course
+      - DD_HOSTNAME=api-course-host
     ports:
       - "8126:8126"
     volumes:

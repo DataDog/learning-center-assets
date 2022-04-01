@@ -7,7 +7,7 @@ from datadog_api_client.v1.models import *
 configuration = Configuration()
 
 environment=os.getenv('DD_ENV')
-host=os.uname()[1]
+host=os.getenv('DD_HOSTNAME')
 
 with ApiClient(configuration) as api_client:
     api_instance = logs_api.LogsApi(api_client)
