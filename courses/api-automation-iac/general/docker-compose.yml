@@ -1,7 +1,7 @@
 version: '3'
 services:
   agent:
-    image: "datadog/agent:7.21.1"
+    image: "datadog/agent:7.31.1"
     container_name: datadog-agent
     environment:
       - DD_API_KEY
@@ -11,6 +11,7 @@ services:
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_SYSTEM_PROBE_ENABLED=true 
+      - DD_HOSTNAME=api-course-host
       - DD_ENV=api-course
       - DD_HOSTNAME=api-course-host
     ports:
