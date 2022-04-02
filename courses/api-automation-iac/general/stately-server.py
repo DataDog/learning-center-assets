@@ -8,7 +8,7 @@ import os
 from ddtrace import tracer
 from ddtrace.contrib.falcon import TraceMiddleware
 
-tracer.configure(hostname=os.getenv('DD_HOSTNAME'))
+tracer.configure(hostname=os.getenv('DD_HOSTNAME', 'api-course-host'))
 
 cache = Cache(
     config={
