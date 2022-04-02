@@ -7,7 +7,7 @@ do
   TO=$(date +"%s")
   FROM=$(expr $TO - 60)
   sleep 2
-  SERVICE_UP=$(curl -s -X GET "https://api.datadoghq.com/api/v1/query?from=$FROM&to=$TO&query=avg:$DD_QUERY_METRIC\{env:$DD_ENV,service:$DD_SERVICE\}" \
+  SERVICE_UP=$(curl -s -X GET "https://api.datadoghq.com/api/v1/query?from=$FROM&to=$TO&query=avg:$DD_QUERY_METRIC\{env:$DD_ENV,service:$DD_SERVICE,host:$DD_HOSTNAME\}" \
     -H "Content-Type: application/json" \
     -H "DD-API-KEY: ${DD_API_KEY}" \
     -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" |jq '.series|length>0')
@@ -24,7 +24,7 @@ EVENT_RESPONSE=$(curl -s -X POST "https://api.datadoghq.com/api/v1/events" \
   "tags" : [
     "env:$DD_ENV",
     "service:$DD_SERVICE",
-    "host:$(hostname)" 
+    "host:$DD_HOSTNAME"
   ]
 }
 EOF

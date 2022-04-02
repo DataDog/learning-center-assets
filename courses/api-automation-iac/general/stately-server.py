@@ -3,11 +3,12 @@ from wsgiref.simple_server import make_server
 import falcon
 from falcon_caching import Cache
 import uuid
+import os
 
 from ddtrace import tracer
 from ddtrace.contrib.falcon import TraceMiddleware
 
-tracer.configure(hostname=agent)
+tracer.configure(hostname=os.getenv('DD_HOSTNAME', 'api-course-host'))
 
 cache = Cache(
     config={

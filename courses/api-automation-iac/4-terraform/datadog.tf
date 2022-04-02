@@ -40,7 +40,7 @@ resource "datadog_dashboard" "redis_session_cache_dash" {
     check_status_definition {
       check = "datadog.agent.check_status"
       grouping = "check"
-      group = "check:redisdb,host:host01"
+      group = "check:redisdb,host:api-course-host"
       title = "Redis Up"
       title_size = 16
       live_span = "30m"

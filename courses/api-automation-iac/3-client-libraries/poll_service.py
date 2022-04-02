@@ -9,7 +9,7 @@ initialize()
 """ Prepare context variables
 """
 environment=os.getenv('DD_ENV')
-host=os.uname()[1]
+host=os.getenv('DD_HOSTNAME')
 service=os.getenv('DD_SERVICE')
 
 tags = [ 'env:{tag}'.format(tag=environment),
