@@ -8,8 +8,9 @@ services:
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
-      - DD_TAGS='env:cwv'
+      - DD_TAGS='env:core-web-vitals'
       - DD_APM_NON_LOCAL_TRAFFIC=true
+      - DD_HOSTNAME='cwv-workshop-host'
     ports:
       - 127.0.0.1:8126:8126/tcp
     volumes:
@@ -23,7 +24,7 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
       - POSTGRES_HOST=db
-      - DD_ENV=cwv
+      - DD_ENV=core-web-vitals
       - DD_SERVICE=discounts-service
       - DD_VERSION=2.1.2
       - DD_AGENT_HOST=datadog
@@ -46,7 +47,7 @@ services:
       - db
     labels:
       com.datadoghq.ad.logs: '[{"source": "python", "service": "discounts-service"}]'
-      com.datadoghq.tags.env: 'cwv'
+      com.datadoghq.tags.env: 'core-web-vitals'
       com.datadoghq.tags.service: 'discounts-service'
       com.datadoghq.tags.version: '2.1.2'
       my.custom.label.team: 'discounts'
@@ -55,7 +56,7 @@ services:
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
       - DD_TRACE_ANALYTICS_ENABLED=true
-      - DD_ENV=cwv
+      - DD_ENV=core-web-vitals
       - DD_SERVICE=store-frontend
       - DD_SITE=datadoghq.com
       - DD_VERSION=2.1.2
@@ -78,7 +79,7 @@ services:
       - advertisements
     labels:
       com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-frontend"}]'
-      com.datadoghq.tags.env: 'cwv'
+      com.datadoghq.tags.env: 'core-web-vitals'
       com.datadoghq.tags.service: 'store-frontend'
       com.datadoghq.tags.version: '2.1.2'
       my.custom.label.team: 'frontend'
@@ -112,7 +113,7 @@ services:
       - db
     labels:
       com.datadoghq.ad.logs: '[{"source": "python", "service": "advertisements-service"}]'
-      com.datadoghq.tags.env: 'cwv'
+      com.datadoghq.tags.env: 'core-web-vitals'
       com.datadoghq.tags.service: 'advertisements-service'
       com.datadoghq.tags.version: '2.1.2'
       my.custom.label.team: 'advertisements'
@@ -125,13 +126,13 @@ services:
     ports:
       - '5432:5432'
     labels:
-      com.datadoghq.tags.env: 'cwv'
+      com.datadoghq.tags.env: 'core-web-vitals'
       com.datadoghq.tags.service: 'database'
       com.datadoghq.tags.version: '11.12'
       my.custom.label.team: 'database'
       com.datadoghq.ad.check_names: '["postgres"]'
       com.datadoghq.ad.init_configs: '[{}]'
-      com.datadoghq.ad.instances: '[{"host":"%%host%%", "port":5432,"username":"datadog","password":"datadog"}]'
+      com.datadoghq.ad.instances: '[{"host":"%%host%%", "port":5432,"username":"datadog","password": "datadog"}]'
       com.datadoghq.ad.logs: '[{"source": "postgresql", "service": "database"}]'
     volumes:
       - /root/postgres:/var/lib/postgresql/data
