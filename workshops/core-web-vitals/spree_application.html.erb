@@ -1,0 +1,95 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html class="ie ie6" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if gt IE 9]><!--><html lang="<%= I18n.locale %>"><!--<![endif]-->
+  <head data-hook="inside_head">
+<script src="https://www.datadoghq-browser-agent.com/datadog-rum-v4.js" type="text/javascript">
+</script>
+<script>
+window.DD_RUM && window.DD_RUM.init({
+  clientToken: '<%= ENV['DD_CLIENT_TOKEN'] %>',
+  applicationId: '<%= ENV['DD_APPLICATION_ID'] %>',
+  sampleRate: 100,
+  trackInteractions: true,
+  service: '<%= ENV['DD_SERVICE'] %>',
+  site: '<%= ENV['DD_SITE'] %>',
+  allowedTracingOrigins: [/https:\/\/.*\.env.play.instruqt\.com/],
+  env: '<%= ENV['DD_ENV'] %>',
+  version: '<%= ENV['DD_VERSION'] %>',
+  defaultPrivacyLevel: 'mask-user-input'
+});
+
+window.DD_RUM && window.DD_RUM.startSessionReplayRecording();
+
+if (!window._DATADOG_SYNTHETICS_BROWSER) {
+  window.DD_RUM.setRumGlobalContext({'usr.handle': 'john@storedog.com'});
+};
+
+if (window.location.href.includes('utm')) {
+  window.DD_RUM.addRumGlobalContext({'fromUtm': true});
+};
+</script>
+    <%= render partial: 'spree/shared/head' %>
+  </head>
+  <body class="<%= body_class %>" id="<%= @body_id || 'default' %>" data-hook="body">
+    <%= render partial: 'spree/shared/header' %>
+
+    <div class="container">
+     <div class="row" data-hook>
+        <%= spree_breadcrumbs(@taxon) %>
+
+        <%= render partial: 'spree/shared/sidebar' if content_for? :sidebar %>
+
+        <main
+          id="content"
+          class="mt-4 <%= !content_for?(:sidebar) ? "col-sm-12" : "col-sm-12 col-md-9" %>"
+          data-hook>
+          <%= flash_messages %>
+          <%= yield %>
+        </main>
+
+        <%= yield :templates %>
+      </div>
+   </div>
+   <script>
+     // If a discounts block exists on this page, populate it
+     if (document.querySelector("#discount-block")) {
+     fetch('<%= ENV['DD_DISCOUNTS_URL'] %>')
+       .then(response => response.json())
+       .then(data => data[Math.floor(Math.random() * data.length)])
+       .then(discount => {
+         document.querySelector("#discount-name").innerText = discount.name;
+         document.querySelector("#discount-code").innerText = discount.code;
+         document.querySelector("#discount-value").innerText = discount.value;
+         document.querySelector("#discount-block").style.visibility = "visible";
+       });
+     };
+   </script>
+   <script>
+     // If an ads block exists on this page, populate it
+     // This is how to get the image 
+     // @ads['base64'] = Base64.encode64(open('http://advertisements:5002/banners/' + @ads['path']).read).gsub("\n", '')
+     if (document.querySelector("#ads-block")) {
+    
+       fetch('<%= ENV['DD_ADS_URL'] %>ads')
+         .then(response => response.json())
+         .then(data => data[Math.floor(Math.random() * data.length)])
+         .then(ad => {
+           document.querySelector("#ad-url").href = ad.url;
+           return fetch(`<%= ENV['DD_ADS_URL'] %>banners/${ad.path}`)
+         })
+         .then(response => response.blob())
+         .then(blob => {
+           const reader = new FileReader();
+           reader.onload = function() { 
+             document.querySelector("#ad-image").src = this.result;
+             document.querySelector("#ads-block").style.visibility = "visible";
+           };
+           reader.readAsDataURL(blob);
+         });
+     };
+   </script>
+  </body>
+</html>
