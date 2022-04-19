@@ -3,10 +3,10 @@ kind: DatadogAgent
 metadata:
   name: datadog
 spec:
-  clusterName: katacoda
+  clusterName: instruqt
   credentials:
     apiSecret:
-      secretName: my-datadog-operator-apikey 
+      secretName: my-datadog-operator-apikey
       keyName: api-key
     appSecret:
       secretName: my-datadog-operator-appkey
@@ -14,13 +14,13 @@ spec:
   agent:
     env:
       - name: DD_KUBELET_TLS_VERIFY
-        value: "false"
+        value: 'false'
       - name: DD_DOGSTATSD_NON_LOCAL_TRAFFIC
-        value: "true"
+        value: 'true'
       - name: DD_APM_NON_LOCAL_TRAFFIC
-        value: "true"
+        value: 'true'
     image:
-      name: "datadog/agent:7.27.0"
+      name: 'datadog/agent:7.35.0'
     apm:
       enabled: true
       hostPort: 8126
@@ -35,7 +35,7 @@ spec:
           effect: NoSchedule
   clusterAgent:
     image:
-      name: "datadog/cluster-agent:1.12.0"
+      name: 'datadog/cluster-agent:1.12.0'
   features:
     orchestratorExplorer:
       enabled: true
