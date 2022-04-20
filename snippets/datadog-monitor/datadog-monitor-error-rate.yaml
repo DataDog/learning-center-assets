@@ -1,0 +1,12 @@
+apiVersion: datadoghq.com/v1alpha1
+kind: DatadogMonitor
+metadata:
+  name: ads-error-rate
+spec:
+  query: ''
+  type: 'metric alert'
+  name: 'Error rate high ads service'
+  message: 'The error rate for the ads service is above 1%'
+  tags:
+    - 'cluster_name:instruqt'
+    - 'service:advertisements'

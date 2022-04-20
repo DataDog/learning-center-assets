@@ -1,0 +1,11 @@
+apiVersion: datadoghq.com/v1alpha1
+kind: DatadogMonitor
+metadata:
+  name: disk-usage-nodes
+spec:
+  query: ''
+  type: 'metric alert'
+  name: 'Disk space on Kubernetes nodes'
+  message: 'We are running out of disk space!'
+  tags:
+    - 'cluster_name:instruqt'
