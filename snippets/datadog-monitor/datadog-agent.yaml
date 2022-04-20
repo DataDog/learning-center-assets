@@ -23,8 +23,6 @@ spec:
         value: 'true'
       - name: DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL
         value: 'true'
-      - name: DD_HOSTNAME
-        value: 'k8s-monitors-host'
     image:
       name: 'datadog/agent:7.35.0'
     apm:
