@@ -78,10 +78,11 @@ spec:
     - port: 80
       protocol: TCP
       targetPort: 3000
+      nodePort: 30001
       name: http
   selector:
     service: frontend
     app: ecommerce
   # Change this value to LoadBalancer for better public ingress routing to this
   # pod on most k8s platforms.
-  type: ClusterIP
+  type: NodePort
