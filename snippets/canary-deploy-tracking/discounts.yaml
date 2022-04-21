@@ -4,7 +4,7 @@ metadata:
   labels:
     app: ecommerce
     service: discounts
-    tags.datadoghq.com/env: "ruby-shop"
+    tags.datadoghq.com/env: "canary-deployments"
   name: discounts
 spec:
   replicas: 1
@@ -19,7 +19,7 @@ spec:
       labels:
         service: discounts
         app: ecommerce
-        tags.datadoghq.com/env: "ruby-shop"
+        tags.datadoghq.com/env: "canary-deployments"
     spec:
       containers:
       - image: ddtraining/discounts-fixed:1.0.0

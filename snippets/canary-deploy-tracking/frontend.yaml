@@ -4,7 +4,7 @@ metadata:
   labels:
     service: frontend
     app: ecommerce
-    tags.datadoghq.com/env: "ruby-shop"
+    tags.datadoghq.com/env: "canary-deployments"
   name: frontend
 spec:
   replicas: 1
@@ -22,7 +22,7 @@ spec:
       labels:
         service: frontend
         app: ecommerce
-        tags.datadoghq.com/env: "ruby-shop"
+        tags.datadoghq.com/env: "canary-deployments"
     spec:
       containers:
       - args:
@@ -74,14 +74,14 @@ metadata:
     app: ecommerce
   name: frontend
 spec:
-  ports: 
-  - name: http
-    protocol: TCP
-    port: 3000
-    nodePort: 30001
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 3000
+      name: http
   selector:
     service: frontend
     app: ecommerce
   # Change this value to LoadBalancer for better public ingress routing to this
   # pod on most k8s platforms.
-  type: NodePort
+  type: ClusterIP
