@@ -4,7 +4,7 @@ metadata:
   labels:
     app: ecommerce
     service: discounts
-    tags.datadoghq.com/env: "production"
+    tags.datadoghq.com/env: "canary-deployments"
     tags.datadoghq.com/service: "discounts-service"
     tags.datadoghq.com/version: "1.0"
   name: discounts
@@ -21,7 +21,7 @@ spec:
       labels:
         service: discounts
         app: ecommerce
-        tags.datadoghq.com/env: "production"
+        tags.datadoghq.com/env: "canary-deployments"
         tags.datadoghq.com/service: "discounts-service"
         tags.datadoghq.com/version: "1.0"
     spec:
@@ -57,7 +57,7 @@ spec:
             - name: DD_PROFILING_ENABLED
               value: "true"
             - name: DD_ENV
-              value: "production"
+              value: "canary-deployments"
           ports:
             - containerPort: 5001
           resources: {}

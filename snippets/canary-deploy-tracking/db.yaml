@@ -91,7 +91,7 @@ metadata:
   labels:
     service: db
     app: ecommerce
-    tags.datadoghq.com/env: "production"
+    tags.datadoghq.com/env: "canary-deployments"
     tags.datadoghq.com/service: "db"
     tags.datadoghq.com/version: "1.0"
   name: db
@@ -105,7 +105,7 @@ spec:
   template:
     metadata:
       labels:
-        tags.datadoghq.com/env: "production"
+        tags.datadoghq.com/env: "canary-deployments"
         tags.datadoghq.com/service: "db"
         tags.datadoghq.com/version: "1.0"
         service: db
