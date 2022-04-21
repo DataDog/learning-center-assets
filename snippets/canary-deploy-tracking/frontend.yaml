@@ -30,9 +30,9 @@ spec:
         command:
         - sh
         env:
-        - name: POSTGRES_USER
-          value: postgres
-        - name: POSTGRES_PASSWORD
+        - name: DB_USERNAME
+          value: user
+        - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
               key: postgres
@@ -78,7 +78,7 @@ spec:
     - port: 80
       protocol: TCP
       targetPort: 3000
-      nodePort: 30001
+      nodePort: 300
       name: http
   selector:
     service: frontend

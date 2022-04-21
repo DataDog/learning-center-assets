@@ -37,7 +37,7 @@ spec:
                 key: postgres
                 name: db-password
           - name: POSTGRES_USER
-            value: "postgres"
+            value: "postrges"
           - name: DATADOG_SERVICE_NAME
             value: "discounts"
           - name: DD_AGENT_HOST

@@ -76,7 +76,7 @@ spec:
               key: postgres
               name: db-password
         - name: POSTGRES_USER
-          value: "user"
+          value: "postgres"
         - name: PGDATA
           value: "/var/lib/postgresql/data/mydata"
         resources: {}
