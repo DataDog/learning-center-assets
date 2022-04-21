@@ -78,7 +78,7 @@ spec:
     - port: 80
       protocol: TCP
       targetPort: 3000
-      nodePort: 300
+      nodePort: 30001
       name: http
   selector:
     service: frontend
