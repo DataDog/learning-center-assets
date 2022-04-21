@@ -54,7 +54,7 @@ spec:
         #   value: <your_client_token>
         # - name: DD_APPLICATION_ID
         #   value: <your_application_id>
-        image: ddtraining/storefront:1.0.0
+        image: ddtraining/storefront:2.0.0
         imagePullPolicy: IfNotPresent
         name: ecommerce-spree-observability
         ports:

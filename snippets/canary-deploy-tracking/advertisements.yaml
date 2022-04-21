@@ -26,7 +26,7 @@ spec:
         tags.datadoghq.com/version: "1.0"
     spec:
       containers:
-      - image: ddtraining/advertisements:1.0.0
+      - image: ddtraining/advertisements:2.0.0
         name: advertisements
         imagePullPolicy: IfNotPresent
         command: ["ddtrace-run"]
