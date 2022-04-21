@@ -40,7 +40,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: postgres
-                name: POSTGRES_PASSWORD
+                name: db-password
           - name: POSTGRES_USER
             value: "postgres"
           - name: DATADOG_SERVICE_NAME
