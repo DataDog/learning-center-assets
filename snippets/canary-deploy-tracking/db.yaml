@@ -73,8 +73,8 @@ spec:
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              key: pw
-              name: db-password
+              key: postgres
+              name: POSTGRES_PASSWORD
         - name: POSTGRES_USER
           value: "user"
         - name: PGDATA

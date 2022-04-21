@@ -30,13 +30,13 @@ spec:
         command:
         - sh
         env:
-        - name: DB_USERNAME
-          value: user
-        - name: DB_PASSWORD
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              key: pw
-              name: db-password
+              key: postgres
+              name: POSTGRES_PASSWORD
         - name: DD_AGENT_HOST
           valueFrom:
             fieldRef:
