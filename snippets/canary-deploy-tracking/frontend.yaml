@@ -63,7 +63,7 @@ spec:
               value: "true"
             - name: DD_SITE
               value: "datadoghq.com"
-          image: ddtraining/storefront-fixed:latest
+          image: ddtraining/storefront:2.0.0
           imagePullPolicy: Always
           name: ecommerce-spree-observability
           ports:
