@@ -42,7 +42,7 @@ spec:
                 key: pw
                 name: db-password
           - name: POSTGRES_USER
-            value: "postgres"
+            value: "user"
           - name: DATADOG_SERVICE_NAME
             value: "advertisements"
           - name: DD_ENV
