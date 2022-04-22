@@ -5,7 +5,7 @@ metadata:
     service: advertisements
     app: ecommerce
     tags.datadoghq.com/env: "canary-deployments"
-    tags.datadoghq.com/service: "advertisements-service"
+    tags.datadoghq.com/service: "advertisements"
     tags.datadoghq.com/version: "1.0"
   name: advertisements
 spec:
@@ -22,7 +22,7 @@ spec:
         service: advertisements
         app: ecommerce
         tags.datadoghq.com/env: "canary-deployments"
-        tags.datadoghq.com/service: "advertisements-service"
+        tags.datadoghq.com/service: "advertisements"
         tags.datadoghq.com/version: "1.0"
     spec:
       containers:
@@ -45,7 +45,7 @@ spec:
             - name: POSTGRES_HOST
               value: "db"
             - name: DD_SERVICE
-              value: "advertisements-service"
+              value: "advertisements"
             - name: DD_ENV
               value: "canary-deployments"
             - name: DD_AGENT_HOST
