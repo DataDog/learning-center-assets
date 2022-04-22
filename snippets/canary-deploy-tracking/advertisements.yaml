@@ -48,6 +48,8 @@ spec:
               value: "advertisements"
             - name: DD_ENV
               value: "canary-deployments"
+            - name: DD_VERSION
+              value: "1.0"
             - name: DD_AGENT_HOST
               valueFrom:
                 fieldRef:
