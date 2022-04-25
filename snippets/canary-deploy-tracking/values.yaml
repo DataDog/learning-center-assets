@@ -46,4 +46,3 @@ datadog:
   # systemProbe:
   #   enabled: true
   #   collectDNSStats: true
-  containerExclude: "image:gcr.io/google_containers/kube-keepalived-vip image:katacoda/katacoda-cloud-provider"
