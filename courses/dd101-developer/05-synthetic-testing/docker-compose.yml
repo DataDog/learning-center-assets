@@ -9,6 +9,7 @@ services:
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
       - DD_TAGS='env:dd101-dev'
+      - DD_HOSTNAME=dd101-dev-host
       - DD_APM_NON_LOCAL_TRAFFIC=true
     ports:
       - 127.0.0.1:8126:8126/tcp
@@ -27,15 +28,8 @@ services:
       - DD_LOGS_INJECTION=true
       - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_SERVICE=discounts-service
-      - DD_VERSION=2.1.2
       - DD_ENV=dd101-dev
-    image: 'ddtraining/discounts:2.1.2'
-    command:
-      [
-        sh,
-        -c,
-        'pip install ddtrace -U && ddtrace-run flask run --port=5001 --host=0.0.0.0',
-      ]
+    image: 'ddtraining/discounts:2.1.4'
     ports:
       - '5001:5001'
     depends_on:
@@ -45,6 +39,7 @@ services:
       com.datadoghq.ad.logs: '[{"source": "python", "service": "discounts-service"}]'
       com.datadoghq.tags.service: 'discounts-service'
       com.datadoghq.tags.env: 'dd101-dev'
+      com.datadoghq.tags.version: '2.1'
   frontend:
     environment:
       - DD_AGENT_HOST=datadog
@@ -83,13 +78,7 @@ services:
       - DD_SERVICE=advertisements-service
       - DD_VERSION=2.1.2
       - DD_ENV=dd101-dev
-    image: 'ddtraining/advertisements-fixed:2.1.2'
-    command:
-      [
-        sh,
-        -c,
-        'pip install ddtrace -U && ddtrace-run flask run --port=5002 --host=0.0.0.0',
-      ]
+    image: 'ddtraining/advertisements-fixed:2.1.4'
     ports:
       - '5002:5002'
     depends_on:
@@ -99,6 +88,7 @@ services:
       com.datadoghq.ad.logs: '[{"source": "python", "service": "advertisements-service"}]'
       com.datadoghq.tags.service: 'advertisements-service'
       com.datadoghq.tags.env: 'dd101-dev'
+      com.datadoghq.tags.version: '2.1'
   db:
     image: postgres:11-alpine
     restart: always
@@ -110,7 +100,7 @@ services:
     labels:
       com.datadoghq.tags.env: 'dd101-dev'
       com.datadoghq.tags.service: 'database'
-      com.datadoghq.tags.version: '11.12'
+      com.datadoghq.tags.version: '11'
       my.custom.label.team: 'database'
       com.datadoghq.ad.check_names: '["postgres"]'
       com.datadoghq.ad.init_configs: '[{}]'

@@ -9,6 +9,7 @@ services:
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
       - DD_TAGS='env:dd101-dev'
+      - DD_HOSTNAME=dd101-dev-host
       - DD_APM_NON_LOCAL_TRAFFIC=true
     ports:
       - 127.0.0.1:8126:8126/tcp
@@ -29,8 +30,7 @@ services:
       - DD_TRACE_SAMPLE_RATE=1
       - DD_PROFILING_ENABLED=true
       - DD_AGENT_HOST=datadog
-    image: 'ddtraining/discounts:2.1.2'
-    command: [sh, -c, 'ddtrace-run flask run --port=5001 --host=0.0.0.0']
+    image: 'ddtraining/discounts:2.1.4'
     ports:
       - '5001:5001'
     volumes:
@@ -41,7 +41,7 @@ services:
     labels:
       com.datadoghq.tags.env: 'dd101-dev'
       com.datadoghq.tags.service: 'discounts-service'
-      com.datadoghq.tags.version: '2.1.2'
+      com.datadoghq.tags.version: '2.1'
       my.custom.label.team: 'discounts'
       com.datadoghq.ad.logs: '[{"source": "python", "service": "discounts-service"}]'
   frontend:
@@ -63,7 +63,7 @@ services:
     labels:
       com.datadoghq.tags.env: 'dd101-dev'
       com.datadoghq.tags.service: 'store-frontend'
-      com.datadoghq.tags.version: '2.1.2'
+      com.datadoghq.tags.version: '2.1'
       my.custom.label.team: 'frontend'
       com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-frontend"}]'
   advertisements:
@@ -79,8 +79,7 @@ services:
       - DD_TRACE_SAMPLE_RATE=1
       - DD_PROFILING_ENABLED=true
       - DD_AGENT_HOST=datadog
-    image: 'ddtraining/advertisements:2.1.2'
-    command: [sh, -c, 'ddtrace-run flask run --port=5002 --host=0.0.0.0']
+    image: 'ddtraining/advertisements:2.1.4'
     ports:
       - '5002:5002'
     volumes:
@@ -91,7 +90,7 @@ services:
     labels:
       com.datadoghq.tags.env: 'dd101-dev'
       com.datadoghq.tags.service: 'advertisements-service'
-      com.datadoghq.tags.version: '2.1.2'
+      com.datadoghq.tags.version: '2.1'
       my.custom.label.team: 'advertisements'
       com.datadoghq.ad.logs: '[{"source": "python", "service": "advertisements-service"}]'
   db:
@@ -105,7 +104,7 @@ services:
     labels:
       com.datadoghq.tags.env: 'dd101-dev'
       com.datadoghq.tags.service: 'database'
-      com.datadoghq.tags.version: '11.12'
+      com.datadoghq.tags.version: '11'
       my.custom.label.team: 'database'
       com.datadoghq.ad.check_names: '["postgres"]'
       com.datadoghq.ad.init_configs: '[{}]'
