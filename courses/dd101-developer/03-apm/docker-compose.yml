@@ -9,6 +9,10 @@ services:
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
       - DD_TAGS='env:dd101-dev'
+      - DD_HOSTNAME=dd101-dev-host
+      - DD_APM_NON_LOCAL_TRAFFIC=true
+    ports:
+      - 127.0.0.1:8126:8126/tcp
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /proc/:/host/proc/:ro
@@ -20,9 +24,13 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
       - POSTGRES_HOST=db
-      - DD_ENV
-    image: 'ddtraining/discounts:2.1.2'
-    entrypoint: []
+      - DD_SERVICE=discounts-service
+      - DD_ENV=dd101-dev
+      - DD_LOGS_INJECTION=true
+      - DD_TRACE_SAMPLE_RATE=1
+      - DD_PROFILING_ENABLED=true
+      - DD_AGENT_HOST=datadog
+    image: 'ddtraining/discounts:2.1.4'
     ports:
       - '5001:5001'
     depends_on:
@@ -31,9 +39,19 @@ services:
     labels:
       com.datadoghq.tags.env: 'dd101-dev'
       com.datadoghq.tags.service: 'discounts-service'
-      com.datadoghq.tags.version: '2.1.2'
+      com.datadoghq.tags.version: '2.1'
       my.custom.label.team: 'discounts'
+      com.datadoghq.ad.logs: '[{"source": "python", "service": "discounts-service"}]'
+    volumes:
+      - '/root/lab/discounts-service:/app'
   frontend:
+    environment:
+      - DD_SERVICE=store-frontend
+      - DD_ENV=dd101-dev
+      - DD_LOGS_INJECTION=true
+      - DD_TRACE_SAMPLE_RATE=1
+      - DD_PROFILING_ENABLED=true
+      - DD_AGENT_HOST=datadog
     image: 'ddtraining/storefront-fixed:2.1.2'
     command: sh docker-entrypoint.sh
     ports:
@@ -45,8 +63,9 @@ services:
     labels:
       com.datadoghq.tags.env: 'dd101-dev'
       com.datadoghq.tags.service: 'store-frontend'
-      com.datadoghq.tags.version: '2.1.2'
+      com.datadoghq.tags.version: '2.1'
       my.custom.label.team: 'frontend'
+      com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-frontend"}]'
   advertisements:
     environment:
       - FLASK_APP=ads.py
@@ -54,9 +73,13 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
       - POSTGRES_HOST=db
-      - DD_ENV
-    image: 'ddtraining/advertisements:2.1.2'
-    entrypoint: []
+      - DD_SERVICE=advertisements-service
+      - DD_ENV=dd101-dev
+      - DD_LOGS_INJECTION=true
+      - DD_TRACE_SAMPLE_RATE=1
+      - DD_PROFILING_ENABLED=true
+      - DD_AGENT_HOST=datadog
+    image: 'ddtraining/advertisements:2.1.4'
     ports:
       - '5002:5002'
     depends_on:
@@ -65,19 +88,29 @@ services:
     labels:
       com.datadoghq.tags.env: 'dd101-dev'
       com.datadoghq.tags.service: 'advertisements-service'
-      com.datadoghq.tags.version: '2.1.2'
+      com.datadoghq.tags.version: '2.1'
       my.custom.label.team: 'advertisements'
+      com.datadoghq.ad.logs: '[{"source": "python", "service": "advertisements-service"}]'
   db:
     image: postgres:11-alpine
     restart: always
     environment:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
+    ports:
+      - '5432:5432'
     labels:
       com.datadoghq.tags.env: 'dd101-dev'
       com.datadoghq.tags.service: 'database'
-      com.datadoghq.tags.version: '11.12'
+      com.datadoghq.tags.version: '11'
       my.custom.label.team: 'database'
+      com.datadoghq.ad.check_names: '["postgres"]'
+      com.datadoghq.ad.init_configs: '[{}]'
+      com.datadoghq.ad.instances: '[{"host":"%%host%%", "port":5432,"username":"datadog","password":"datadog"}]'
+      com.datadoghq.ad.logs: '[{"source": "postgresql", "service": "database"}]'
+    volumes:
+      - /root/postgres:/var/lib/postgresql/data
+      - /root/dd_agent.sql:/docker-entrypoint-initdb.d/dd_agent.sql
   puppeteer:
     image: buildkite/puppeteer:10.0.0
     volumes:
