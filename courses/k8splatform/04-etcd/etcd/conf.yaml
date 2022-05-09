@@ -1,9 +1,0 @@
-init_config:
-
-instances:
-  - prometheus_url: https://kubernetes.default.svc:2379/metrics
-    use_preview: true
-    ssl_verify: true
-    ssl_ca_cert: /keys/ca.crt
-    ssl_cert: /keys/server.crt
-    ssl_private_key: /keys/server.key
