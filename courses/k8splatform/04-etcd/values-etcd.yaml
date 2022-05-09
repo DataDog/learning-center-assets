@@ -1,0 +1,30 @@
+datadog:
+  apiKey: <DATADOG_API_KEY>
+  appKey: <DATADOG_APP_KEY>
+  clusterName: trainingcluster
+  kubelet:
+    tlsVerify: false
+  ignoreAutoConfig:
+  - etcd
+  confd:
+    etcd.yaml: |-
+      ad_identifiers:
+        - etcd
+      instances:
+        - prometheus_url: https://%%host%%:2379/metrics
+          tls_ca_cert: /host/etc/kubernetes/pki/etcd/ca.crt
+          tls_cert: /host/etc/kubernetes/pki/etcd/server.crt
+          tls_private_key: /host/etc/kubernetes/pki/etcd/server.key
+agents:
+  volumes:
+    - hostPath:
+        path: /etc/kubernetes/pki/etcd
+      name: etcd-certs
+  volumeMounts:
+    - name: etcd-certs
+      mountPath: /host/etc/kubernetes/pki/etcd
+      readOnly: true
+  tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Exists
