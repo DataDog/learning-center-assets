@@ -42,5 +42,5 @@ agents:
       readOnly: true
   tolerations:
   - effect: NoSchedule
-    key: node-role.kubernetes.io/control-plane
+    key: node-role.kubernetes.io/master
     operator: Exists
