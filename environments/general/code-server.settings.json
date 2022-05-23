@@ -8,5 +8,7 @@
   "editor.wordWrap": "on",
   "redhat.telemetry.enabled": false,
   "update.mode": "none",
-  "extensions.ignoreRecommendations": true
+  "extensions.ignoreRecommendations": true,
+  "security.workspace.trust.enabled": false
 }
+
