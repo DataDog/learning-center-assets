@@ -1,7 +1,0 @@
-cluster_check: true
-
-init_config:
-
-instances:
-  - prometheus_url: "https://kubernetes.default.svc:443/metrics"
-    bearer_token_auth: true
