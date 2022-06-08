@@ -58,7 +58,7 @@ services:
       - DD_ENV=dd101-dev
       - DD_SERVICE=store-frontend
       - DD_SITE=datadoghq.com
-      - DD_VERSION=2.1
+      - DD_VERSION
       - DB_USERNAME
       - DB_PASSWORD
       - DD_CLIENT_TOKEN
