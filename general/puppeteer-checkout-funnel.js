@@ -188,14 +188,7 @@ const placeOrder = async (page) => {
   return;
 };
 
-// Session 1
-// Home
-// Bags
-// Datadog Tote
-// Add to Cart
-// Checkout
-// Fill in details to complete checkout/place order
-(async () => {
+const mainSession = async () => {
   const browser = await getNewBrowser();
   const skipSessionClose =
     process.env.SKIP_SESSION_CLOSE || Math.floor(Math.random() * 3) === 0;
@@ -279,4 +272,16 @@ const placeOrder = async (page) => {
   } finally {
     browser.close();
   }
-})();
+};
+
+// Session 1
+// Home
+// Bags
+// Datadog Tote
+// Add to Cart
+// Checkout
+// Fill in details to complete checkout/place order
+(async () => mainSession())();
+(async () => mainSession())();
+(async () => mainSession())();
+(async () => mainSession())();
