@@ -26,7 +26,7 @@ const getNewBrowser = async () => {
   return browser;
 };
 
-const randomlyCloseSession = async (browser, skipSessionClose) => {
+const randomlyCloseSession = async (browser, page, skipSessionClose) => {
   console.log('In randomlyCloseSession');
 
   if (skipSessionClose) {
@@ -37,6 +37,7 @@ const randomlyCloseSession = async (browser, skipSessionClose) => {
   const random = Math.floor(Math.random() * 7) + 1;
   if (random === 1) {
     console.log('Closing browser...');
+    await page.close();
     await browser.close();
     return true;
   } else {
@@ -205,72 +206,77 @@ const mainSession = async () => {
     let pageTitle = await page.title();
     console.log(`"${pageTitle}" loaded`);
 
-    let didUserLeave = await randomlyCloseSession(browser, skipSessionClose);
+    let didUserLeave = await randomlyCloseSession(
+      browser,
+      page,
+      skipSessionClose
+    );
     if (didUserLeave) {
       return;
     }
 
     await goToBags(page);
 
-    didUserLeave = await randomlyCloseSession(browser, skipSessionClose);
+    didUserLeave = await randomlyCloseSession(browser, page, skipSessionClose);
     if (didUserLeave) {
       return;
     }
 
     await goToProduct(page);
 
-    didUserLeave = await randomlyCloseSession(browser, skipSessionClose);
+    didUserLeave = await randomlyCloseSession(browser, page, skipSessionClose);
     if (didUserLeave) {
       return;
     }
 
     await addToCart(page);
 
-    didUserLeave = await randomlyCloseSession(browser, skipSessionClose);
+    didUserLeave = await randomlyCloseSession(browser, page, skipSessionClose);
     if (didUserLeave) {
       return;
     }
 
     await goToCheckout(page);
 
-    didUserLeave = await randomlyCloseSession(browser, skipSessionClose);
+    didUserLeave = await randomlyCloseSession(browser, page, skipSessionClose);
     if (didUserLeave) {
       return;
     }
 
     await checkoutGuest(page);
 
-    didUserLeave = await randomlyCloseSession(browser, skipSessionClose);
+    didUserLeave = await randomlyCloseSession(browser, page, skipSessionClose);
     if (didUserLeave) {
       return;
     }
 
     await fillAddress(page);
 
-    didUserLeave = await randomlyCloseSession(browser, skipSessionClose);
+    didUserLeave = await randomlyCloseSession(browser, page, skipSessionClose);
     if (didUserLeave) {
       return;
     }
 
     await setShippingMethod(page);
 
-    didUserLeave = await randomlyCloseSession(browser, skipSessionClose);
+    didUserLeave = await randomlyCloseSession(browser, page, skipSessionClose);
     if (didUserLeave) {
       return;
     }
 
     await setPaymentMethod(page);
 
-    didUserLeave = await randomlyCloseSession(browser, skipSessionClose);
+    didUserLeave = await randomlyCloseSession(browser, page, skipSessionClose);
     if (didUserLeave) {
       return;
     }
 
     await placeOrder(page);
+    await page.close();
   } catch (err) {
     console.log(`Session failed: ${err}`);
   } finally {
-    browser.close();
+    await browser.close();
   }
 };
 
