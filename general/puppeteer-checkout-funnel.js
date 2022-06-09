@@ -26,6 +26,32 @@ const getNewBrowser = async () => {
   return browser;
 };
 
+const choosePhone = () => {
+  const deviceNames = [
+    'Pixel 2 XL',
+    'Pixel 2',
+    'Nokia N9',
+    'Nokia Lumia 520',
+    'Nexus 7',
+    'Nexus 6P',
+    'LG Optimus L70',
+    'Galaxy S5',
+    'iPhone 11 Pro Max',
+    'iPhone 11',
+    'iPhone XR',
+    'iPhone X',
+    'iPhone SE',
+    'iPhone 8 Plus',
+    'iPhone 6',
+    'iPad Pro',
+    'iPad Mini',
+  ];
+
+  const deviceIndex = Math.floor(Math.random() * deviceNames.length);
+  const device = deviceNames[deviceIndex];
+  return puppeteer.devices[device];
+};
+
 const randomlyCloseSession = async (browser, page, skipSessionClose) => {
   console.log('In randomlyCloseSession');
 
@@ -196,6 +222,10 @@ const mainSession = async () => {
 
   try {
     const page = await browser.newPage();
+    if (Math.floor(Math.random() * 3) === 0) {
+      await page.emulate(choosePhone());
+    }
+
     await page.setDefaultNavigationTimeout(
       process.env.PUPPETEER_TIMEOUT || 40000
     );
