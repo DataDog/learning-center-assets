@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-docker run -d --network=lab_default \
+docker run --rm --name npm_agent -d --network=lab_default \
 --env-file /root/lab/.env \
 -e DD_API_KEY \
 -e DD_HOSTNAME=dd101-sre-host \
