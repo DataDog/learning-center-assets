@@ -7,20 +7,16 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
       - POSTGRES_HOST=db
-    image: 'ddtraining/discounts:2.0.0'
-    command:
-      [
-        sh,
-        -c,
-        'flask run --port=5001 --host=0.0.0.0',
-      ]
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/discounts-fixed:2.2.0'
     ports:
       - '5001:5001'
     depends_on:
       - db
   frontend:
-    image: 'ddtraining/storefront-fixed:2.0.0'
-    command: sh docker-entrypoint.sh
+    environment:
+      - ADS_ROUTE=http://advertisements
+      - ADS_PORT=5002
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.0'
     ports:
       - '3000:3000'
     depends_on:
@@ -33,13 +29,7 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
       - POSTGRES_HOST=db
-    image: 'ddtraining/advertisements:2.0.0'
-    command:
-      [
-        sh,
-        -c,
-        'flask run --port=5002 --host=0.0.0.0',
-      ]
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0'
     ports:
       - '5002:5002'
     depends_on:
