@@ -26,7 +26,7 @@ curl -X PUT "https://api.datadoghq.com/api/v1/notebooks/${NOTEBOOK_ID}" \
                   "response_format": "scalar",
                   "queries": [
                     {
-                      "query": "avg:trace.rack.request.duration{env:ecommerce-store,service:store-frontend}",
+                      "query": "avg:trace.rack.request.duration{env:notebook-api-lab,service:store-frontend}",
                       "data_source": "metrics",
                       "name": "query1",
                       "aggregator": "avg"
@@ -62,7 +62,7 @@ curl -X PUT "https://api.datadoghq.com/api/v1/notebooks/${NOTEBOOK_ID}" \
                   "display_type": "bars",
                   "queries": [
                     {
-                      "search": { "query": "service:store-frontend env:ecommerce-store" },
+                      "search": { "query": "service:store-frontend env:notebook-api-lab" },
                       "data_source": "logs",
                       "compute": { "interval": 30000, "aggregation": "count" },
                       "name": "query1",
