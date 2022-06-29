@@ -8,7 +8,6 @@ services:
       - DD_LOGS_ENABLED=true
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_PROCESS_AGENT_ENABLED=true
-      - DD_SYSTEM_PROBE_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
       - DD_TAGS='env:dd101-sre'
       - DD_APM_NON_LOCAL_TRAFFIC=true
@@ -18,18 +17,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /proc/:/host/proc/:ro
       - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
-      - /sys/kernel/debug/:/sys/kernel/debug
-    cap_add:
-      - SYS_ADMIN
-      - SYS_RESOURCE
-      - SYS_PTRACE
-      - NET_ADMIN
-      - NET_BROADCAST
-      - NET_RAW
-      - IPC_LOCK
-      - CHOWN
-    security_opt:
-      - apparmor:unconfined
   discounts:
     environment:
       - FLASK_APP=discounts.py
@@ -52,13 +39,15 @@ services:
       ]
     ports:
       - '5001:5001'
+    volumes:
+       - /root/lab/discounts-service:/app
     depends_on:
       - datadog
       - db
     labels:
       com.datadoghq.tags.env: 'dd101-sre'
       com.datadoghq.tags.service: 'discounts-service'
-      com.datadoghq.tags.version: '2.1'
+      com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'discounts'
       com.datadoghq.ad.logs: '[{"source": "python", "service": "discounts-service"}]'
   frontend:
@@ -79,7 +68,7 @@ services:
     labels:
       com.datadoghq.tags.env: 'dd101-sre'
       com.datadoghq.tags.service: 'store-frontend'
-      com.datadoghq.tags.version: '2.1'
+      com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'frontend'
       com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-frontend"}]'
   advertisements:
@@ -104,13 +93,15 @@ services:
       ]
     ports:
       - '5002:5002'
+    volumes:
+      - /root/lab/ads-service:/app
     depends_on:
       - datadog
       - db
     labels:
       com.datadoghq.tags.env: 'dd101-sre'
       com.datadoghq.tags.service: 'advertisements-service'
-      com.datadoghq.tags.version: '2.1'
+      com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'advertisements'
       com.datadoghq.ad.logs: '[{"source": "python", "service": "advertisements-service"}]'
   db:
