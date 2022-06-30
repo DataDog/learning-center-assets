@@ -51,14 +51,10 @@ services:
       - DD_SERVICE=store-frontend
       - DD_SITE=datadoghq.com
       - DD_VERSION
-      - DB_USERNAME
-      - DB_PASSWORD
       - DD_CLIENT_TOKEN
       - DD_APPLICATION_ID
       - DD_DISCOUNTS_URL
       - DD_ADS_URL
-      - ADS_ROUTE=http://advertisements
-      - ADS_PORT=5002
     image: 'public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.0'
     ports:
       - '3000:3000'
