@@ -1,0 +1,128 @@
+version: '3'
+services:
+  datadog:
+    image: 'datadog/agent:7.31.1'
+    environment:
+      - DD_API_KEY
+      - DD_LOGS_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+      - DD_PROCESS_AGENT_ENABLED=true
+      - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
+      - DD_TAGS='${DD_TAGS-env:notebook-api-lab}'
+      - DD_HOSTNAME=${DD_HOSTNAME-notebook-api-host}
+      - DD_APM_NON_LOCAL_TRAFFIC=true
+    ports:
+      - 127.0.0.1:8126:8126/tcp
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+  discounts:
+    environment:
+      - FLASK_APP=discounts.py
+      - FLASK_DEBUG=1
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_HOST=db
+      - DD_ENV=notebook-api-lab
+      - DD_SERVICE=discounts-service
+      - DD_AGENT_HOST=datadog
+      - DD_LOGS_INJECTION=true
+      - DD_TRACE_ANALYTICS_ENABLED=true
+      - DD_PROFILING_ENABLED=true
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/discounts-fixed:2.2.0'
+    ports:
+      - '5001:5001'
+    depends_on:
+      - datadog
+      - db
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "python", "service": "discounts-service"}]'
+      com.datadoghq.tags.env: 'notebook-api-lab'
+      com.datadoghq.tags.service: 'discounts-service'
+      com.datadoghq.tags.version: '2.2.0'
+      my.custom.label.team: 'discounts'
+  frontend:
+    environment:
+      - DD_AGENT_HOST=datadog
+      - DD_LOGS_INJECTION=true
+      - DD_TRACE_ANALYTICS_ENABLED=true
+      - DD_ENV=notebook-api-lab
+      - DD_SERVICE=store-frontend
+      - DD_SITE=datadoghq.com
+      - DD_VERSION
+      - DD_CLIENT_TOKEN
+      - DD_APPLICATION_ID
+      - DD_DISCOUNTS_URL
+      - DD_ADS_URL
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.0'
+    ports:
+      - '3000:3000'
+    depends_on:
+      - datadog
+      - db
+      - discounts
+      - advertisements
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-frontend"}]'
+      com.datadoghq.tags.env: 'notebook-api-lab'
+      com.datadoghq.tags.service: 'store-frontend'
+      com.datadoghq.tags.version: '2.2.0'
+      my.custom.label.team: 'frontend'
+  advertisements:
+    environment:
+      - FLASK_APP=ads.py
+      - FLASK_DEBUG=1
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_HOST=db
+      - DD_ENV=notebook-api-lab
+      - DD_SERVICE=advertisements-service
+      - DD_AGENT_HOST=datadog
+      - DD_LOGS_INJECTION=true
+      - DD_TRACE_ANALYTICS_ENABLED=true
+      - DD_PROFILING_ENABLED=true
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0'
+    ports:
+      - '5002:5002'
+    depends_on:
+      - datadog
+      - db
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "python", "service": "advertisements-service"}]'
+      com.datadoghq.tags.env: 'notebook-api-lab'
+      com.datadoghq.tags.service: 'advertisements-service'
+      com.datadoghq.tags.version: '2.2.0'
+      my.custom.label.team: 'advertisements'
+  db:
+    image: postgres:11-alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+    ports:
+      - '5432:5432'
+    labels:
+      com.datadoghq.tags.env: 'notebook-api-lab'
+      com.datadoghq.tags.service: 'database'
+      com.datadoghq.tags.version: '11'
+      my.custom.label.team: 'database'
+      com.datadoghq.ad.check_names: '["postgres"]'
+      com.datadoghq.ad.init_configs: '[{}]'
+      com.datadoghq.ad.instances: '[{"host":"%%host%%", "port":5432,"username":"datadog","password":"datadog"}]'
+      com.datadoghq.ad.logs: '[{"source": "postgresql", "service": "database"}]'
+    volumes:
+      - /root/postgres:/var/lib/postgresql/data
+      - /root/dd_agent.sql:/docker-entrypoint-initdb.d/dd_agent.sql
+  puppeteer:
+    image: buildkite/puppeteer:10.0.0
+    volumes:
+      - /root/puppeteer-checkout-funnel.js:/puppeteer.js
+      - /root/puppeteer.sh:/puppeteer.sh
+    environment:
+      - STOREDOG_URL
+      - PUPPETEER_TIMEOUT
+      - SKIP_SESSION_CLOSE
+    depends_on:
+      - frontend
+    command: bash puppeteer.sh

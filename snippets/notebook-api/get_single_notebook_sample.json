@@ -1,0 +1,129 @@
+{
+  "data": {
+    "type": "notebooks",
+    "id": 1243941,
+    "attributes": {
+      "name": "Frontend Service - Weekly Report",
+      "cells": [
+        {
+          "attributes": {
+            "definition": {
+              "type": "query_value",
+              "requests": [
+                {
+                  "formulas": [
+                    {
+                      "formula": "query1"
+                    }
+                  ],
+                  "response_format": "scalar",
+                  "queries": [
+                    {
+                      "query": "avg:trace.rack.request.duration{env:notebook-api-lab,service:store-frontend}",
+                      "data_source": "metrics",
+                      "name": "query1",
+                      "aggregator": "avg"
+                    }
+                  ]
+                }
+              ],
+              "autoscale": true,
+              "precision": 2,
+              "title": "Avg Request Duration"
+            },
+            "graph_size": "xs",
+            "time": null
+          },
+          "type": "notebook_cells",
+          "id": "1uzt9rep"
+        },
+        {
+          "attributes": {
+            "definition": {
+              "show_legend": true,
+              "title": "Log Statuses by Type",
+              "type": "timeseries",
+              "requests": [
+                {
+                  "formulas": [
+                    {
+                      "formula": "query1"
+                    }
+                  ],
+                  "style": {
+                    "line_width": "normal",
+                    "palette": "dog_classic",
+                    "line_type": "solid"
+                  },
+                  "response_format": "timeseries",
+                  "on_right_yaxis": false,
+                  "display_type": "bars",
+                  "queries": [
+                    {
+                      "search": {
+                        "query": "service:store-frontend env:notebook-api-lab"
+                      },
+                      "data_source": "logs",
+                      "compute": {
+                        "aggregation": "count"
+                      },
+                      "name": "query1",
+                      "indexes": ["*"],
+                      "group_by": [
+                        {
+                          "facet": "status",
+                          "sort": {
+                            "aggregation": "count",
+                            "order": "desc"
+                          },
+                          "limit": 10
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "yaxis": {
+                "scale": "linear"
+              }
+            },
+            "graph_size": "m",
+            "split_by": {
+              "keys": [],
+              "tags": []
+            },
+            "time": null
+          },
+          "type": "notebook_cells",
+          "id": "rpotc70h"
+        },
+        {
+          "attributes": {
+            "definition": {
+              "text": "## Release Notes",
+              "type": "markdown"
+            }
+          },
+          "type": "notebook_cells",
+          "id": "phucxbur"
+        }
+      ],
+      "time": {
+        "live_span": "1w"
+      },
+      "status": "published",
+      "modified": "2021-09-02T16:43:01.090842+00:00",
+      "created": "2021-09-02T16:43:01.090842+00:00",
+      "author": {
+        "name": "8vm9jzeaei",
+        "handle": "8vm9jzeaei@dev.datadogtraining.com",
+        "email": "8vm9jzeaei@dev.datadogtraining.com",
+        "icon": "https://secure.gravatar.com/avatar/a42abb210657c16e3b6bb3d492ca1879?s=48&d=retro",
+        "title": null,
+        "verified": true,
+        "disabled": false,
+        "status": "Active"
+      }
+    }
+  }
+}
