@@ -1,9 +1,7 @@
 #!/bin/bash
-
-apt-get update && apt-get install -y curl
-
+  
 checkStoredog() {
-  curl --silent --fail $STOREDOG_URL 2>&1 |grep -qi storedog
+  wget --quiet -O - $STOREDOG_URL |grep -qi storedog
 }
 
 printf "\nWaiting for Storedog"
@@ -13,7 +11,7 @@ until checkStoredog; do
   sleep 2
 done
 
-printf "\nInfinite Mobile Replay Starting.\n\n"
+printf "\nBrowser replay starting.\n\n"
 
 while :
 do
