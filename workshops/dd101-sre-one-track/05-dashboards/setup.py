@@ -122,7 +122,7 @@ slo_name = "Discounts service request time"
 dashboard_name = "Datadog 101: SRE Dashboard"
 dashboard = {}
 
-with console.status("Creating users") as status:
+with console.status("Creating dashboards") as status:
 
     status.update("Creating dashboard")
     dashboard = find_dashboard(dashboard_name)
