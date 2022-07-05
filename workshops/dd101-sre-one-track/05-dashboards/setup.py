@@ -71,7 +71,11 @@ def find_slo(slo_name):
     with ApiClientV1(configuration) as api_client:
         api_instance = service_level_objectives_api.ServiceLevelObjectivesApi(api_client)
         try:
-            api_response = api_instance.list_slos(query=slo_name)
+            '''
+            The endpoint is incorrect in 1.10.0. If ddtrace is updated beyond 1.10.0, update this 
+            call to `list_slos` instead of `list_sl_os`
+            '''
+            api_response = api_instance.list_sl_os(query=slo_name)
             if len(api_response.data) > 0:
                 slo = api_response.data[0]
                 return slo['id']
@@ -124,7 +128,6 @@ dashboard = {}
 
 with console.status("Creating dashboards") as status:
 
-    status.update("Creating dashboard")
     dashboard = find_dashboard(dashboard_name)
     if not dashboard:
         dashboard = create_dashboard(dashboard_json_path, api_key, app_key)
@@ -140,7 +143,6 @@ with console.status("Creating dashboards") as status:
     else:
       monitor_id = create_monitor(monitor_json_path)
       console.log("Monitor id {0} [green]created[/green]".format(monitor_id))
-      create_slo(slo_name, monitor_id)
 
     status.update("Creating SLO")
     slo_id = find_slo(slo_name)
