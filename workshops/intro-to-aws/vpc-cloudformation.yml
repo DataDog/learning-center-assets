@@ -104,7 +104,7 @@ Resources:
       SubnetId:
         Ref: LabSubnet3
   Outputs:
-    VpcID:
+    VPC:
       Description: "The ID of the created VPC"
       Value: 
         Ref: LabVPC
