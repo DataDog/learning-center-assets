@@ -1,107 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
 Resources:
-  LabInternetGateway:
-    Type: "AWS::EC2::InternetGateway"
-    Properties:
-      Tags:
-        - Key: app
-          Value: AWSLab
-  LabVPC:
-    Type: "AWS::EC2::VPC"
-    DependsOn: LabInternetGateway
-    Properties:
-      CidrBlock: "10.0.0.0/16"
-      EnableDnsSupport: True
-      EnableDnsHostnames: True
-      Tags:
-        - Key: app
-          Value: AWSLab
-  AttachGateway:
-    Type: AWS::EC2::VPCGatewayAttachment
-    DependsOn: LabVPC
-    Properties:
-      VpcId:
-        Ref: LabVPC
-      InternetGatewayId:
-        Ref: LabInternetGateway
-  LabRouteTable:
-    Type: "AWS::EC2::RouteTable"
-    DependsOn: [ LabVPC, LabInternetGateway, AttachGateway ]
-    Properties:
-      VpcId:
-        Ref: LabVPC
-      Tags:
-        - Key: app
-          Value: AWSLab
-  LabDefaultRoute:
-    Type: AWS::EC2::Route
-    DependsOn: LabInternetGateway
-    Properties:
-      RouteTableId:
-        Ref: LabRouteTable
-      DestinationCidrBlock: 0.0.0.0/0
-      GatewayId:
-        Ref: LabInternetGateway
-  LabSubnet1:
-    Type: "AWS::EC2::Subnet"
-    DependsOn: LabRouteTable
-    Properties:
-      AvailabilityZone: "eu-west-1a"
-      CidrBlock: "10.0.0.0/24"
-      MapPublicIpOnLaunch: True
-      VpcId:
-        Ref: LabVPC
-      Tags:
-        - Key: app
-          Value: AWSLab
-  LabSubnet2:
-    Type: "AWS::EC2::Subnet"
-    DependsOn: LabRouteTable
-    Properties:
-      AvailabilityZone: "us-west-1b"
-      CidrBlock: "10.0.1.0/24"
-      MapPublicIpOnLaunch: True
-      VpcId:
-        Ref: LabVPC
-      Tags:
-        - Key: app
-          Value: AWSLab
-  LabSubnet3:
-    Type: "AWS::EC2::Subnet"
-    DependsOn: LabRouteTable
-    Properties:
-      AvailabilityZone: "us-west-1c"
-      CidrBlock: "10.0.2.0/24"
-      MapPublicIpOnLaunch: True
-      VpcId:
-        Ref: LabVPC
-      Tags:
-        - Key: app
-          Value: AWSLab
-  LabRouteAc1:
-    Type: "AWS::EC2::SubnetRouteTableAssociation"
-    DependsOn: LabDefaultRoute
-    Properties:
-      RouteTableId:
-        Ref: LabRouteTable
-      SubnetId:
-        Ref: LabSubnet1
-  LabRouteAc2:
-    Type: "AWS::EC2::SubnetRouteTableAssociation"
-    DependsOn: LabDefaultRoute
-    Properties:
-      RouteTableId:
-        Ref: LabRouteTable
-      SubnetId:
-        Ref: LabSubnet2
-  LabRouteAc3:
-    Type: "AWS::EC2::SubnetRouteTableAssociation"
-    DependsOn: LabDefaultRoute
-    Properties:
-      RouteTableId:
-        Ref: LabRouteTable
-      SubnetId:
-        Ref: LabSubnet3
   AdvertisementsService:
     DependsOn:
     - AdvertisementsTCP5002Listener
@@ -183,8 +81,7 @@ Resources:
       - Key: com.docker.compose.project
         Value: lab
       TargetType: ip
-      VpcId: 
-        Ref: LabVPC
+      VpcId: vpc-09c79348eaa78af36
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
   AdvertisementsTaskDefinition:
     Properties:
@@ -355,8 +252,7 @@ Resources:
       - Key: com.docker.compose.project
         Value: lab
       TargetType: ip
-      VpcId:
-        Ref: LabVPC
+      VpcId: vpc-09c79348eaa78af36
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
   DbTaskDefinition:
     Properties:
@@ -476,8 +372,7 @@ Resources:
         Value: lab
       - Key: com.docker.compose.network
         Value: lab_default
-      VpcId:
-        Ref: LabVPC
+      VpcId: vpc-09c79348eaa78af36
     Type: AWS::EC2::SecurityGroup
   DefaultNetworkIngress:
     Properties:
@@ -569,8 +464,7 @@ Resources:
       - Key: com.docker.compose.project
         Value: lab
       TargetType: ip
-      VpcId:
-        Ref: LabVPC
+      VpcId: vpc-09c79348eaa78af36
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
   DiscountsTaskDefinition:
     Properties:
@@ -731,8 +625,7 @@ Resources:
       - Key: com.docker.compose.project
         Value: lab
       TargetType: ip
-      VpcId:
-        Ref: LabVPC
+      VpcId: vpc-09c79348eaa78af36
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
   FrontendTaskDefinition:
     Properties:
