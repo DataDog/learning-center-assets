@@ -1,0 +1,110 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "VPC for AWS Lab"
+Resources:
+  LabInternetGateway:
+    Type: "AWS::EC2::InternetGateway"
+    Properties:
+      Tags:
+        - Key: app
+          Value: AWSLab
+  LabVPC:
+    Type: "AWS::EC2::VPC"
+    DependsOn: LabInternetGateway
+    Properties:
+      CidrBlock: "10.0.0.0/16"
+      EnableDnsSupport: True
+      EnableDnsHostnames: True
+      Tags:
+        - Key: app
+          Value: AWSLab
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    DependsOn: LabVPC
+    Properties:
+      VpcId:
+        Ref: LabVPC
+      InternetGatewayId:
+        Ref: LabInternetGateway
+  LabRouteTable:
+    Type: "AWS::EC2::RouteTable"
+    DependsOn: [ LabVPC, LabInternetGateway, AttachGateway ]
+    Properties:
+      VpcId:
+        Ref: LabVPC
+      Tags:
+        - Key: app
+          Value: AWSLab
+  LabDefaultRoute:
+    Type: AWS::EC2::Route
+    DependsOn: LabInternetGateway
+    Properties:
+      RouteTableId:
+        Ref: LabRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: LabInternetGateway
+  LabSubnet1:
+    Type: "AWS::EC2::Subnet"
+    DependsOn: LabRouteTable
+    Properties:
+      AvailabilityZone: "eu-west-1a"
+      CidrBlock: "10.0.0.0/24"
+      MapPublicIpOnLaunch: True
+      VpcId:
+        Ref: LabVPC
+      Tags:
+        - Key: app
+          Value: AWSLab
+  LabSubnet2:
+    Type: "AWS::EC2::Subnet"
+    DependsOn: LabRouteTable
+    Properties:
+      AvailabilityZone: "us-west-1b"
+      CidrBlock: "10.0.1.0/24"
+      MapPublicIpOnLaunch: True
+      VpcId:
+        Ref: LabVPC
+      Tags:
+        - Key: app
+          Value: AWSLab
+  LabSubnet3:
+    Type: "AWS::EC2::Subnet"
+    DependsOn: LabRouteTable
+    Properties:
+      AvailabilityZone: "us-west-1c"
+      CidrBlock: "10.0.2.0/24"
+      MapPublicIpOnLaunch: True
+      VpcId:
+        Ref: LabVPC
+      Tags:
+        - Key: app
+          Value: AWSLab
+  LabRouteAc1:
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    DependsOn: LabDefaultRoute
+    Properties:
+      RouteTableId:
+        Ref: LabRouteTable
+      SubnetId:
+        Ref: LabSubnet1
+  LabRouteAc2:
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    DependsOn: LabDefaultRoute
+    Properties:
+      RouteTableId:
+        Ref: LabRouteTable
+      SubnetId:
+        Ref: LabSubnet2
+  LabRouteAc3:
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    DependsOn: LabDefaultRoute
+    Properties:
+      RouteTableId:
+        Ref: LabRouteTable
+      SubnetId:
+        Ref: LabSubnet3
+  Outputs:
+    VpcID:
+      Description: "The ID of the created VPC"
+      Value: 
+        Ref: LabVPC

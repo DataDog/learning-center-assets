@@ -1,0 +1,713 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  AdvertisementsService:
+    DependsOn:
+    - AdvertisementsTCP5002Listener
+    - DbService
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      LoadBalancers:
+      - ContainerName: advertisements
+        ContainerPort: 5002
+        TargetGroupArn:
+          Ref: AdvertisementsTCP5002TargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: DefaultNetwork
+          Subnets:
+          - subnet-0d0c1c45c8f0e6829
+          - subnet-0a53511929b83a105
+          - subnet-0753c4c84ce54d179
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - AdvertisementsServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: com.docker.compose.project
+        Value: lab
+      - Key: com.docker.compose.service
+        Value: advertisements
+      TaskDefinition:
+        Ref: AdvertisementsTaskDefinition
+    Type: AWS::ECS::Service
+  AdvertisementsServiceDiscoveryEntry:
+    Properties:
+      Description: '"advertisements" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: advertisements
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  AdvertisementsTCP5002Listener:
+    Properties:
+      DefaultActions:
+      - ForwardConfig:
+          TargetGroups:
+          - TargetGroupArn:
+              Ref: AdvertisementsTCP5002TargetGroup
+        Type: forward
+      LoadBalancerArn:
+        Ref: LoadBalancer
+      Port: 5002
+      Protocol: TCP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  AdvertisementsTCP5002TargetGroup:
+    Properties:
+      Port: 5002
+      Protocol: TCP
+      Tags:
+      - Key: com.docker.compose.project
+        Value: lab
+      TargetType: ip
+      VpcId: vpc-09c79348eaa78af36
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  AdvertisementsTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - eu-west-1.compute.internal
+        - lab.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: lab
+        Name: Advertisements_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Advertisements_ResolvConf_InitContainer
+        Environment:
+        - Name: FLASK_APP
+          Value: ads.py
+        - Name: FLASK_DEBUG
+          Value: "1"
+        - Name: POSTGRES_HOST
+          Value: db
+        - Name: POSTGRES_PASSWORD
+          Value: postgres
+        - Name: POSTGRES_USER
+          Value: postgres
+        Essential: true
+        Image: public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0@sha256:9106d941804cf4494c925a1f27dabac7722d247d429fb6e3a8050d140d25ef69
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: lab
+        Name: advertisements
+        PortMappings:
+        - ContainerPort: 5002
+          HostPort: 5002
+          Protocol: tcp
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: AdvertisementsTaskExecutionRole
+      Family: lab-advertisements
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  AdvertisementsTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: com.docker.compose.project
+        Value: lab
+      - Key: com.docker.compose.service
+        Value: advertisements
+    Type: AWS::IAM::Role
+  CloudMap:
+    Properties:
+      Description: Service Map for Docker Compose project lab
+      Name: lab.local
+      Vpc: vpc-09c79348eaa78af36
+    Type: AWS::ServiceDiscovery::PrivateDnsNamespace
+  Cluster:
+    Properties:
+      ClusterName: lab
+      Tags:
+      - Key: com.docker.compose.project
+        Value: lab
+    Type: AWS::ECS::Cluster
+  DbService:
+    DependsOn:
+    - DbTCP5432Listener
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      LoadBalancers:
+      - ContainerName: db
+        ContainerPort: 5432
+        TargetGroupArn:
+          Ref: DbTCP5432TargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: DefaultNetwork
+          Subnets:
+          - subnet-0d0c1c45c8f0e6829
+          - subnet-0a53511929b83a105
+          - subnet-0753c4c84ce54d179
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - DbServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: com.docker.compose.project
+        Value: lab
+      - Key: com.docker.compose.service
+        Value: db
+      TaskDefinition:
+        Ref: DbTaskDefinition
+    Type: AWS::ECS::Service
+  DbServiceDiscoveryEntry:
+    Properties:
+      Description: '"db" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: db
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  DbTCP5432Listener:
+    Properties:
+      DefaultActions:
+      - ForwardConfig:
+          TargetGroups:
+          - TargetGroupArn:
+              Ref: DbTCP5432TargetGroup
+        Type: forward
+      LoadBalancerArn:
+        Ref: LoadBalancer
+      Port: 5432
+      Protocol: TCP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  DbTCP5432TargetGroup:
+    Properties:
+      Port: 5432
+      Protocol: TCP
+      Tags:
+      - Key: com.docker.compose.project
+        Value: lab
+      TargetType: ip
+      VpcId: vpc-09c79348eaa78af36
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  DbTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - eu-west-1.compute.internal
+        - lab.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: lab
+        Name: Db_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Db_ResolvConf_InitContainer
+        Environment:
+        - Name: POSTGRES_PASSWORD
+          Value: postgres
+        - Name: POSTGRES_USER
+          Value: postgres
+        Essential: true
+        Image: docker.io/library/postgres:11-alpine@sha256:9967df19b93fef80ddc8db3e9331b506d0842779bc693598e39e2f30c595180a
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: lab
+        Name: db
+        PortMappings:
+        - ContainerPort: 5432
+          HostPort: 5432
+          Protocol: tcp
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: DbTaskExecutionRole
+      Family: lab-db
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  DbTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: com.docker.compose.project
+        Value: lab
+      - Key: com.docker.compose.service
+        Value: db
+    Type: AWS::IAM::Role
+  Default3000Ingress:
+    Properties:
+      CidrIp: 0.0.0.0/0
+      Description: frontend:3000/tcp on default network
+      FromPort: 3000
+      GroupId:
+        Ref: DefaultNetwork
+      IpProtocol: TCP
+      ToPort: 3000
+    Type: AWS::EC2::SecurityGroupIngress
+  Default5001Ingress:
+    Properties:
+      CidrIp: 0.0.0.0/0
+      Description: discounts:5001/tcp on default network
+      FromPort: 5001
+      GroupId:
+        Ref: DefaultNetwork
+      IpProtocol: TCP
+      ToPort: 5001
+    Type: AWS::EC2::SecurityGroupIngress
+  Default5002Ingress:
+    Properties:
+      CidrIp: 0.0.0.0/0
+      Description: advertisements:5002/tcp on default network
+      FromPort: 5002
+      GroupId:
+        Ref: DefaultNetwork
+      IpProtocol: TCP
+      ToPort: 5002
+    Type: AWS::EC2::SecurityGroupIngress
+  Default5432Ingress:
+    Properties:
+      CidrIp: 0.0.0.0/0
+      Description: db:5432/tcp on default network
+      FromPort: 5432
+      GroupId:
+        Ref: DefaultNetwork
+      IpProtocol: TCP
+      ToPort: 5432
+    Type: AWS::EC2::SecurityGroupIngress
+  DefaultNetwork:
+    Properties:
+      GroupDescription: lab Security Group for default network
+      Tags:
+      - Key: com.docker.compose.project
+        Value: lab
+      - Key: com.docker.compose.network
+        Value: lab_default
+      VpcId: vpc-09c79348eaa78af36
+    Type: AWS::EC2::SecurityGroup
+  DefaultNetworkIngress:
+    Properties:
+      Description: Allow communication within network default
+      GroupId:
+        Ref: DefaultNetwork
+      IpProtocol: "-1"
+      SourceSecurityGroupId:
+        Ref: DefaultNetwork
+    Type: AWS::EC2::SecurityGroupIngress
+  DiscountsService:
+    DependsOn:
+    - DiscountsTCP5001Listener
+    - DbService
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      LoadBalancers:
+      - ContainerName: discounts
+        ContainerPort: 5001
+        TargetGroupArn:
+          Ref: DiscountsTCP5001TargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: DefaultNetwork
+          Subnets:
+          - subnet-0d0c1c45c8f0e6829
+          - subnet-0a53511929b83a105
+          - subnet-0753c4c84ce54d179
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - DiscountsServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: com.docker.compose.project
+        Value: lab
+      - Key: com.docker.compose.service
+        Value: discounts
+      TaskDefinition:
+        Ref: DiscountsTaskDefinition
+    Type: AWS::ECS::Service
+  DiscountsServiceDiscoveryEntry:
+    Properties:
+      Description: '"discounts" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: discounts
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  DiscountsTCP5001Listener:
+    Properties:
+      DefaultActions:
+      - ForwardConfig:
+          TargetGroups:
+          - TargetGroupArn:
+              Ref: DiscountsTCP5001TargetGroup
+        Type: forward
+      LoadBalancerArn:
+        Ref: LoadBalancer
+      Port: 5001
+      Protocol: TCP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  DiscountsTCP5001TargetGroup:
+    Properties:
+      Port: 5001
+      Protocol: TCP
+      Tags:
+      - Key: com.docker.compose.project
+        Value: lab
+      TargetType: ip
+      VpcId: vpc-09c79348eaa78af36
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  DiscountsTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - eu-west-1.compute.internal
+        - lab.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: lab
+        Name: Discounts_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Discounts_ResolvConf_InitContainer
+        Environment:
+        - Name: FLASK_APP
+          Value: discounts.py
+        - Name: FLASK_DEBUG
+          Value: "1"
+        - Name: POSTGRES_HOST
+          Value: db
+        - Name: POSTGRES_PASSWORD
+          Value: postgres
+        - Name: POSTGRES_USER
+          Value: postgres
+        Essential: true
+        Image: public.ecr.aws/x2b9z2t7/ddtraining/discounts-fixed:2.2.0@sha256:214cc2e2f04c60640d474c1efbb14a91cb4eca6f85d76cf9a1eb248df3883666
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: lab
+        Name: discounts
+        PortMappings:
+        - ContainerPort: 5001
+          HostPort: 5001
+          Protocol: tcp
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: DiscountsTaskExecutionRole
+      Family: lab-discounts
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  DiscountsTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: com.docker.compose.project
+        Value: lab
+      - Key: com.docker.compose.service
+        Value: discounts
+    Type: AWS::IAM::Role
+  FrontendService:
+    DependsOn:
+    - FrontendTCP3000Listener
+    - DbService
+    - DiscountsService
+    - AdvertisementsService
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      LoadBalancers:
+      - ContainerName: frontend
+        ContainerPort: 3000
+        TargetGroupArn:
+          Ref: FrontendTCP3000TargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: DefaultNetwork
+          Subnets:
+          - subnet-0d0c1c45c8f0e6829
+          - subnet-0a53511929b83a105
+          - subnet-0753c4c84ce54d179
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - FrontendServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: com.docker.compose.project
+        Value: lab
+      - Key: com.docker.compose.service
+        Value: frontend
+      TaskDefinition:
+        Ref: FrontendTaskDefinition
+    Type: AWS::ECS::Service
+  FrontendServiceDiscoveryEntry:
+    Properties:
+      Description: '"frontend" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: frontend
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  FrontendTCP3000Listener:
+    Properties:
+      DefaultActions:
+      - ForwardConfig:
+          TargetGroups:
+          - TargetGroupArn:
+              Ref: FrontendTCP3000TargetGroup
+        Type: forward
+      LoadBalancerArn:
+        Ref: LoadBalancer
+      Port: 3000
+      Protocol: TCP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  FrontendTCP3000TargetGroup:
+    Properties:
+      Port: 3000
+      Protocol: TCP
+      Tags:
+      - Key: com.docker.compose.project
+        Value: lab
+      TargetType: ip
+      VpcId: vpc-09c79348eaa78af36
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  FrontendTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - eu-west-1.compute.internal
+        - lab.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: lab
+        Name: Frontend_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Frontend_ResolvConf_InitContainer
+        Essential: true
+        Image: public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.0@sha256:f7ec4a33fd78bbf167a573c04eb6dc1df31ab7bb4e9f3d8d2259792cf0b7e0d0
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: lab
+        Name: frontend
+        PortMappings:
+        - ContainerPort: 3000
+          HostPort: 3000
+          Protocol: tcp
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: FrontendTaskExecutionRole
+      Family: lab-frontend
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  FrontendTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: com.docker.compose.project
+        Value: lab
+      - Key: com.docker.compose.service
+        Value: frontend
+    Type: AWS::IAM::Role
+  LoadBalancer:
+    Properties:
+      LoadBalancerAttributes:
+      - Key: load_balancing.cross_zone.enabled
+        Value: "true"
+      Scheme: internet-facing
+      Subnets:
+      - subnet-0d0c1c45c8f0e6829
+      - subnet-0a53511929b83a105
+      - subnet-0753c4c84ce54d179
+      Tags:
+      - Key: com.docker.compose.project
+        Value: lab
+      Type: network
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+  LogGroup:
+    Properties:
+      LogGroupName: /docker-compose/lab
+    Type: AWS::Logs::LogGroup
