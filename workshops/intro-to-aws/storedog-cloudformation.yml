@@ -58,7 +58,7 @@ Resources:
     Type: "AWS::EC2::Subnet"
     DependsOn: LabRouteTable
     Properties:
-      AvailabilityZone: "us-west-1b"
+      AvailabilityZone: "eu-west-1b"
       CidrBlock: "10.0.1.0/24"
       MapPublicIpOnLaunch: True
       VpcId:
@@ -70,7 +70,7 @@ Resources:
     Type: "AWS::EC2::Subnet"
     DependsOn: LabRouteTable
     Properties:
-      AvailabilityZone: "us-west-1c"
+      AvailabilityZone: "eu-west-1c"
       CidrBlock: "10.0.2.0/24"
       MapPublicIpOnLaunch: True
       VpcId:
@@ -266,7 +266,8 @@ Resources:
     Properties:
       Description: Service Map for Docker Compose project lab
       Name: lab.local
-      Vpc: vpc-09c79348eaa78af36
+      Vpc: 
+        Ref: LabVPC
     Type: AWS::ServiceDiscovery::PrivateDnsNamespace
   Cluster:
     Properties:
