@@ -129,9 +129,9 @@ Resources:
           SecurityGroups:
           - Ref: DefaultNetwork
           Subnets:
-          - subnet-0d0c1c45c8f0e6829
-          - subnet-0a53511929b83a105
-          - subnet-0753c4c84ce54d179
+          - Ref: LabSubnet1
+          - Ref: LabSubnet2
+          - Ref: LabSubnet3
       PlatformVersion: 1.4.0
       PropagateTags: SERVICE
       SchedulingStrategy: REPLICA
@@ -301,9 +301,9 @@ Resources:
           SecurityGroups:
           - Ref: DefaultNetwork
           Subnets:
-          - subnet-0d0c1c45c8f0e6829
-          - subnet-0a53511929b83a105
-          - subnet-0753c4c84ce54d179
+          - Ref: LabSubnet1
+          - Ref: LabSubnet2
+          - Ref: LabSubnet3
       PlatformVersion: 1.4.0
       PropagateTags: SERVICE
       SchedulingStrategy: REPLICA
@@ -515,9 +515,9 @@ Resources:
           SecurityGroups:
           - Ref: DefaultNetwork
           Subnets:
-          - subnet-0d0c1c45c8f0e6829
-          - subnet-0a53511929b83a105
-          - subnet-0753c4c84ce54d179
+          - Ref: LabSubnet1
+          - Ref: LabSubnet2
+          - Ref: LabSubnet3
       PlatformVersion: 1.4.0
       PropagateTags: SERVICE
       SchedulingStrategy: REPLICA
@@ -677,9 +677,9 @@ Resources:
           SecurityGroups:
           - Ref: DefaultNetwork
           Subnets:
-          - subnet-0d0c1c45c8f0e6829
-          - subnet-0a53511929b83a105
-          - subnet-0753c4c84ce54d179
+          - Ref: LabSubnet1
+          - Ref: LabSubnet2
+          - Ref: LabSubnet3
       PlatformVersion: 1.4.0
       PropagateTags: SERVICE
       SchedulingStrategy: REPLICA
@@ -806,9 +806,9 @@ Resources:
         Value: "true"
       Scheme: internet-facing
       Subnets:
-      - subnet-0d0c1c45c8f0e6829
-      - subnet-0a53511929b83a105
-      - subnet-0753c4c84ce54d179
+      - Ref: LabSubnet1
+      - Ref: LabSubnet2
+      - Ref: LabSubnet3
       Tags:
       - Key: com.docker.compose.project
         Value: lab
