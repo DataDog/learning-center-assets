@@ -141,9 +141,9 @@ Resources:
           - AdvertisementsServiceDiscoveryEntry
           - Arn
       Tags:
-      - Key: com.docker.compose.project
-        Value: lab
-      - Key: com.docker.compose.service
+      - Key: project
+        Value: "Intro to AWS"
+      - Key: service
         Value: advertisements
       TaskDefinition:
         Ref: AdvertisementsTaskDefinition
@@ -180,8 +180,8 @@ Resources:
       Port: 5002
       Protocol: TCP
       Tags:
-      - Key: com.docker.compose.project
-        Value: lab
+      - Key: project
+        Value: "Intro to AWS"
       TargetType: ip
       VpcId: 
         Ref: LabVPC
@@ -257,14 +257,14 @@ Resources:
       - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
       - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
       Tags:
-      - Key: com.docker.compose.project
-        Value: lab
-      - Key: com.docker.compose.service
+      - Key: project
+        Value: "Intro to AWS"
+      - Key: service
         Value: advertisements
     Type: AWS::IAM::Role
   CloudMap:
     Properties:
-      Description: Service Map for Docker Compose project lab
+      Description: Service Map for Intro to AWS Lab 
       Name: lab.local
       Vpc: 
         Ref: LabVPC
@@ -273,8 +273,8 @@ Resources:
     Properties:
       ClusterName: lab
       Tags:
-      - Key: com.docker.compose.project
-        Value: lab
+      - Key: project
+        Value: "Intro to AWS"
     Type: AWS::ECS::Cluster
   DbService:
     DependsOn:
@@ -314,9 +314,9 @@ Resources:
           - DbServiceDiscoveryEntry
           - Arn
       Tags:
-      - Key: com.docker.compose.project
-        Value: lab
-      - Key: com.docker.compose.service
+      - Key: project
+        Value: "Intro to AWS"
+      - Key: service
         Value: db
       TaskDefinition:
         Ref: DbTaskDefinition
@@ -353,8 +353,8 @@ Resources:
       Port: 5432
       Protocol: TCP
       Tags:
-      - Key: com.docker.compose.project
-        Value: lab
+      - Key: project
+        Value: "Intro to AWS"
       TargetType: ip
       VpcId:
         Ref: LabVPC
@@ -424,9 +424,9 @@ Resources:
       - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
       - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
       Tags:
-      - Key: com.docker.compose.project
-        Value: lab
-      - Key: com.docker.compose.service
+      - Key: project
+        Value: "Intro to AWS"
+      - Key: service
         Value: db
     Type: AWS::IAM::Role
   Default3000Ingress:
@@ -473,9 +473,9 @@ Resources:
     Properties:
       GroupDescription: lab Security Group for default network
       Tags:
-      - Key: com.docker.compose.project
-        Value: lab
-      - Key: com.docker.compose.network
+      - Key: project
+        Value: "Intro to AWS"
+      - Key: network
         Value: lab_default
       VpcId:
         Ref: LabVPC
@@ -528,9 +528,9 @@ Resources:
           - DiscountsServiceDiscoveryEntry
           - Arn
       Tags:
-      - Key: com.docker.compose.project
-        Value: lab
-      - Key: com.docker.compose.service
+      - Key: project
+        Value: "Intro to AWS"
+      - Key: service
         Value: discounts
       TaskDefinition:
         Ref: DiscountsTaskDefinition
@@ -567,8 +567,8 @@ Resources:
       Port: 5001
       Protocol: TCP
       Tags:
-      - Key: com.docker.compose.project
-        Value: lab
+      - Key: project
+        Value: "Intro to AWS"
       TargetType: ip
       VpcId:
         Ref: LabVPC
@@ -644,9 +644,9 @@ Resources:
       - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
       - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
       Tags:
-      - Key: com.docker.compose.project
-        Value: lab
-      - Key: com.docker.compose.service
+      - Key: project
+        Value: "Intro to AWS"
+      - Key: service
         Value: discounts
     Type: AWS::IAM::Role
   FrontendService:
@@ -690,9 +690,9 @@ Resources:
           - FrontendServiceDiscoveryEntry
           - Arn
       Tags:
-      - Key: com.docker.compose.project
-        Value: lab
-      - Key: com.docker.compose.service
+      - Key: project
+        Value: "Intro to AWS"
+      - Key: service
         Value: frontend
       TaskDefinition:
         Ref: FrontendTaskDefinition
@@ -729,8 +729,8 @@ Resources:
       Port: 3000
       Protocol: TCP
       Tags:
-      - Key: com.docker.compose.project
-        Value: lab
+      - Key: project
+        Value: "Intro to AWS"
       TargetType: ip
       VpcId:
         Ref: LabVPC
@@ -795,9 +795,9 @@ Resources:
       - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
       - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
       Tags:
-      - Key: com.docker.compose.project
-        Value: lab
-      - Key: com.docker.compose.service
+      - Key: project
+        Value: "Intro to AWS"
+      - Key: service
         Value: frontend
     Type: AWS::IAM::Role
   LoadBalancer:
@@ -811,8 +811,8 @@ Resources:
       - Ref: LabSubnet2
       - Ref: LabSubnet3
       Tags:
-      - Key: com.docker.compose.project
-        Value: lab
+      - Key: project
+        Value: "Intro to AWS"
       Type: network
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
   LogGroup:
