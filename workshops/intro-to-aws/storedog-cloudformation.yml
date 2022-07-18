@@ -218,7 +218,7 @@ Resources:
         - Name: POSTGRES_USER
           Value: postgres
         Essential: true
-        Image: public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0@sha256:9106d941804cf4494c925a1f27dabac7722d247d429fb6e3a8050d140d25ef69
+        Image: public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0
         LinuxParameters: {}
         LogConfiguration:
           LogDriver: awslogs
@@ -385,7 +385,7 @@ Resources:
         - Name: POSTGRES_USER
           Value: postgres
         Essential: true
-        Image: docker.io/library/postgres:11-alpine@sha256:9967df19b93fef80ddc8db3e9331b506d0842779bc693598e39e2f30c595180a
+        Image: docker.io/library/postgres:11-alpine
         LinuxParameters: {}
         LogConfiguration:
           LogDriver: awslogs
@@ -605,7 +605,7 @@ Resources:
         - Name: POSTGRES_USER
           Value: postgres
         Essential: true
-        Image: public.ecr.aws/x2b9z2t7/ddtraining/discounts-fixed:2.2.0@sha256:214cc2e2f04c60640d474c1efbb14a91cb4eca6f85d76cf9a1eb248df3883666
+        Image: public.ecr.aws/x2b9z2t7/ddtraining/discounts-fixed:2.2.0
         LinuxParameters: {}
         LogConfiguration:
           LogDriver: awslogs
@@ -756,7 +756,7 @@ Resources:
         - Condition: SUCCESS
           ContainerName: Frontend_ResolvConf_InitContainer
         Essential: true
-        Image: public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.0@sha256:f7ec4a33fd78bbf167a573c04eb6dc1df31ab7bb4e9f3d8d2259792cf0b7e0d0
+        Image: public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.0
         LinuxParameters: {}
         LogConfiguration:
           LogDriver: awslogs
