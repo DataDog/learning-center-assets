@@ -111,7 +111,9 @@ Resources:
       MasterUserPassword: postgres
       DBInstanceClass: db.t3.micro
       VPCSecurityGroups: 
-        - Ref: VPCSecurityGroup
+        - Ref: DefaultNetwork
+      DBSubnetGroupName:
+        - Ref: LabSubnet1
       AllocatedStorage: 20 
   AdvertisementsService:
     DependsOn:
