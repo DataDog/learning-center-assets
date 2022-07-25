@@ -116,7 +116,7 @@ Resources:
   AdvertisementsService:
     DependsOn:
     - AdvertisementsTCP5002Listener
-    - DbInstance
+    - DBInstance
     Properties:
       Cluster:
         Fn::GetAtt:
@@ -224,7 +224,7 @@ Resources:
           Value: "1"
         - Name: POSTGRES_HOST
           Value: 
-            Ref: DbInstance
+            Ref: DBInstance
         - Name: POSTGRES_PASSWORD
           Value: postgres
         - Name: POSTGRES_USER
@@ -331,7 +331,7 @@ Resources:
   DiscountsService:
     DependsOn:
     - DiscountsTCP5001Listener
-    - DbInstance
+    - DBInstance
     Properties:
       Cluster:
         Fn::GetAtt:
@@ -439,7 +439,7 @@ Resources:
           Value: "1"
         - Name: POSTGRES_HOST
           Value: 
-            Ref: DbInstance
+            Ref: DBInstance
         - Name: POSTGRES_PASSWORD
           Value: postgres
         - Name: POSTGRES_USER
