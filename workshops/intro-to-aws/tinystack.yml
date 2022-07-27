@@ -102,6 +102,18 @@ Resources:
         Ref: LabRouteTable
       SubnetId:
         Ref: LabSubnet3
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties: 
+      DBSubnetGroupDescription: DBSubnetGroup for the lab RDS instance
+      DBSubnetGroupName: LabDBSubnetGroup
+      SubnetIds: 
+        - Ref: LabSubnet1
+        - Ref: LabSubnet2
+        - Ref: LabSubnet3
+      Tags: 
+        - Key: project
+          Value: "Intro to AWS"
   DBInstance: 
     Type: "AWS::RDS::DBInstance"
     Properties:
@@ -112,8 +124,7 @@ Resources:
       DBInstanceClass: db.t3.micro
       VPCSecurityGroups: 
         - Ref: DefaultNetwork
-      DBSubnetGroupName:
-        - Ref: LabSubnet1
+      DBSubnetGroupName: LabDBSubnetGroup
       AllocatedStorage: 20 
   AdvertisementsService:
     DependsOn:
