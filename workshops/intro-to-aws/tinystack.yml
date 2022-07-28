@@ -103,6 +103,10 @@ Resources:
       SubnetId:
         Ref: LabSubnet3
   DBSubnetGroup:
+    DependsOn: 
+      - LabSubnet1
+      - LabSubnet2
+      - LabSubnet3
     Type: AWS::RDS::DBSubnetGroup
     Properties: 
       DBSubnetGroupDescription: DBSubnetGroup for the lab RDS instance
@@ -116,8 +120,10 @@ Resources:
           Value: "Intro to AWS"
   DBInstance: 
     Type: "AWS::RDS::DBInstance"
+    DependsOn:
+      - DBSubnetGroup
     Properties:
-      DBName: "ads-discounts-db"
+      DBName: AdsDiscountsDB
       Engine: postgres
       MasterUsername: postgres
       MasterUserPassword: postgres
