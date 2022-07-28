@@ -243,7 +243,9 @@ Resources:
           Value: "1"
         - Name: POSTGRES_HOST
           Value: 
-            GetAtt: [DBInstance, Endpoint.Address]
+            Fn::GetAtt:
+            - DBInstance
+            - Endpoint.Address
         - Name: POSTGRES_PASSWORD
           Value: postgres
         - Name: POSTGRES_USER
@@ -458,7 +460,9 @@ Resources:
           Value: "1"
         - Name: POSTGRES_HOST
           Value: 
-            GetAtt: [DBInstance, Endpoint.Address]
+            Fn::GetAtt:
+            - DBInstance
+            - Endpoint.Address
         - Name: POSTGRES_PASSWORD
           Value: postgres
         - Name: POSTGRES_USER
