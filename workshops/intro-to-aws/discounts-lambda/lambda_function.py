@@ -8,12 +8,19 @@ from psycopg2.extras import RealDictCursor
 # from aws_xray_sdk.core import xray_recorder
 # from aws_xray_sdk.core import patch_all
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import words
-
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 # patch_all()
+
+def get_random_word(count=1):
+    word_list = [ "act", "action", "actor", "bonus", "book", "boost", "border", "cat", "fudge", "positron",
+                  "question", "quiz", "rotation", "radiator", "radar", "transcendence", "tubular",
+                  "possible", "post", "potato", "turtle", "twelve", "twenty", "twice", "wolf", "vegan",
+                  "woman", "wonder", "woof", "wabbit", "word", "yard", "work"]
+    words = []
+    for i in range(0, count):
+        words.append(random.choice(word_list))
+    return " ".join(words)
 
 def create_table():
 
@@ -33,8 +40,8 @@ def create_table():
     cur.execute("CREATE TABLE discounts (id serial primary key, name varchar(128), code varchar(64), value int)")
 
     for i in range(100):
-        discount_name = words.get_random(random.randint(2,4))
-        code = words.get_random().upper()
+        discount_name = get_random_word(random.randint(2,4))
+        code = get_random_word().upper()
         value = random.randrange(1,100) * random.random()
         logger.debug(f"Creating record: {discount_name}, {code}, {value}")
         cur.execute(f"INSERT INTO discounts VALUES (DEFAULT, %s, %s, %s)", (discount_name, code, value))
