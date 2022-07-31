@@ -5,12 +5,12 @@ import random
 import psycopg2
 import json
 from psycopg2.extras import RealDictCursor
-# from aws_xray_sdk.core import xray_recorder
-# from aws_xray_sdk.core import patch_all
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.core import patch_all
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
-# patch_all()
+patch_all()
 
 def get_random_word(count=1):
     word_list = [ "act", "action", "actor", "bonus", "book", "boost", "border", "cat", "fudge", "positron",
@@ -104,4 +104,4 @@ def lambda_handler(event, context):
     return json.dumps(get_random_discount())
 
 
-print(lambda_handler(None, None))
+# print(lambda_handler(None, None))
