@@ -9,7 +9,7 @@ services:
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
       - DD_TAGS='${DD_TAGS-env:dd101-dev}'
-      - DD_HOSTNAME=${DD_HOSTNAME-dd101-dev-host} 
+      - DD_HOSTNAME=${DD_HOSTNAME-dd101-dev-host}
       - DD_APM_NON_LOCAL_TRAFFIC=true
     ports:
       - 127.0.0.1:8126:8126/tcp
@@ -121,7 +121,7 @@ services:
   puppeteer:
     image: buildkite/puppeteer:10.0.0
     volumes:
-      - /root/puppeteer-checkout-funnel.js:/puppeteer.js
+      - /root/puppeteer-mobile.js:/puppeteer.js
       - /root/puppeteer.sh:/puppeteer.sh
     environment:
       - STOREDOG_URL
