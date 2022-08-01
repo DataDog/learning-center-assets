@@ -339,8 +339,27 @@ Resources:
       SourceSecurityGroupId:
         Ref: DefaultNetwork
     Type: AWS::EC2::SecurityGroupIngress
+  LambdaRole:
+     Type: AWS::IAM::Role
+     Properties:
+       RoleName:
+         Fn::Sub: lambda-role
+       AssumeRolePolicyDocument:
+         Statement:
+           - Action:
+             - sts:AssumeRole
+             Effect: Allow
+             Principal:
+               Service:
+               - lambda.amazonaws.com
+         Version: 2012-10-17
+       ManagedPolicyArns:
+         - arn:aws:iam::aws:policy/AWSLambdaExecute
+         - arn:aws:iam::aws:policy/AmazonS3FullAccess
+       Path: /
   DiscountsService:
     DependsOn:
+    - LambdaRole
     - DBInstance
     Properties:
       Handler: lambda_function
@@ -351,7 +370,14 @@ Resources:
       Environment:
         Variables:
           POSTGRES_HOST: 
-            Ref: DBInstance
+            Fn::GetAtt:
+            - DBInstance
+            - Endpoint.Address
+      Timeout: 10
+      Role:
+        Fn::GetAtt:
+          - LambdaRole
+          - Arn
       VpcConfig:
         SecurityGroupIds:
           - Ref: DefaultNetwork
@@ -364,7 +390,16 @@ Resources:
         Value: "Intro to AWS"
       - Key: service
         Value: discounts
-    Type: AWS::Serverless::Function
+    Type: AWS::Lambda::Function
+  DiscountsServiceURL:
+    Type: AWS::Lambda::Url
+    Properties: 
+      AuthType: None
+      Cors: 
+        AllowMethods: GET
+        AllowOrigins: "*"
+      TargetFunctionArn:
+        Ref: DiscountsService
   LoadBalancer:
     Properties:
       LoadBalancerAttributes:
