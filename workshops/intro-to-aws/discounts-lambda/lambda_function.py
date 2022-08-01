@@ -9,7 +9,7 @@ from psycopg2.extras import RealDictCursor
 # from aws_xray_sdk.core import patch_all
 
 logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 # patch_all()
 
 def get_random_word(count=1):
@@ -29,7 +29,7 @@ def create_table():
     connection = None
 
     try:
-        connection = psycopg2.connect(f"host={os.environ['DB_HOST']} dbname=discounts user=postgres password=postgres")
+        connection = psycopg2.connect(f"host={os.environ['POSTGRES_HOST']} dbname=discounts user=postgres password=postgres")
         connection.set_session(autocommit=True)
     except Exception as error:
         logger.error("Could not connect to discounts database.")
@@ -54,7 +54,7 @@ def prepare_database():
     connection = None
 
     try:
-        connection = psycopg2.connect(f"host={os.environ['DB_HOST']} user=postgres password=postgres")
+        connection = psycopg2.connect(f"host={os.environ['POSTGRES_HOST']} user=postgres password=postgres")
         connection.set_session(autocommit=True)
     except Exception as error:
         logger.error("Could not connect to PostgresSQL server.")
@@ -82,7 +82,7 @@ def get_random_discount():
     connection = None
 
     try:
-        connection = psycopg2.connect(f"host={os.environ['DB_HOST']} dbname=discounts user=postgres password=postgres")
+        connection = psycopg2.connect(f"host={os.environ['POSTGRES_HOST']} dbname=discounts user=postgres password=postgres")
     except Exception as error:
         logger.error("Could not connect to database.")
         logger.exception(error)
