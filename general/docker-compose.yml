@@ -121,7 +121,7 @@ services:
   puppeteer:
     image: buildkite/puppeteer:10.0.0
     volumes:
-      - /root/puppeteer-mobile.js:/puppeteer.js
+      - /root/puppeteer-checkout-funnel.js:/puppeteer.js
       - /root/puppeteer.sh:/puppeteer.sh
     environment:
       - STOREDOG_URL
