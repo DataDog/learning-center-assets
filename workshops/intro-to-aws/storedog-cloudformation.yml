@@ -236,36 +236,36 @@ Resources:
       - DependsOn:
         - Condition: SUCCESS
           ContainerName: Advertisements_ResolvConf_InitContainer
-      Environment:
-        - Name: FLASK_APP
-          Value: ads.py
-        - Name: FLASK_DEBUG
-          Value: "1"
-        - Name: POSTGRES_HOST
-          Value: 
-            Fn::GetAtt:
-            - DBInstance
-            - Endpoint.Address
-        - Name: POSTGRES_PASSWORD
-          Value: postgres
-        - Name: POSTGRES_USER
-          Value: postgres
-      Essential: true
-      Image: public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0
-      LinuxParameters: {}
-      LogConfiguration:
-        LogDriver: awslogs
-        Options:
-          awslogs-group:
-            Ref: LogGroup
-          awslogs-region:
-            Ref: AWS::Region
-          awslogs-stream-prefix: lab
-      Name: advertisements
-      PortMappings:
-        - ContainerPort: 5002
-          HostPort: 5002
-          Protocol: tcp
+        Environment:
+          - Name: FLASK_APP
+            Value: ads.py
+          - Name: FLASK_DEBUG
+            Value: "1"
+          - Name: POSTGRES_HOST
+            Value: 
+              Fn::GetAtt:
+              - DBInstance
+              - Endpoint.Address
+          - Name: POSTGRES_PASSWORD
+            Value: postgres
+          - Name: POSTGRES_USER
+            Value: postgres
+        Essential: true
+        Image: public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: lab
+        Name: advertisements
+        PortMappings:
+          - ContainerPort: 5002
+            HostPort: 5002
+            Protocol: tcp
       Cpu: "256"
       ExecutionRoleArn:
         Ref: AdvertisementsTaskExecutionRole
@@ -527,35 +527,35 @@ Resources:
       - DependsOn:
         - Condition: SUCCESS
           ContainerName: Frontend_ResolvConf_InitContainer
-      Environment:
-        - Name: DISCOUNTS_ROUTE
-          Value: 
-            Fn::Sub:
-              - "https://${DiscountsUrl}"
-              - DiscountsUrl:
-                  Fn::GetAtt:
-                    - DiscountsServiceURL
-                    - FunctionUrl
-        - Name: DISCOUNTS_PORT
-          Value: 443
-        - Name: POSTGRES_USER
-          Value: postgres
-      Essential: true
-      Image: public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.0
-      LinuxParameters: {}
-      LogConfiguration:
-        LogDriver: awslogs
-        Options:
-          awslogs-group:
-            Ref: LogGroup
-          awslogs-region:
-            Ref: AWS::Region
-          awslogs-stream-prefix: lab
-      Name: frontend
-      PortMappings:
-      - ContainerPort: 3000
-        HostPort: 3000
-        Protocol: tcp
+        Environment:
+          - Name: DISCOUNTS_ROUTE
+            Value: 
+              Fn::Sub:
+                - "https://${DiscountsUrl}"
+                - DiscountsUrl:
+                    Fn::GetAtt:
+                      - DiscountsServiceURL
+                      - FunctionUrl
+          - Name: DISCOUNTS_PORT
+            Value: 443
+          - Name: POSTGRES_USER
+            Value: postgres
+        Essential: true
+        Image: public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:latest
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: lab
+        Name: frontend
+        PortMappings:
+          - ContainerPort: 3000
+            HostPort: 3000
+            Protocol: tcp
       Cpu: "256"
       ExecutionRoleArn:
         Ref: FrontendTaskExecutionRole
