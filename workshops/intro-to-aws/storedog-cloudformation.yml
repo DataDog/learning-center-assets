@@ -135,7 +135,7 @@ Resources:
   AdvertisementsService:
     DependsOn:
     - AdvertisementsTCP5002Listener
-    - DbService
+    - DBInstance
     Properties:
       Cluster:
         Fn::GetAtt:
@@ -250,19 +250,19 @@ Resources:
           Value: postgres
         - Name: POSTGRES_USER
           Value: postgres
-        Essential: true
-        Image: public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0
-        LinuxParameters: {}
-        LogConfiguration:
-          LogDriver: awslogs
-          Options:
-            awslogs-group:
-              Ref: LogGroup
-            awslogs-region:
-              Ref: AWS::Region
-            awslogs-stream-prefix: lab
-        Name: advertisements
-        PortMappings:
+      Essential: true
+      Image: public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0
+      LinuxParameters: {}
+      LogConfiguration:
+        LogDriver: awslogs
+        Options:
+          awslogs-group:
+            Ref: LogGroup
+          awslogs-region:
+            Ref: AWS::Region
+          awslogs-stream-prefix: lab
+      Name: advertisements
+      PortMappings:
         - ContainerPort: 5002
           HostPort: 5002
           Protocol: tcp
@@ -402,7 +402,7 @@ Resources:
       - Key: service
         Value: discounts
     Type: AWS::Lambda::Function
-  DiscountsServiceUrlInvokePermission:
+  DiscountsServiceURLInvokePermission:
     Type: AWS::Lambda::Permission
     Properties:
        FunctionName: 
@@ -424,8 +424,8 @@ Resources:
   FrontendService:
     DependsOn:
     - FrontendTCP3000Listener
-    - DbService
-    - DiscountsService
+    - DBInstance
+    - DiscountsServiceURL
     - AdvertisementsService
     Properties:
       Cluster:
@@ -530,12 +530,12 @@ Resources:
       Environment:
         - Name: DISCOUNTS_ROUTE
           Value: 
-            Fn::Join
-            - ""
-            - "https://"
-            - Fn::GetAtt:
-              - DiscountsServiceUrl
-              - FunctionUrl
+            Fn::Sub:
+              - "https://${DiscountsUrl}"
+              - DiscountsUrl:
+                  Fn::GetAtt:
+                    - DiscountsServiceURL
+                    - FunctionUrl
         - Name: DISCOUNTS_PORT
           Value: 443
         - Name: POSTGRES_USER
