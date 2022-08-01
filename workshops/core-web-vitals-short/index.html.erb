@@ -1,0 +1,18 @@
+<% @body_id = 'home-page' %>
+<% content_for :sidebar do %>
+  <div id="discount-block" style="visibility:hidden;padding:10px;background-color:rgb(114,206,74,0.5);margin-top:48px;border-radius:5px;">
+    <h3 id="discount-name"></h3><br /> <strong>Enter coupon code '<span id="discount-code"></span>'
+    at checkout for a $<span id="discount-value"></span> discount</strong>
+  </div>
+  <div data-hook="homepage_sidebar_navigation">
+    <%= render partial: 'spree/shared/taxonomies' %>
+  </div>
+<% end %>
+
+<div data-hook="homepage_products">
+  <div id="ads-block" style="visibility:hidden"><a id="ad-url" href=""><img id="ad-image" src=""></a></div>
+  <% cache(cache_key_for_products) do %>
+    <%= render partial: 'spree/shared/products', locals: { products: @products } %>
+  <% end %>
+</div>
+
