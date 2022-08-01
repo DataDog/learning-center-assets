@@ -102,36 +102,6 @@ Resources:
         Ref: LabRouteTable
       SubnetId:
         Ref: LabSubnet3
-  DBSubnetGroup:
-    DependsOn: 
-      - LabSubnet1
-      - LabSubnet2
-      - LabSubnet3
-    Type: AWS::RDS::DBSubnetGroup
-    Properties: 
-      DBSubnetGroupDescription: DBSubnetGroup for the lab RDS instance
-      DBSubnetGroupName: LabDBSubnetGroup
-      SubnetIds: 
-        - Ref: LabSubnet1
-        - Ref: LabSubnet2
-        - Ref: LabSubnet3
-      Tags: 
-        - Key: project
-          Value: "Intro to AWS"
-  DBInstance: 
-    Type: "AWS::RDS::DBInstance"
-    DependsOn:
-      - DBSubnetGroup
-    Properties:
-      DBName: AdsDiscountsDB
-      Engine: postgres
-      MasterUsername: postgres
-      MasterUserPassword: postgres
-      DBInstanceClass: db.t3.micro
-      VPCSecurityGroups: 
-        - Ref: DefaultNetwork
-      DBSubnetGroupName: LabDBSubnetGroup
-      AllocatedStorage: 20 
   AdvertisementsService:
     DependsOn:
     - AdvertisementsTCP5002Listener
@@ -236,16 +206,13 @@ Resources:
       - DependsOn:
         - Condition: SUCCESS
           ContainerName: Advertisements_ResolvConf_InitContainer
-      Environment:
+        Environment:
         - Name: FLASK_APP
           Value: ads.py
         - Name: FLASK_DEBUG
           Value: "1"
         - Name: POSTGRES_HOST
-          Value: 
-            Fn::GetAtt:
-            - DBInstance
-            - Endpoint.Address
+          Value: db
         - Name: POSTGRES_PASSWORD
           Value: postgres
         - Name: POSTGRES_USER
@@ -309,6 +276,159 @@ Resources:
       - Key: project
         Value: "Intro to AWS"
     Type: AWS::ECS::Cluster
+  DbService:
+    DependsOn:
+    - DbTCP5432Listener
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      LoadBalancers:
+      - ContainerName: db
+        ContainerPort: 5432
+        TargetGroupArn:
+          Ref: DbTCP5432TargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - Ref: DefaultNetwork
+          Subnets:
+          - Ref: LabSubnet1
+          - Ref: LabSubnet2
+          - Ref: LabSubnet3
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - DbServiceDiscoveryEntry
+          - Arn
+      Tags:
+      - Key: project
+        Value: "Intro to AWS"
+      - Key: service
+        Value: db
+      TaskDefinition:
+        Ref: DbTaskDefinition
+    Type: AWS::ECS::Service
+  DbServiceDiscoveryEntry:
+    Properties:
+      Description: '"db" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: db
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  DbTCP5432Listener:
+    Properties:
+      DefaultActions:
+      - ForwardConfig:
+          TargetGroups:
+          - TargetGroupArn:
+              Ref: DbTCP5432TargetGroup
+        Type: forward
+      LoadBalancerArn:
+        Ref: LoadBalancer
+      Port: 5432
+      Protocol: TCP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  DbTCP5432TargetGroup:
+    Properties:
+      Port: 5432
+      Protocol: TCP
+      Tags:
+      - Key: project
+        Value: "Intro to AWS"
+      TargetType: ip
+      VpcId:
+        Ref: LabVPC
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  DbTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - us-west-2.compute.internal
+        - lab.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: lab
+        Name: Db_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Db_ResolvConf_InitContainer
+        Environment:
+        - Name: POSTGRES_PASSWORD
+          Value: postgres
+        - Name: POSTGRES_USER
+          Value: postgres
+        Essential: true
+        Image: docker.io/library/postgres:11-alpine
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: lab
+        Name: db
+        PortMappings:
+        - ContainerPort: 5432
+          HostPort: 5432
+          Protocol: tcp
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: DbTaskExecutionRole
+      Family: lab-db
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  DbTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: project
+        Value: "Intro to AWS"
+      - Key: service
+        Value: db
+    Type: AWS::IAM::Role
   Default3000Ingress:
     Properties:
       CidrIp: 0.0.0.0/0
@@ -319,6 +439,16 @@ Resources:
       IpProtocol: TCP
       ToPort: 3000
     Type: AWS::EC2::SecurityGroupIngress
+  Default5001Ingress:
+    Properties:
+      CidrIp: 0.0.0.0/0
+      Description: discounts:5001/tcp on default network
+      FromPort: 5001
+      GroupId:
+        Ref: DefaultNetwork
+      IpProtocol: TCP
+      ToPort: 5001
+    Type: AWS::EC2::SecurityGroupIngress
   Default5002Ingress:
     Properties:
       CidrIp: 0.0.0.0/0
@@ -328,6 +458,16 @@ Resources:
         Ref: DefaultNetwork
       IpProtocol: TCP
       ToPort: 5002
+    Type: AWS::EC2::SecurityGroupIngress
+  Default5432Ingress:
+    Properties:
+      CidrIp: 0.0.0.0/0
+      Description: db:5432/tcp on default network
+      FromPort: 5432
+      GroupId:
+        Ref: DefaultNetwork
+      IpProtocol: TCP
+      ToPort: 5432
     Type: AWS::EC2::SecurityGroupIngress
   DefaultNetwork:
     Properties:
@@ -349,78 +489,166 @@ Resources:
       SourceSecurityGroupId:
         Ref: DefaultNetwork
     Type: AWS::EC2::SecurityGroupIngress
-  LambdaRole:
-     Type: AWS::IAM::Role
-     Properties:
-       RoleName:
-         Fn::Sub: lambda-role
-       AssumeRolePolicyDocument:
-         Statement:
-           - Action:
-             - sts:AssumeRole
-             Effect: Allow
-             Principal:
-               Service:
-               - lambda.amazonaws.com
-         Version: 2012-10-17
-       ManagedPolicyArns:
-         - arn:aws:iam::aws:policy/AWSLambdaExecute
-         - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole 
-         - arn:aws:iam::aws:policy/AmazonS3FullAccess
-       Path: /
   DiscountsService:
     DependsOn:
-    - LambdaRole
-    - DBInstance
+    - DiscountsTCP5001Listener
+    - DbService
     Properties:
-      Handler: lambda_function.lambda_handler
-      Runtime: python3.8
-      Code: 
-        S3Bucket: dd-training-team
-        S3Key: discounts-lambda-package.zip
-      Environment:
-        Variables:
-          POSTGRES_HOST: 
-            Fn::GetAtt:
-            - DBInstance
-            - Endpoint.Address
-      Timeout: 10
-      Role:
+      Cluster:
         Fn::GetAtt:
-          - LambdaRole
-          - Arn
-      VpcConfig:
-        SecurityGroupIds:
+        - Cluster
+        - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      LoadBalancers:
+      - ContainerName: discounts
+        ContainerPort: 5001
+        TargetGroupArn:
+          Ref: DiscountsTCP5001TargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
           - Ref: DefaultNetwork
-        SubnetIds:
+          Subnets:
           - Ref: LabSubnet1
           - Ref: LabSubnet2
           - Ref: LabSubnet3
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+      - RegistryArn:
+          Fn::GetAtt:
+          - DiscountsServiceDiscoveryEntry
+          - Arn
       Tags:
       - Key: project
         Value: "Intro to AWS"
       - Key: service
         Value: discounts
-    Type: AWS::Lambda::Function
-  DiscountsServiceUrlInvokePermission:
-    Type: AWS::Lambda::Permission
+      TaskDefinition:
+        Ref: DiscountsTaskDefinition
+    Type: AWS::ECS::Service
+  DiscountsServiceDiscoveryEntry:
     Properties:
-       FunctionName: 
-         Ref: DiscountsService
-       FunctionUrlAuthType: 'NONE'
-       Action: lambda:InvokeFunctionUrl
-       Principal: '*'
-  DiscountsServiceURL:
-    Type: AWS::Lambda::Url
-    Properties: 
-      AuthType: 'NONE'
-      Cors: 
-        AllowMethods: 
-          - GET
-        AllowOrigins: 
-          - "*"
-      TargetFunctionArn:
-        Ref: DiscountsService
+      Description: '"discounts" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+        - TTL: 60
+          Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: discounts
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  DiscountsTCP5001Listener:
+    Properties:
+      DefaultActions:
+      - ForwardConfig:
+          TargetGroups:
+          - TargetGroupArn:
+              Ref: DiscountsTCP5001TargetGroup
+        Type: forward
+      LoadBalancerArn:
+        Ref: LoadBalancer
+      Port: 5001
+      Protocol: TCP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  DiscountsTCP5001TargetGroup:
+    Properties:
+      Port: 5001
+      Protocol: TCP
+      Tags:
+      - Key: project
+        Value: "Intro to AWS"
+      TargetType: ip
+      VpcId:
+        Ref: LabVPC
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  DiscountsTaskDefinition:
+    Properties:
+      ContainerDefinitions:
+      - Command:
+        - us-west-2.compute.internal
+        - lab.local
+        Essential: false
+        Image: docker/ecs-searchdomain-sidecar:1.0
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: lab
+        Name: Discounts_ResolvConf_InitContainer
+      - DependsOn:
+        - Condition: SUCCESS
+          ContainerName: Discounts_ResolvConf_InitContainer
+        Environment:
+        - Name: FLASK_APP
+          Value: discounts.py
+        - Name: FLASK_DEBUG
+          Value: "1"
+        - Name: POSTGRES_HOST
+          Value: db
+        - Name: POSTGRES_PASSWORD
+          Value: postgres
+        - Name: POSTGRES_USER
+          Value: postgres
+        Essential: true
+        Image: public.ecr.aws/x2b9z2t7/ddtraining/discounts-fixed:2.2.0
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: lab
+        Name: discounts
+        PortMappings:
+        - ContainerPort: 5001
+          HostPort: 5001
+          Protocol: tcp
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: DiscountsTaskExecutionRole
+      Family: lab-discounts
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+    Type: AWS::ECS::TaskDefinition
+  DiscountsTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+      - Key: project
+        Value: "Intro to AWS"
+      - Key: service
+        Value: discounts
+    Type: AWS::IAM::Role
   FrontendService:
     DependsOn:
     - FrontendTCP3000Listener
@@ -527,35 +755,22 @@ Resources:
       - DependsOn:
         - Condition: SUCCESS
           ContainerName: Frontend_ResolvConf_InitContainer
-      Environment:
-        - Name: DISCOUNTS_ROUTE
-          Value: 
-            Fn::Join
-            - ""
-            - "https://"
-            - Fn::GetAtt:
-              - DiscountsServiceUrl
-              - FunctionUrl
-        - Name: DISCOUNTS_PORT
-          Value: 443
-        - Name: POSTGRES_USER
-          Value: postgres
-      Essential: true
-      Image: public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.0
-      LinuxParameters: {}
-      LogConfiguration:
-        LogDriver: awslogs
-        Options:
-          awslogs-group:
-            Ref: LogGroup
-          awslogs-region:
-            Ref: AWS::Region
-          awslogs-stream-prefix: lab
-      Name: frontend
-      PortMappings:
-      - ContainerPort: 3000
-        HostPort: 3000
-        Protocol: tcp
+        Essential: true
+        Image: public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.0
+        LinuxParameters: {}
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: LogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-stream-prefix: lab
+        Name: frontend
+        PortMappings:
+        - ContainerPort: 3000
+          HostPort: 3000
+          Protocol: tcp
       Cpu: "256"
       ExecutionRoleArn:
         Ref: FrontendTaskExecutionRole
@@ -602,5 +817,5 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
   LogGroup:
     Properties:
-      LogGroupName: awslab
+      LogGroupName: /docker-compose/lab
     Type: AWS::Logs::LogGroup
