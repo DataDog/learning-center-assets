@@ -404,6 +404,8 @@ Resources:
     Type: AWS::Lambda::Function
   DiscountsServiceURLInvokePermission:
     Type: AWS::Lambda::Permission
+    DependsOn:
+      - DiscountsService
     Properties:
        FunctionName: 
          Ref: DiscountsService
@@ -412,6 +414,8 @@ Resources:
        Principal: '*'
   DiscountsServiceURL:
     Type: AWS::Lambda::Url
+    DependsOn:
+      - DiscountsService
     Properties: 
       AuthType: 'NONE'
       Cors: 
@@ -525,17 +529,15 @@ Resources:
             awslogs-stream-prefix: lab
         Name: Frontend_ResolvConf_InitContainer
       - DependsOn:
+        - DiscountsServiceUrl
         - Condition: SUCCESS
           ContainerName: Frontend_ResolvConf_InitContainer
         Environment:
           - Name: DISCOUNTS_ROUTE
             Value: 
-              Fn::Sub:
-                - "https://${DiscountsUrl}"
-                - DiscountsUrl:
-                    Fn::GetAtt:
-                      - DiscountsServiceURL
-                      - FunctionUrl
+              Fn::GetAtt:
+                - DiscountsServiceURL
+                - FunctionUrl
           - Name: DISCOUNTS_PORT
             Value: 443
           - Name: POSTGRES_USER
