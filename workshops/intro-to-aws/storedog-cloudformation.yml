@@ -528,15 +528,16 @@ Resources:
             awslogs-stream-prefix: lab
         Name: Frontend_ResolvConf_InitContainer
       - DependsOn:
-        - DiscountsServiceUrl
         - Condition: SUCCESS
           ContainerName: Frontend_ResolvConf_InitContainer
         Environment:
           - Name: DISCOUNTS_ROUTE
-            Value: 
-              Fn::GetAtt:
-                - DiscountsServiceURL
-                - FunctionUrl
+            Value: !Join
+	          - "/"
+	          - - !Select [0, !Split ["/", !GetAtt DiscountsServiceURL.FunctionUrl] ]
+	            - !Select [1, !Split ["/", !GetAtt DiscountsServiceURL.FunctionUrl] ]
+	            - !Select [2, !Split ["/", !GetAtt DiscountsServiceURL.FunctionUrl] ]
+	            - !Select [3, !Split ["/", !GetAtt DiscountsServiceURL.FunctionUrl] ]
           - Name: DISCOUNTS_PORT
             Value: 443
           - Name: POSTGRES_USER
