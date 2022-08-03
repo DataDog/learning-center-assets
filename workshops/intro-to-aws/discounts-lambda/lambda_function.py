@@ -74,10 +74,9 @@ def prepare_database():
     connection.close()
 
 
-def get_random_discount():
+def get_random_discounts(limit=1):
 
-    rand_discount_query = "SELECT * FROM discounts ORDER by RANDOM() LIMIT 1"
-    fast_rand_discount_query = "SELECT * FROM discounts OFFSET floor(random() * (SELECT COUNT(*) FROM discounts))"
+    rand_discount_query = f"SELECT * FROM discounts ORDER by RANDOM() LIMIT {limit}"
 
     connection = None
 
@@ -90,7 +89,7 @@ def get_random_discount():
 
     cur = connection.cursor(cursor_factory=RealDictCursor)
     cur.execute(rand_discount_query)
-    result = cur.fetchone()
+    result = cur.fetchall()
 
     cur.close()
     connection.close()
@@ -101,7 +100,7 @@ def get_random_discount():
 def lambda_handler(event, context):
 
     prepare_database()
-    return json.dumps(get_random_discount())
+    return json.dumps(get_random_discounts(10))
 
 
 # print(lambda_handler(None, None))
