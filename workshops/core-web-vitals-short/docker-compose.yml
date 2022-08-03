@@ -61,6 +61,8 @@ services:
       - DD_ADS_URL
       - ADS_ROUTE=http://advertisements
       - ADS_PORT=5002
+      - DISCOUNTS_ROUTE=http://discounts
+      - DISCOUNTS_PORT=5001
     image: 'public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.0'
     ports:
       - '3000:3000'

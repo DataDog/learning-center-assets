@@ -7,6 +7,7 @@ const getNewBrowser = async () => {
     defaultViewport: null,
     timeout: 30000,
     slowMo: 1000,
+    headless: false,
     args: [
       // Required for Docker version of Puppeteer
       '--no-sandbox',
@@ -14,6 +15,7 @@ const getNewBrowser = async () => {
       // This will write shared memory files into /tmp instead of /dev/shm,
       // because Docker’s default for /dev/shm is 64MB
       '--disable-dev-shm-usage',
+      '--headless',
     ],
   });
   const browserVersion = await browser.version();
@@ -23,8 +25,6 @@ const getNewBrowser = async () => {
 
 const runSession = async (url, selectors) => {
   const browser = await getNewBrowser();
-  const context = await browser.defaultBrowserContext();
-  await context.overridePermissions(url, ['geolocation']);
 
   let page = await browser.newPage();
 
@@ -32,7 +32,7 @@ const runSession = async (url, selectors) => {
     await page.setDefaultNavigationTimeout(
       process.env.PUPPETEER_TIMEOUT || 20000
     );
-    await page.setGeolocation({ latitude: 40.73061, longitude: -73.935242 });
+
     await page.goto(url, { waitUntil: 'domcontentloaded' });
     const pageTitle = await page.title();
     console.log(`"${pageTitle}" loaded`);
