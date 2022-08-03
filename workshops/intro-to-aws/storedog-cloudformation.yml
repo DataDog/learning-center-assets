@@ -532,9 +532,9 @@ Resources:
           ContainerName: Frontend_ResolvConf_InitContainer
         Environment:
           - Name: ADS_ROUTE
-            Value: advertisements
+            Value: http://advertisements
           - Name: ADS_PORT
-            Value: 5001
+            Value: 5002
           - Name: DISCOUNTS_ROUTE
             Value: 
               Fn::Join: 
@@ -555,6 +555,13 @@ Resources:
                       - FunctionUrl
                 - Fn::Select: 
                   - "2"
+                  - Fn::Split:
+                    - "/"
+                    - Fn::GetAtt: 
+                      - DiscountsServiceURL
+                      - FunctionUrl
+                - Fn::Select: 
+                  - "3"
                   - Fn::Split:
                     - "/"
                     - Fn::GetAtt: 
