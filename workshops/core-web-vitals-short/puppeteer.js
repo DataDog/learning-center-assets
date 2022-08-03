@@ -6,8 +6,7 @@ const getNewBrowser = async () => {
   const browser = await puppeteer.launch({
     defaultViewport: null,
     timeout: 30000,
-    slowMo: 1000,
-    headless: false,
+    slowMo: 250,
     args: [
       // Required for Docker version of Puppeteer
       '--no-sandbox',
@@ -15,7 +14,6 @@ const getNewBrowser = async () => {
       // This will write shared memory files into /tmp instead of /dev/shm,
       // because Docker’s default for /dev/shm is 64MB
       '--disable-dev-shm-usage',
-      '--headless',
     ],
   });
   const browserVersion = await browser.version();
