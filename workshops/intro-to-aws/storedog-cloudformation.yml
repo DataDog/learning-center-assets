@@ -531,13 +531,35 @@ Resources:
         - Condition: SUCCESS
           ContainerName: Frontend_ResolvConf_InitContainer
         Environment:
+          - Name: ADS_ROUTE
+            Value: advertisements
+          - Name: ADS_PORT
+            Value: 5001
           - Name: DISCOUNTS_ROUTE
-            Value: !Join
-	          - "/"
-	          - - !Select [0, !Split ["/", !GetAtt DiscountsServiceURL.FunctionUrl] ]
-	            - !Select [1, !Split ["/", !GetAtt DiscountsServiceURL.FunctionUrl] ]
-	            - !Select [2, !Split ["/", !GetAtt DiscountsServiceURL.FunctionUrl] ]
-	            - !Select [3, !Split ["/", !GetAtt DiscountsServiceURL.FunctionUrl] ]
+            Value: 
+              Fn::Join: 
+              - "/" 
+              - - Fn::Select: 
+                  - "0"
+                  - Fn::Split:
+                    - "/"
+                    - Fn::GetAtt: 
+                      - DiscountsServiceURL
+                      - FunctionUrl
+                - Fn::Select: 
+                  - "1"
+                  - Fn::Split:
+                    - "/"
+                    - Fn::GetAtt: 
+                      - DiscountsServiceURL
+                      - FunctionUrl
+                - Fn::Select: 
+                  - "2"
+                  - Fn::Split:
+                    - "/"
+                    - Fn::GetAtt: 
+                      - DiscountsServiceURL
+                      - FunctionUrl
           - Name: DISCOUNTS_PORT
             Value: 443
           - Name: POSTGRES_USER
