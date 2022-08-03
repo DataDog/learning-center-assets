@@ -14,6 +14,8 @@ const getNewBrowser = async () => {
       // This will write shared memory files into /tmp instead of /dev/shm,
       // because Docker’s default for /dev/shm is 64MB
       '--disable-dev-shm-usage',
+      '--proxy-server="direct://"',
+      '--proxy-bypass-list=*',
     ],
   });
   const browserVersion = await browser.version();
