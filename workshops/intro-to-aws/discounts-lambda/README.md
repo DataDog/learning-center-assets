@@ -19,6 +19,14 @@ It's best to build this package inside a lab, rather than to commit the dependen
 
 5. `cd ..`
 
-6. `zip -g discounts-lambda-package.zip laambda_function.py`
+6. `zip -g discounts-lambda-package.zip lambda_function.py`
 
+Drop the zip file in the dd-training S3 bucket (dd-marketing-admin role).
 
+If you need to update `lambda_function.py`:
+
+1. Make changes to the python script
+
+2. Update the zip file with `zip -u discounts-lambda-package.zip lambda_function.py`
+
+3. Re-uploada the file to the dd-training S3 bucket, and make sure the permissions are world-readable.
