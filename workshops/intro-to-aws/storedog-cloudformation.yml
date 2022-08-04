@@ -384,6 +384,7 @@ Resources:
             - DBInstance
             - Endpoint.Address
       Timeout: 10
+      ReservedConcurrentExecutions: 2
       Role:
         Fn::GetAtt:
           - LambdaRole
