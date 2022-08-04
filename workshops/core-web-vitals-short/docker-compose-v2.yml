@@ -30,7 +30,7 @@ services:
       - DD_LOGS_INJECTION=true
       - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_PROFILING_ENABLED=true
-    image: 'ddtraining/discounts:2.1.2'
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/discounts-fixed:2.2.0'
     ports:
       - '5001:5001'
     volumes:
@@ -64,7 +64,7 @@ services:
       - DISCOUNTS_ROUTE=http://discounts
       - DISCOUNTS_PORT=5001
       - useSSR=false
-    image: 'ddtraining/storefront-fixed:2.1.2'
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.0'
     ports:
       - '3000:3000'
     volumes:
@@ -93,7 +93,7 @@ services:
       - DD_LOGS_INJECTION=true
       - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_PROFILING_ENABLED=true
-    image: 'ddtraining/advertisements:2.1.2'
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0'
     ports:
       - '5002:5002'
     volumes:

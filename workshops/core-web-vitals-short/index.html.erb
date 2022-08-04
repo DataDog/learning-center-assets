@@ -19,7 +19,11 @@
 <% end %>
 
 <div data-hook="homepage_products">
-  <div id="ads-block" style="visibility:hidden"><a id="ad-url" href=""><img id="ad-image" src=""></a></div>
+  <% if ENV["useSSR"] == 'true' %>
+    <br /><center><a href="<%= @ads['url'] %>"><img src="data:image/png;base64,<%= @ads['base64'] %>" /></a></center>
+  <% else %>
+    <div id="ads-block" style="visibility:hidden"><center><a id="ad-url" href=""><img id="ad-image" src=""></a></center></div>
+  <% end %>
   <% cache(cache_key_for_products) do %>
     <%= render partial: 'spree/shared/products', locals: { products: @products } %>
   <% end %>
