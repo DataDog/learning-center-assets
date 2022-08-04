@@ -1,11 +1,8 @@
 import requests
 import random
 import time
-import sys
-import os
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import words
+from random_word import RandomWords
 
 from flask import Flask, Response, jsonify
 from flask import request as flask_request
@@ -15,6 +12,8 @@ from sqlalchemy.orm import joinedload
 
 from bootstrap import create_app
 from models import Discount, DiscountType, db
+
+r = RandomWords()
 
 app = create_app()
 CORS(app)
@@ -38,7 +37,6 @@ def status():
         # time experiment. DO NOT RELEASE TO PRODUCTION!!!!
         time.sleep(2.5)
         return jsonify([b.serialize() for b in discounts])
-
     elif flask_request.method == 'POST':
         # create a new discount with random name and value
         discounts_count = len(Discount.query.all())
@@ -46,7 +44,7 @@ def status():
                                          'price * .9',
                                          None)
         new_discount = Discount('Discount ' + str(discounts_count + 1),
-                                words.get_random(random.randomint(2,4)),
+                                r.get_random_word(),
                                 random.randint(10,500),
                                 new_discount_type)
         app.logger.info(f"Adding discount {new_discount}")
