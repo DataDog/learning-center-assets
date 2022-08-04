@@ -70,13 +70,16 @@ services:
       - ADS_PORT=5002
       - DISCOUNTS_ROUTE=http://discounts
       - DISCOUNTS_PORT=5001
-      - useSSR=false
+      - useSSR=true
     image: 'ddtraining/storefront-fixed:2.1.2'
     command: sh docker-entrypoint.sh
     ports:
       - '3000:3000'
     volumes:
-      - '/ecommworkshop/store-frontend-instrumented-fixed:/app'
+      - '/ecommworkshop/store-frontend-instrumented-fixed/config/environments/development.rb:/app/config/environments/development.rb'
+      - '/ecommworkshop/store-frontend-instrumented-fixed/app/controllers/spree/home_controller.rb:/app/app/controllers/spree/home_controller.rb'
+      - '/ecommworkshop/store-frontend-instrumented-fixed/app/views/spree/layouts/spree_application.html.erb:/app/app/views/spree/layouts/spree_application.html.erb'
+      - '/ecommworkshop/store-frontend-instrumented-fixed/app/views/spree/home/index.html.erb:/app/app/views/spree/home/index.html.erb'
     depends_on:
       - datadog
       - db
