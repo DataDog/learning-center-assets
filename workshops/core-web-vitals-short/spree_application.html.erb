@@ -55,43 +55,46 @@ if (window.location.href.includes('utm')) {
         <%= yield :templates %>
       </div>
    </div>
-   <script>
-     // If a discounts block exists on this page, populate it
-     if (document.querySelector("#discount-block")) {
-     fetch('<%= ENV['DD_DISCOUNTS_URL'] %>')
-       .then(response => response.json())
-       .then(data => data[Math.floor(Math.random() * data.length) + 15])
-       .then(discount => {
-         document.querySelector("#discount-name").innerText = discount.name;
-         document.querySelector("#discount-code").innerText = discount.code;
-         document.querySelector("#discount-value").innerText = discount.value;
-         document.querySelector("#discount-block").style.visibility = "visible";
-       });
-     };
-   </script>
-   <script>
-     // If an ads block exists on this page, populate it
-     // This is how to get the image 
-     // @ads['base64'] = Base64.encode64(open('http://advertisements:5002/banners/' + @ads['path']).read).gsub("\n", '')
-     if (document.querySelector("#ads-block")) {
-    
-       fetch('<%= ENV['DD_ADS_URL'] %>/ads')
-         .then(response => response.json())
-         .then(data => data[Math.floor(Math.random() * data.length)])
-         .then(ad => {
-           document.querySelector("#ad-url").href = ad.url;
-           return fetch(`<%= ENV['DD_ADS_URL'] %>/banners/${ad.path}`)
-         })
-         .then(response => response.blob())
-         .then(blob => {
-           const reader = new FileReader();
-           reader.onload = function() { 
-             document.querySelector("#ad-image").src = this.result;
-             document.querySelector("#ads-block").style.visibility = "visible";
-           };
-           reader.readAsDataURL(blob);
-         }).catch(error => console.error(error));
-     };
-   </script>
+   <%# if environment variable `isSSR` is true, don't include this %>
+   <% unless ENV['useSSR'] == 'true' %>
+    <script>
+      // If a discounts block exists on this page, populate it
+      if (document.querySelector("#discount-block")) {
+      fetch('<%= ENV['DD_DISCOUNTS_URL'] %>')
+        .then(response => response.json())
+        .then(data => data[Math.floor(Math.random() * data.length) + 15])
+        .then(discount => {
+          document.querySelector("#discount-name").innerText = discount.name;
+          document.querySelector("#discount-code").innerText = discount.code;
+          document.querySelector("#discount-value").innerText = discount.value;
+          document.querySelector("#discount-block").style.visibility = "visible";
+        });
+      };
+    </script>
+    <script>
+      // If an ads block exists on this page, populate it
+      // This is how to get the image 
+      // @ads['base64'] = Base64.encode64(open('http://advertisements:5002/banners/' + @ads['path']).read).gsub("\n", '')
+      if (document.querySelector("#ads-block")) {
+      
+        fetch('<%= ENV['DD_ADS_URL'] %>/ads')
+          .then(response => response.json())
+          .then(data => data[Math.floor(Math.random() * data.length)])
+          .then(ad => {
+            document.querySelector("#ad-url").href = ad.url;
+            return fetch(`<%= ENV['DD_ADS_URL'] %>/banners/${ad.path}`)
+          })
+          .then(response => response.blob())
+          .then(blob => {
+            const reader = new FileReader();
+            reader.onload = function() { 
+              document.querySelector("#ad-image").src = this.result;
+              document.querySelector("#ads-block").style.visibility = "visible";
+            };
+            reader.readAsDataURL(blob);
+          }).catch(error => console.error(error));
+      };
+    </script>
+   <% end %>
   </body>
 </html>
