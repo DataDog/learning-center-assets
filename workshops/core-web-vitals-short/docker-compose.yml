@@ -70,7 +70,7 @@ services:
       - ADS_PORT=5002
       - DISCOUNTS_ROUTE=http://discounts
       - DISCOUNTS_PORT=5001
-      - useSSR=true
+      - useSSR=false
     image: 'ddtraining/storefront-fixed:2.1.2'
     command: sh docker-entrypoint.sh
     ports:
