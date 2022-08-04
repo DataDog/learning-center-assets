@@ -66,6 +66,11 @@ services:
       - DD_APPLICATION_ID
       - DD_DISCOUNTS_URL
       - DD_ADS_URL
+      - ADS_ROUTE=http://advertisements
+      - ADS_PORT=5002
+      - DISCOUNTS_ROUTE=http://discounts
+      - DISCOUNTS_PORT=5001
+      - useSSR=false
     image: 'ddtraining/storefront-fixed:2.1.2'
     command: sh docker-entrypoint.sh
     ports:
