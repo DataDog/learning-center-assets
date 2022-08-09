@@ -221,38 +221,47 @@ Resources:
         Ref: LabVPC
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
   AdvertisementsTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
     Properties:
       ContainerDefinitions:
-        Environment:
-          - Name: FLASK_APP
-            Value: ads.py
-          - Name: FLASK_DEBUG
-            Value: "1"
-          - Name: POSTGRES_HOST
-            Value: 
-              Fn::GetAtt:
-              - DBInstance
-              - Endpoint.Address
-          - Name: POSTGRES_PASSWORD
-            Value: postgres
-          - Name: POSTGRES_USER
-            Value: postgres
-        Essential: true
-        Image: public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0
-        LinuxParameters: {}
-        LogConfiguration:
-          LogDriver: awslogs
-          Options:
-            awslogs-group:
-              Ref: LogGroup
-            awslogs-region:
-              Ref: AWS::Region
-            awslogs-stream-prefix: lab
-        Name: advertisements
-        PortMappings:
-          - ContainerPort: 5002
-            HostPort: 5002
-            Protocol: tcp
+        - Name: advertisements
+          Environment:
+            - Name: FLASK_APP
+              Value: ads.py
+            - Name: FLASK_DEBUG
+              Value: "1"
+            - Name: POSTGRES_HOST
+              Value: 
+                Fn::GetAtt:
+                - DBInstance
+                - Endpoint.Address
+            - Name: POSTGRES_PASSWORD
+              Value: postgres
+            - Name: POSTGRES_USER
+              Value: postgres
+          Essential: True
+          Image: public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0
+          LinuxParameters: {}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: lab
+          PortMappings:
+            - ContainerPort: 5002
+              HostPort: 5002
+              Protocol: tcp
+        - Name: datadog-agent
+          Image: 'public.ecr.aws/datadog/agent:latest' 
+          Environment:
+            - Name: DD_API_KEY
+              Value:
+                Ref: DatadogApiKeyParameter
+            - Name: ECS_FARGATE
+              Value: True
       Cpu: "256"
       ExecutionRoleArn:
         Ref: AdvertisementsTaskExecutionRole
@@ -261,7 +270,6 @@ Resources:
       NetworkMode: awsvpc
       RequiresCompatibilities:
       - FARGATE
-    Type: AWS::ECS::TaskDefinition
   AdvertisementsTaskExecutionRole:
     Properties:
       AssumeRolePolicyDocument:
@@ -504,19 +512,19 @@ Resources:
         - Name: frontend
           Environment:
             - Name: ADS_ROUTE
-              Value: http://advertisements
+              Value: http://advertisements.lab.local
             - Name: ADS_PORT
               Value: 5002
             - Name: DISCOUNTS_ROUTE
               Value: 
-                - Fn::GetAtt: 
+                Fn::GetAtt: 
                   - DiscountsServiceURL
                   - FunctionUrl
             - Name: DISCOUNTS_PORT
               Value: 443
             - Name: POSTGRES_USER
               Value: postgres
-          Essential: true
+          Essential: 'true'
           Image: public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.1
           LinuxParameters: {}
           LogConfiguration:
