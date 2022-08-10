@@ -539,6 +539,14 @@ Resources:
             - ContainerPort: 3000
               HostPort: 3000
               Protocol: tcp
+        - Name: datadog-agent
+          Image: "public.ecr.aws/datadog/agent:latest"
+          Environment:
+            - Name: DD_API_KEY
+              Value:
+                Ref: DdApiKey
+            - Name: ECS_FARGATE
+              Value: True
       Cpu: "256"
       ExecutionRoleArn:
         Ref: FrontendTaskExecutionRole
