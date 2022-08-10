@@ -217,55 +217,39 @@ Resources:
         Ref: LabVPC
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
   AdvertisementsTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
     Properties:
       ContainerDefinitions:
-      - Command:
-        - us-west-2.compute.internal
-        - lab.local
-        Essential: false
-        Image: docker/ecs-searchdomain-sidecar:1.0
-        LogConfiguration:
-          LogDriver: awslogs
-          Options:
-            awslogs-group:
-              Ref: LogGroup
-            awslogs-region:
-              Ref: AWS::Region
-            awslogs-stream-prefix: lab
-        Name: Advertisements_ResolvConf_InitContainer
-      - DependsOn:
-        - Condition: SUCCESS
-          ContainerName: Advertisements_ResolvConf_InitContainer
-        Environment:
-          - Name: FLASK_APP
-            Value: ads.py
-          - Name: FLASK_DEBUG
-            Value: "1"
-          - Name: POSTGRES_HOST
-            Value: 
-              Fn::GetAtt:
-              - DBInstance
-              - Endpoint.Address
-          - Name: POSTGRES_PASSWORD
-            Value: postgres
-          - Name: POSTGRES_USER
-            Value: postgres
-        Essential: true
-        Image: public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0
-        LinuxParameters: {}
-        LogConfiguration:
-          LogDriver: awslogs
-          Options:
-            awslogs-group:
-              Ref: LogGroup
-            awslogs-region:
-              Ref: AWS::Region
-            awslogs-stream-prefix: lab
-        Name: advertisements
-        PortMappings:
-          - ContainerPort: 5002
-            HostPort: 5002
-            Protocol: tcp
+        - Name: advertisements
+          Environment:
+            - Name: FLASK_APP
+              Value: ads.py
+            - Name: FLASK_DEBUG
+              Value: "1"
+            - Name: POSTGRES_HOST
+              Value: 
+                Fn::GetAtt:
+                - DBInstance
+                - Endpoint.Address
+            - Name: POSTGRES_PASSWORD
+              Value: postgres
+            - Name: POSTGRES_USER
+              Value: postgres
+          Essential: True
+          Image: public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0
+          LinuxParameters: {}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: lab
+          PortMappings:
+            - ContainerPort: 5002
+              HostPort: 5002
+              Protocol: tcp
       Cpu: "256"
       ExecutionRoleArn:
         Ref: AdvertisementsTaskExecutionRole
@@ -273,8 +257,7 @@ Resources:
       Memory: "512"
       NetworkMode: awsvpc
       RequiresCompatibilities:
-      - FARGATE
-    Type: AWS::ECS::TaskDefinition
+        - FARGATE
   AdvertisementsTaskExecutionRole:
     Properties:
       AssumeRolePolicyDocument:
@@ -511,82 +494,39 @@ Resources:
         Ref: LabVPC
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
   FrontendTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
     Properties:
       ContainerDefinitions:
-      - Command:
-        - us-west-2.compute.internal
-        - lab.local
-        Essential: false
-        Image: docker/ecs-searchdomain-sidecar:1.0
-        LogConfiguration:
-          LogDriver: awslogs
-          Options:
-            awslogs-group:
-              Ref: LogGroup
-            awslogs-region:
-              Ref: AWS::Region
-            awslogs-stream-prefix: lab
-        Name: Frontend_ResolvConf_InitContainer
-      - DependsOn:
-        - Condition: SUCCESS
-          ContainerName: Frontend_ResolvConf_InitContainer
-        Environment:
-          - Name: ADS_ROUTE
-            Value: http://advertisements
-          - Name: ADS_PORT
-            Value: 5002
-          - Name: DISCOUNTS_ROUTE
-            Value: 
-              Fn::Join: 
-              - "/" 
-              - - Fn::Select: 
-                  - "0"
-                  - Fn::Split:
-                    - "/"
-                    - Fn::GetAtt: 
-                      - DiscountsServiceURL
-                      - FunctionUrl
-                - Fn::Select: 
-                  - "1"
-                  - Fn::Split:
-                    - "/"
-                    - Fn::GetAtt: 
-                      - DiscountsServiceURL
-                      - FunctionUrl
-                - Fn::Select: 
-                  - "2"
-                  - Fn::Split:
-                    - "/"
-                    - Fn::GetAtt: 
-                      - DiscountsServiceURL
-                      - FunctionUrl
-                - Fn::Select: 
-                  - "3"
-                  - Fn::Split:
-                    - "/"
-                    - Fn::GetAtt: 
-                      - DiscountsServiceURL
-                      - FunctionUrl
-          - Name: DISCOUNTS_PORT
-            Value: 443
-          - Name: POSTGRES_USER
-            Value: postgres
-        Essential: true
-        Image: public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.1
-        LinuxParameters: {}
-        LogConfiguration:
-          LogDriver: awslogs
-          Options:
-            awslogs-group:
-              Ref: LogGroup
-            awslogs-region:
-              Ref: AWS::Region
-            awslogs-stream-prefix: lab
-        Name: frontend
-        PortMappings:
-          - ContainerPort: 3000
-            HostPort: 3000
-            Protocol: tcp
+        - Name: frontend
+          Environment:
+            - Name: ADS_ROUTE
+              Value: http://advertisements.lab.local
+            - Name: ADS_PORT
+              Value: 5002
+            - Name: DISCOUNTS_ROUTE
+              Value: 
+                Fn::GetAtt: 
+                  - DiscountsServiceURL
+                  - FunctionUrl
+            - Name: DISCOUNTS_PORT
+              Value: 443
+            - Name: POSTGRES_USER
+              Value: postgres
+          Essential: true
+          Image: public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.1
+          LinuxParameters: {}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: lab
+          PortMappings:
+            - ContainerPort: 3000
+              HostPort: 3000
+              Protocol: tcp
       Cpu: "256"
       ExecutionRoleArn:
         Ref: FrontendTaskExecutionRole
@@ -595,7 +535,6 @@ Resources:
       NetworkMode: awsvpc
       RequiresCompatibilities:
       - FARGATE
-    Type: AWS::ECS::TaskDefinition
   FrontendTaskExecutionRole:
     Properties:
       AssumeRolePolicyDocument:
