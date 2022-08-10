@@ -8,8 +8,8 @@ services:
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
-      - DD_TAGS='${DD_TAGS-env:dd101-dev}'
-      - DD_HOSTNAME=${DD_HOSTNAME-dd101-dev-host}
+      - DD_TAGS='env:cwv-workshop'
+      - DD_HOSTNAME=cwv-workshop-host
       - DD_APM_NON_LOCAL_TRAFFIC=true
     ports:
       - 127.0.0.1:8126:8126/tcp
@@ -24,21 +24,22 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
       - POSTGRES_HOST=db
-      - DD_ENV=dd101-dev
+      - DD_ENV=cwv-workshop
       - DD_SERVICE=discounts-service
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
-      - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_PROFILING_ENABLED=true
     image: 'public.ecr.aws/x2b9z2t7/ddtraining/discounts-fixed:2.2.0'
     ports:
       - '5001:5001'
+    volumes:
+      - '/root/lab/discounts-service:/app'
     depends_on:
       - datadog
       - db
     labels:
       com.datadoghq.ad.logs: '[{"source": "python", "service": "discounts-service"}]'
-      com.datadoghq.tags.env: 'dd101-dev'
+      com.datadoghq.tags.env: 'cwv-workshop'
       com.datadoghq.tags.service: 'discounts-service'
       com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'discounts'
@@ -46,8 +47,7 @@ services:
     environment:
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
-      - DD_TRACE_ANALYTICS_ENABLED=true
-      - DD_ENV=dd101-dev
+      - DD_ENV=cwv-workshop
       - DD_SERVICE=store-frontend
       - DD_SITE=datadoghq.com
       - DD_VERSION
@@ -59,9 +59,14 @@ services:
       - DD_ADS_URL
       - ADS_ROUTE=http://advertisements
       - ADS_PORT=5002
+      - DISCOUNTS_ROUTE=http://discounts
+      - DISCOUNTS_PORT=5001
+      - useSSR
     image: 'public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.0'
     ports:
       - '3000:3000'
+    volumes:
+      - /root/lab/store-frontend:/app
     depends_on:
       - datadog
       - db
@@ -69,7 +74,7 @@ services:
       - advertisements
     labels:
       com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-frontend"}]'
-      com.datadoghq.tags.env: 'dd101-dev'
+      com.datadoghq.tags.env: 'cwv-workshop'
       com.datadoghq.tags.service: 'store-frontend'
       com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'frontend'
@@ -80,21 +85,22 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
       - POSTGRES_HOST=db
-      - DD_ENV=dd101-dev
+      - DD_ENV=cwv-workshop
       - DD_SERVICE=advertisements-service
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
-      - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_PROFILING_ENABLED=true
     image: 'public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0'
     ports:
       - '5002:5002'
+    volumes:
+      - '/root/lab/ads-service:/app'
     depends_on:
       - datadog
       - db
     labels:
       com.datadoghq.ad.logs: '[{"source": "python", "service": "advertisements-service"}]'
-      com.datadoghq.tags.env: 'dd101-dev'
+      com.datadoghq.tags.env: 'cwv-workshop'
       com.datadoghq.tags.service: 'advertisements-service'
       com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'advertisements'
@@ -107,7 +113,7 @@ services:
     ports:
       - '5432:5432'
     labels:
-      com.datadoghq.tags.env: 'dd101-dev'
+      com.datadoghq.tags.env: 'cwv-workshop'
       com.datadoghq.tags.service: 'database'
       com.datadoghq.tags.version: '11'
       my.custom.label.team: 'database'
@@ -121,7 +127,7 @@ services:
   puppeteer:
     image: buildkite/puppeteer:10.0.0
     volumes:
-      - /root/puppeteer-checkout-funnel.js:/puppeteer.js
+      - /root/puppeteer-mobile.js:/puppeteer.js
       - /root/puppeteer.sh:/puppeteer.sh
     environment:
       - STOREDOG_URL

@@ -317,7 +317,8 @@ const mainSession = async () => {
 // Add to Cart
 // Checkout
 // Fill in details to complete checkout/place order
-(async () => mainSession())();
-(async () => mainSession())();
-(async () => mainSession())();
-(async () => mainSession())();
+(() => mainSession())();
+(() => mainSession())();
+(() => mainSession())();
+(() => mainSession())();
+(() => mainSession())();
