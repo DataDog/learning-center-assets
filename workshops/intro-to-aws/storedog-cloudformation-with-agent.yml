@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Parameters:
-  DatadogApiKeyParameter:
+  DdApiKey:
     Type: String
     Description: Datadog API key for the Datadog Agent
 Resources:
@@ -259,7 +259,7 @@ Resources:
           Environment:
             - Name: DD_API_KEY
               Value:
-                Ref: DatadogApiKeyParameter
+                Ref: DdApiKey
             - Name: ECS_FARGATE
               Value: True
       Cpu: "256"
