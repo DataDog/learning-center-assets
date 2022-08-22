@@ -8,7 +8,7 @@ services:
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS='{"my.custom.label.team":"team"}'
-      - DD_TAGS='${DD_TAGS-env:storedog-2-0-demo'
+      - DD_TAGS='${DD_TAGS-env:storedog-2-0-demo}'
       - DD_HOSTNAME=${DD_HOSTNAME-lab-host}
       - DD_HOSTNAME
       - DD_APM_NON_LOCAL_TRAFFIC=true
@@ -86,7 +86,7 @@ services:
     ports:
       - '${ADMIN_PORT:-4000}:${ADMIN_PORT:-4000}'
     volumes:
-      - 'bundle_cache:/bundle'
+      - '/root/bundle_cache:/bundle'
     environment:
       REDIS_URL: redis://redis:6379/0
       DB_HOST: db
@@ -139,9 +139,9 @@ services:
     depends_on:
       - frontend
     volumes:
-      - '/root/nginx-default.conf:/etc/nginx/conf.d/default.conf'
-      - '/root/nginx-status.conf:/etc/nginx/conf.d/status.conf'
-      - '/root/lab/storedog-frontend/services/frontend/site:/storedog-app/site'
+      - /root/nginx-default.conf:/etc/nginx/conf.d/default.conf
+      - /root/nginx-status.conf:/etc/nginx/conf.d/status.conf
+      - /root/lab/storedog-frontend/services/frontend/site:/storedog-app/site
     labels:
       com.datadoghq.ad.logs: '[{"source": "nginx", "service": "webserver"}]'
       com.datadoghq.ad.check_names: '["nginx"]'
