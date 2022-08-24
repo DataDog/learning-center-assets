@@ -1,7 +1,7 @@
 data "aws_region" "current" {}
 
 locals {
-  name      = "ecommerce-cluster"
+  name      = var.cluster_name
   region    = data.aws_region.current.name
   user_data = <<-EOT
     #!/bin/bash
@@ -82,7 +82,7 @@ module "autoscaling" {
   name = "asg-fargate-instances"
 
   image_id      = jsondecode(data.aws_ssm_parameter.ecs_optimized_ami.value)["image_id"]
-  instance_type = "t2.medium"
+  instance_type = var.worker_node_instance_type
 
   security_groups                 = [aws_security_group.fargate-worker.id]
   user_data                       = base64encode(local.user_data)
@@ -99,8 +99,8 @@ module "autoscaling" {
   vpc_zone_identifier = module.vpc.private_subnets
   health_check_type   = "EC2"
   min_size            = 0
-  max_size            = 1
-  desired_capacity    = 1
+  max_size            = var.worker_node_count
+  desired_capacity    = var.worker_node_count
 
   # https://github.com/hashicorp/terraform-provider-aws/issues/12582
   autoscaling_group_tags = {
@@ -114,9 +114,9 @@ resource "aws_security_group" "fargate-worker" {
   name   = "fargate-worker-sg"
   vpc_id = module.vpc.vpc_id
   ingress {
-    description     = "Ingress 3000 from ALB"
-    from_port       = 3000
-    to_port         = 3000
+    description     = "Ingress 8000 from ALB"
+    from_port       = 8000
+    to_port         = 8000
     protocol        = "tcp"
     security_groups = [aws_security_group.alb.id]
     self            = true # for convenience

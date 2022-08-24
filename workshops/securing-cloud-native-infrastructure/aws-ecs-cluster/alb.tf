@@ -5,8 +5,8 @@ resource "aws_security_group" "alb" {
   ingress {
     protocol         = "tcp"
     description      = "Allow HTTP ingress"
-    from_port        = 3000
-    to_port          = 3000
+    from_port        = 8000
+    to_port          = 8000
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
@@ -21,8 +21,8 @@ resource "aws_security_group" "alb" {
   }
 }
 
-resource "aws_lb" "ecommerce" {
-  name                       = "ecommerce-alb"
+resource "aws_lb" "alb" {
+  name                       = "alb"
   internal                   = false
   load_balancer_type         = "application"
   security_groups            = [aws_security_group.alb.id]
@@ -30,9 +30,9 @@ resource "aws_lb" "ecommerce" {
   enable_deletion_protection = false
 }
 
-resource "aws_alb_target_group" "ecommerce" {
-  name                 = "ecommerce-tg"
-  port                 = 3000
+resource "aws_alb_target_group" "backend" {
+  name                 = "main-tg"
+  port                 = 8000
   protocol             = "HTTP"
   vpc_id               = module.vpc.vpc_id
   target_type          = "instance"
@@ -40,7 +40,7 @@ resource "aws_alb_target_group" "ecommerce" {
 
   health_check {
     enabled             = true
-    port                = 3000
+    port                = 8000
     interval            = 120
     healthy_threshold   = 2
     unhealthy_threshold = 2
@@ -50,16 +50,16 @@ resource "aws_alb_target_group" "ecommerce" {
 }
 
 resource "aws_alb_listener" "http" {
-  load_balancer_arn = aws_lb.ecommerce.id
-  port              = 3000
+  load_balancer_arn = aws_lb.alb.id
+  port              = 8000
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_alb_target_group.ecommerce.id
+    target_group_arn = aws_alb_target_group.backend.id
     type             = "forward"
   }
 }
 
 output "app_url" {
-  value = format("http://%s:3000", aws_lb.ecommerce.dns_name)
+  value = format("http://%s:8000", aws_lb.alb.dns_name)
 }
