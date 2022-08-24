@@ -14,3 +14,4 @@ docker tag sample-vulnerable-java-app $REPO_URL
 REGISTRY_URL=$(echo $REPO_URL | cut -d/ -f1)
 aws ecr get-login-password | docker login --username AWS --password-stdin $REGISTRY_URL
 docker push $REPO_URL
+echo $REPO_URL
