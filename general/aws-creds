@@ -13,11 +13,13 @@ then
   printf "If this doesn't work, please contact the Datadog Training Team either by emailing us at learn@datadoghq.com or messaging us in the #learning-center Slack channel at https://chat.datadoghq.com \n\n"
 
 else
+  MAGIC_LOGIN_URL=$(aws-vault login default --stdout --duration=12h)
   LOGIN_URL=https://$AWS_ACCOUNT_ID.signin.aws.amazon.com/console
   printf "Your AWS Console credentials for logging in are as follows:\n"
   printf "URL: \t\t\033[32m$LOGIN_URL\033[0m\n"
   printf "Username: \t\033[32m$INSTRUQT_AWS_ACCOUNT_AWSACCOUNT_USERNAME\033[0m\n"
   printf "Password: \t\033[32m$INSTRUQT_AWS_ACCOUNT_AWSACCOUNT_PASSWORD\033[0m\n"
+  printf "Magic login URL:\t$MAGIC_LOGIN_URL"
   printf "======\n\n"
   printf "If these credentials do not work, please contact the Datadog Training Team either by emailing us at learn@datadoghq.com or messaging us in the #learning-center Slack channel at https://chat.datadoghq.com \n\n"
 fi
