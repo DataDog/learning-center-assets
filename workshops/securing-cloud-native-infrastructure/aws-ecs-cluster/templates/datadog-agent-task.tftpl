@@ -5,6 +5,7 @@
         "cpu": 100,
         "memory": 512,
         "essential": true,
+        "privileged": true,
         "portMappings": [
             {
                 "hostPort": 8126,
@@ -17,26 +18,15 @@
                 "containerPort": 8125
             }
         ],
-        "linuxParameters": {
-            "capabilities": {
-                "add": [
-                    "SYS_ADMIN",
-                    "SYS_RESOURCE",
-                    "SYS_PTRACE",
-                    "NET_ADMIN",
-                    "NET_BROADCAST",
-                    "NET_RAW",
-                    "IPC_LOCK",
-                    "CHOWN"
-
-                ]
-            }
-        },
-        "dockerSecurityOptions": ["apparmor:unconfined"],
         "mountPoints": [
             {
                 "containerPath": "/var/run/docker.sock",
                 "sourceVolume": "docker_sock",
+                "readOnly": true
+            },
+            {
+                "containerPath": "/host/proc",
+                "sourceVolume": "proc",
                 "readOnly": true
             },
             {
@@ -45,8 +35,28 @@
                 "readOnly": true
             },
             {
-                "containerPath": "/host/proc",
-                "sourceVolume": "proc",
+                "containerPath": "/etc/passwd",
+                "sourceVolume": "passwd",
+                "readOnly": true
+            },
+            {
+                "containerPath": "/etc/group",
+                "sourceVolume": "group",
+                "readOnly": true
+            },
+            {
+                "containerPath": "/host/root",
+                "sourceVolume": "host",
+                "readOnly": true
+            },
+            {
+                "containerPath": "/sys/kernel/debug",
+                "sourceVolume": "kerneldebug",
+                "readOnly": true
+            },
+            {
+                "containerPath": "/etc/os-release",
+                "sourceVolume": "osrelease",
                 "readOnly": true
             },
             {
@@ -103,6 +113,10 @@
             {
                 "name": "DD_RUNTIME_SECURITY_CONFIG_NETWORK_ENABLED",
                 "value": "true"
+            },
+            {
+                "name": "HOST_ROOT",
+                "value": "/host/root"
             }
         ]
     }

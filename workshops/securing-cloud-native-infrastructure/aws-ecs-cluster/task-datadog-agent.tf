@@ -27,12 +27,32 @@ resource "aws_ecs_task_definition" "datadog-agent" {
 
   volume {
     name      = "cgroup"
-    host_path = "/cgroup/"
+    host_path = "/sys/fs/cgroup/"
   }
 
   volume {
     name      = "passwd"
     host_path = "/etc/passwd"
+  }
+
+  volume {
+    name      = "group"
+    host_path = "/etc/group"
+  }
+
+  volume {
+    name      = "host"
+    host_path = "/"
+  }
+
+  volume {
+    name      = "kerneldebug"
+    host_path = "/sys/kernel/debug"
+  }
+
+  volume {
+    name      = "osrelease"
+    host_path = "/etc/os-release"
   }
 
   volume {
