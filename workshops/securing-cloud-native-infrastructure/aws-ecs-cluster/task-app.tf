@@ -31,7 +31,5 @@ resource "aws_ecs_task_definition" "app" {
   family                   = var.app_name
   requires_compatibilities = ["EC2"]
   memory                   = var.app_max_memory
-  container_definitions = templatefile(var.app_task_definition_file, {
-    app_ecr_url = var.app_ecr_url
-  })
+  container_definitions    = file(var.app_task_definition_file)
 }
