@@ -16,3 +16,7 @@ module "ecs" {
   app_task_definition_file = var.app_task_definition_file
   ddApiKey                 = var.ddApiKey
 }
+
+output "app_url" {
+  value = module.ecs.app_url
+}

@@ -17,6 +17,22 @@
                 "containerPort": 8125
             }
         ],
+        "linuxParameters": {
+            "capabilities": {
+                "add": [
+                    "SYS_ADMIN",
+                    "SYS_RESOURCE",
+                    "SYS_PTRACE",
+                    "NET_ADMIN",
+                    "NET_BROADCAST",
+                    "NET_RAW",
+                    "IPC_LOCK",
+                    "CHOWN"
+
+                ]
+            }
+        },
+        "dockerSecurityOptions": ["apparmor:unconfined"],
         "mountPoints": [
             {
                 "containerPath": "/var/run/docker.sock",
@@ -78,6 +94,14 @@
             },
             {
                 "name": "DD_DOGSTATSD_NON_LOCAL_TRAFFIC",
+                "value": "true"
+            },
+            {
+                "name": "DD_RUNTIME_SECURITY_CONFIG_ENABLED",
+                "value": "true"
+            },
+            {
+                "name": "DD_RUNTIME_SECURITY_CONFIG_NETWORK_ENABLED",
                 "value": "true"
             }
         ]
