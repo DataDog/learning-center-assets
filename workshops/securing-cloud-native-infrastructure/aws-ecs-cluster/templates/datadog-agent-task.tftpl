@@ -55,7 +55,12 @@
                 "readOnly": false
             },
             {
-                "containerPath": "/etc/os-release",
+                "containerPath": "/host/sys/kernel/security",
+                "sourceVolume": "kernelsecurity",
+                "readOnly": false
+            },
+            {
+                "containerPath": "/host/root/etc/os-release",
                 "sourceVolume": "osrelease",
                 "readOnly": true
             },

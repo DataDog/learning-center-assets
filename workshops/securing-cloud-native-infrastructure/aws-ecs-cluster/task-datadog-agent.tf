@@ -50,6 +50,12 @@ resource "aws_ecs_task_definition" "datadog-agent" {
     host_path = "/sys/kernel/debug"
   }
 
+
+  volume {
+    name      = "kernelsecurity"
+    host_path = "/sys/kernel/security"
+  }
+
   volume {
     name      = "osrelease"
     host_path = "/etc/os-release"
