@@ -19,6 +19,6 @@ else
   printf "URL: \t\t\033[32m$LOGIN_URL\033[0m\n"
   printf "Username: \t\033[32m$INSTRUQT_AWS_ACCOUNT_AWSACCOUNT_USERNAME\033[0m\n"
   printf "Password: \t\033[32m$INSTRUQT_AWS_ACCOUNT_AWSACCOUNT_PASSWORD\033[0m\n"
-  printf "Magic login URL:\t$MAGIC_LOGIN_URL"
+  printf "Magic login URL:\t$MAGIC_LOGIN_URL\n"
   printf "======\n\n"
 fi
