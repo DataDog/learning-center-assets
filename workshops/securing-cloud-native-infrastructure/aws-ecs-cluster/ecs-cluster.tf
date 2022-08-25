@@ -79,12 +79,12 @@ module "autoscaling" {
   version = "~> 6.5.2"
 
 
-  name = "asg-fargate-instances"
+  name = "ecs-worker-instances-asg"
 
   image_id      = jsondecode(data.aws_ssm_parameter.ecs_optimized_ami.value)["image_id"]
   instance_type = var.worker_node_instance_type
 
-  security_groups                 = [aws_security_group.fargate-worker.id]
+  security_groups                 = [aws_security_group.ecs-worker.id]
   user_data                       = base64encode(local.user_data)
   ignore_desired_capacity_changes = true
 
@@ -110,8 +110,8 @@ module "autoscaling" {
   tags = local.tags
 }
 
-resource "aws_security_group" "fargate-worker" {
-  name   = "fargate-worker-sg"
+resource "aws_security_group" "ecs-worker" {
+  name   = "ecs-worker-sg"
   vpc_id = module.vpc.vpc_id
   ingress {
     description     = "Ingress 8000 from ALB"
