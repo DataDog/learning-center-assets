@@ -11,7 +11,7 @@ resource "aws_ecs_task_definition" "datadog-agent" {
   family                   = "datadog-agent-task"
   requires_compatibilities = ["EC2"]
   network_mode             = "bridge"
-  container_definitions = templatefile("./templates/datadog-agent-task.tftpl", {
+  container_definitions = templatefile("${path.module}/templates/datadog-agent-task.tftpl", {
     ddApiKey = var.ddApiKey
   })
 
