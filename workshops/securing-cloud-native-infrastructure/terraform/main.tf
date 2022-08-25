@@ -11,4 +11,6 @@ module "ecs" {
 
   cluster_name      = "prod-cluster"
   worker_node_count = 1
+  app_name          = "sample-vulnerable-java-application"
+  ddApiKey          = var.ddApiKey
 }
