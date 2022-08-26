@@ -33,7 +33,7 @@
       },
       {
         "name": "DD_SERVICE",
-        "value": "sample-vulnerable-java-app"
+        "value": "domain-tester-service"
       },
       {
         "name": "DD_VERSION",

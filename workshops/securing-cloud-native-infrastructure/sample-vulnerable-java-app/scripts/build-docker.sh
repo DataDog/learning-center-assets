@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build . -t sample-vulnerable-java-app
+docker build . -t domain-tester-service
