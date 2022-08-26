@@ -27,6 +27,9 @@ func main() {
 }
 
 func EatCpu() {
+	// Step 1: sleep so that we can see a CPU spike afterwards
+	time.Sleep(5 * time.Minute)
+
 	for {
 		for i := 1; i <= 1000000000; i++ {
 			IsPrime(i)
