@@ -91,6 +91,7 @@ services:
       - '${ADMIN_PORT:-4000}:${ADMIN_PORT:-4000}'
     volumes:
       - '/root/bundle_cache:/bundle'
+      - '/root/database.yaml:/app/assets/config/database.yaml'
     environment:
       - REDIS_URL
       - DB_HOST=db
@@ -177,8 +178,6 @@ services:
       com.datadoghq.ad.instances: '[{"host":"%%host%%", "port":5432,"username":"datadog","password":"datadog"}]'
       com.datadoghq.ad.logs: '[{"source": "postgresql", "service": "database"}]'
     volumes:
-      - /root/postgres:/var/lib/postgresql/data
-      - /root/dd_agent.sql:/docker-entrypoint-initdb.d/dd_agent.sql
       - /root/restore.sql:/docker-entrypoint-initdb.d/restore.sql
   redis:
     image: redis:6.2-alpine
