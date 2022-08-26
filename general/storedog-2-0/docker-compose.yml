@@ -91,7 +91,7 @@ services:
       - '${ADMIN_PORT:-4000}:${ADMIN_PORT:-4000}'
     volumes:
       - '/root/bundle_cache:/bundle'
-      - '/root/database.yaml:/app/assets/config/database.yaml'
+      - '/root/database.yml:/app/config/database.yml'
     environment:
       - REDIS_URL
       - DB_HOST=db
@@ -110,6 +110,7 @@ services:
       - backend
     volumes:
       - '/root/bundle_cache:/bundle'
+      - '/root/database.yml:/app/config/database.yml'
     environment:
       - REDIS_URL
       - DB_HOST=db
