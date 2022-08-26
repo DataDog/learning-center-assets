@@ -2,14 +2,14 @@ resource "aws_security_group" "alb" {
   name   = "alb-sg"
   vpc_id = module.vpc.vpc_id
 
-  ingress {
+  /*ingress {
     protocol         = "tcp"
     description      = "Allow HTTP ingress"
     from_port        = 8000
     to_port          = 8000
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-  }
+  }*/
 
   egress {
     protocol         = "-1"
