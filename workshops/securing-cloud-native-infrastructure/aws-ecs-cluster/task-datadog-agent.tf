@@ -30,6 +30,12 @@ resource "aws_ecs_task_definition" "datadog-agent" {
     host_path = "/sys/fs/cgroup/"
   }
 
+
+  volume {
+    name      = "kerneldebug"
+    host_path = "/sys/kernel/debug"
+  }
+
   volume {
     name      = "passwd"
     host_path = "/etc/passwd"
@@ -46,12 +52,6 @@ resource "aws_ecs_task_definition" "datadog-agent" {
   }
 
   volume {
-    name      = "kerneldebug"
-    host_path = "/sys/kernel/debug"
-  }
-
-
-  volume {
     name      = "kernelsecurity"
     host_path = "/sys/kernel/security"
   }
@@ -61,7 +61,7 @@ resource "aws_ecs_task_definition" "datadog-agent" {
     host_path = "/etc/os-release"
   }
 
-  volume {
+  volume { # unused for now
     name      = "pointdir"
     host_path = "/opt/datadog-agent/run"
   }

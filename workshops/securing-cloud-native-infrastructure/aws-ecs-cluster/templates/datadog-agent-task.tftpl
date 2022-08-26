@@ -55,7 +55,7 @@
                 "readOnly": false
             },
             {
-                "containerPath": "/host/sys/kernel/security",
+                "containerPath": "/sys/kernel/security",
                 "sourceVolume": "kernelsecurity",
                 "readOnly": false
             },
@@ -63,11 +63,6 @@
                 "containerPath": "/host/root/etc/os-release",
                 "sourceVolume": "osrelease",
                 "readOnly": true
-            },
-            {
-                "readOnly": false,
-                "containerPath": "/opt/datadog-agent/run",
-                "sourceVolume": "pointdir"
             }
         ],
         "environment": [
