@@ -1,8 +1,20 @@
+var outputContainer = document.getElementById('output-container')
+var outputElement = document.getElementById('output')
+var errorContainer = document.getElementById('error-container')
+var errorElement = document.getElementById('error')
+
 function updateOutput(result) {
-  var outputContainer = document.getElementById('output-container')
-  var outputElement = document.getElementById('output')
+  // If there is any error, hide it first
+  errorContainer.classList.add('hidden');
   outputElement.innerText = result;
   outputContainer.classList.remove('hidden');
+}
+
+function handleError(error) {
+  // If there is any successful output, hide it first
+  outputContainer.classList.add('hidden');
+  errorElement.innerText = error.responseText;
+  errorContainer.classList.remove('hidden');
 }
 
 function submitRequest() {
@@ -18,7 +30,8 @@ function submitRequest() {
     data: JSON.stringify({
       'domainName': domainName
     }),
-    success: updateOutput
+    success: updateOutput,
+    error: handleError
   })
 }
 
