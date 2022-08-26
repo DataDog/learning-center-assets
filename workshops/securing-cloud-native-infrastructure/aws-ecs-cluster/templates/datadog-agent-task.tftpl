@@ -55,7 +55,7 @@
                 "readOnly": false
             },
             {
-                "containerPath": "/sys/kernel/security",
+                "containerPath": "/host/sys/kernel/security",
                 "sourceVolume": "kernelsecurity",
                 "readOnly": false
             },
@@ -88,6 +88,10 @@
             },
             {
                 "name": "DD_SYSTEM_PROBE_ENABLED",
+                "value": "true"
+            },
+            {
+                "name": "DD_SYSTEM_PROBE_SERVICE_MONITORING_ENABLED",
                 "value": "true"
             },
             {

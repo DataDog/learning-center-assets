@@ -52,6 +52,8 @@ resource "aws_ecs_task_definition" "datadog-agent" {
   }
 
   volume {
+    # NOTE: In the container we mount on /host/sys/kernel/security because of this error message:
+    # 	* /host/sys/kernel/security doesn't seem to be a mountpoint
     name      = "kernelsecurity"
     host_path = "/sys/kernel/security"
   }
