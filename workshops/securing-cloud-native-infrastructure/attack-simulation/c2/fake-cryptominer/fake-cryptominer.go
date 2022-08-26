@@ -16,6 +16,9 @@ func main() {
 	// Eat all the CPU from half the CPUs
 	println("Connection successful")
 	numCpusToEat := int(math.Floor(float64(runtime.NumCPU()) / 2))
+	if numCpusToEat < 1 {
+		numCpusToEat = 1
+	}
 	println("Mining on " + strconv.Itoa(numCpusToEat) + " CPUs")
 	for i := 0; i < numCpusToEat; i++ {
 		go EatCpu()
