@@ -1,0 +1,576 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  LabInternetGateway:
+    Type: "AWS::EC2::InternetGateway"
+    Properties:
+      Tags:
+        - Key: app
+          Value: AWSLab
+  LabVPC:
+    Type: "AWS::EC2::VPC"
+    DependsOn: LabInternetGateway
+    Properties:
+      CidrBlock: "10.0.0.0/16"
+      EnableDnsSupport: True
+      EnableDnsHostnames: True
+      Tags:
+        - Key: app
+          Value: AWSLab
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    DependsOn: LabVPC
+    Properties:
+      VpcId:
+        Ref: LabVPC
+      InternetGatewayId:
+        Ref: LabInternetGateway
+  LabRouteTable:
+    Type: "AWS::EC2::RouteTable"
+    DependsOn: [LabVPC, LabInternetGateway, AttachGateway]
+    Properties:
+      VpcId:
+        Ref: LabVPC
+      Tags:
+        - Key: app
+          Value: AWSLab
+  LabDefaultRoute:
+    Type: AWS::EC2::Route
+    DependsOn: LabInternetGateway
+    Properties:
+      RouteTableId:
+        Ref: LabRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: LabInternetGateway
+  LabSubnet1:
+    Type: "AWS::EC2::Subnet"
+    DependsOn: LabRouteTable
+    Properties:
+      AvailabilityZone: "us-west-2a"
+      CidrBlock: "10.0.0.0/24"
+      MapPublicIpOnLaunch: True
+      VpcId:
+        Ref: LabVPC
+      Tags:
+        - Key: app
+          Value: AWSLab
+  LabSubnet2:
+    Type: "AWS::EC2::Subnet"
+    DependsOn: LabRouteTable
+    Properties:
+      AvailabilityZone: "us-west-2b"
+      CidrBlock: "10.0.1.0/24"
+      MapPublicIpOnLaunch: True
+      VpcId:
+        Ref: LabVPC
+      Tags:
+        - Key: app
+          Value: AWSLab
+  LabSubnet3:
+    Type: "AWS::EC2::Subnet"
+    DependsOn: LabRouteTable
+    Properties:
+      AvailabilityZone: "us-west-2c"
+      CidrBlock: "10.0.2.0/24"
+      MapPublicIpOnLaunch: True
+      VpcId:
+        Ref: LabVPC
+      Tags:
+        - Key: app
+          Value: AWSLab
+  LabRouteAc1:
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    DependsOn: LabDefaultRoute
+    Properties:
+      RouteTableId:
+        Ref: LabRouteTable
+      SubnetId:
+        Ref: LabSubnet1
+  LabRouteAc2:
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    DependsOn: LabDefaultRoute
+    Properties:
+      RouteTableId:
+        Ref: LabRouteTable
+      SubnetId:
+        Ref: LabSubnet2
+  LabRouteAc3:
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    DependsOn: LabDefaultRoute
+    Properties:
+      RouteTableId:
+        Ref: LabRouteTable
+      SubnetId:
+        Ref: LabSubnet3
+  DBSubnetGroup:
+    DependsOn:
+      - LabSubnet1
+      - LabSubnet2
+      - LabSubnet3
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: DBSubnetGroup for the lab RDS instance
+      DBSubnetGroupName: LabDBSubnetGroup
+      SubnetIds:
+        - Ref: LabSubnet1
+        - Ref: LabSubnet2
+        - Ref: LabSubnet3
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+  DBInstance:
+    Type: "AWS::RDS::DBInstance"
+    DependsOn:
+      - DBSubnetGroup
+    Properties:
+      DBName: AdsDiscountsDB
+      Engine: postgres
+      MasterUsername: postgres
+      MasterUserPassword: postgres
+      DBInstanceClass: db.t3.micro
+      VPCSecurityGroups:
+        - Ref: DefaultNetwork
+      DBSubnetGroupName: LabDBSubnetGroup
+      AllocatedStorage: 20
+  AdvertisementsService:
+    DependsOn:
+      - AdvertisementsTCP5002Listener
+      - DBInstance
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+          - Cluster
+          - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      LoadBalancers:
+        - ContainerName: advertisements
+          ContainerPort: 5002
+          TargetGroupArn:
+            Ref: AdvertisementsTCP5002TargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - Ref: DefaultNetwork
+          Subnets:
+            - Ref: LabSubnet1
+            - Ref: LabSubnet2
+            - Ref: LabSubnet3
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+        - RegistryArn:
+            Fn::GetAtt:
+              - AdvertisementsServiceDiscoveryEntry
+              - Arn
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+        - Key: service
+          Value: advertisements
+      TaskDefinition:
+        Ref: AdvertisementsTaskDefinition
+    Type: AWS::ECS::Service
+  AdvertisementsServiceDiscoveryEntry:
+    Properties:
+      Description: '"advertisements" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+          - TTL: 60
+            Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: advertisements
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  AdvertisementsTCP5002Listener:
+    Properties:
+      DefaultActions:
+        - ForwardConfig:
+            TargetGroups:
+              - TargetGroupArn:
+                  Ref: AdvertisementsTCP5002TargetGroup
+          Type: forward
+      LoadBalancerArn:
+        Ref: LoadBalancer
+      Port: 5002
+      Protocol: TCP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  AdvertisementsTCP5002TargetGroup:
+    Properties:
+      Port: 5002
+      Protocol: TCP
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+      TargetType: ip
+      VpcId:
+        Ref: LabVPC
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  AdvertisementsTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        - Name: advertisements
+          Environment:
+            - Name: FLASK_APP
+              Value: ads.py
+            - Name: FLASK_DEBUG
+              Value: "1"
+            - Name: POSTGRES_HOST
+              Value:
+                Fn::GetAtt:
+                  - DBInstance
+                  - Endpoint.Address
+            - Name: POSTGRES_PASSWORD
+              Value: postgres
+            - Name: POSTGRES_USER
+              Value: postgres
+          Essential: True
+          Image: public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0
+          LinuxParameters: {}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: lab
+          PortMappings:
+            - ContainerPort: 5002
+              HostPort: 5002
+              Protocol: tcp
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: AdvertisementsTaskExecutionRole
+      Family: lab-advertisements
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+  AdvertisementsTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+        - Key: service
+          Value: advertisements
+    Type: AWS::IAM::Role
+  CloudMap:
+    Properties:
+      Description: Service Map for Intro to AWS Lab
+      Name: lab.local
+      Vpc:
+        Ref: LabVPC
+    Type: AWS::ServiceDiscovery::PrivateDnsNamespace
+  Cluster:
+    Properties:
+      ClusterName: lab
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+    Type: AWS::ECS::Cluster
+  Default3000Ingress:
+    Properties:
+      CidrIp: 0.0.0.0/0
+      Description: frontend:3000/tcp on default network
+      FromPort: 3000
+      GroupId:
+        Ref: DefaultNetwork
+      IpProtocol: TCP
+      ToPort: 3000
+    Type: AWS::EC2::SecurityGroupIngress
+  Default5002Ingress:
+    Properties:
+      CidrIp: 0.0.0.0/0
+      Description: advertisements:5002/tcp on default network
+      FromPort: 5002
+      GroupId:
+        Ref: DefaultNetwork
+      IpProtocol: TCP
+      ToPort: 5002
+    Type: AWS::EC2::SecurityGroupIngress
+  DefaultNetwork:
+    Properties:
+      GroupDescription: lab Security Group for default network
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+        - Key: network
+          Value: lab_default
+      VpcId:
+        Ref: LabVPC
+    Type: AWS::EC2::SecurityGroup
+  DefaultNetworkIngress:
+    Properties:
+      Description: Allow communication within network default
+      GroupId:
+        Ref: DefaultNetwork
+      IpProtocol: "-1"
+      SourceSecurityGroupId:
+        Ref: DefaultNetwork
+    Type: AWS::EC2::SecurityGroupIngress
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: lambda-role
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSLambdaExecute
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+      Path: /
+  DiscountsService:
+    DependsOn:
+      - LambdaRole
+      - DBInstance
+    Properties:
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.8
+      Code:
+        S3Bucket: dd-training-team
+        S3Key: discounts-lambda-package.zip
+      Environment:
+        Variables:
+          POSTGRES_HOST:
+            Fn::GetAtt:
+              - DBInstance
+              - Endpoint.Address
+      Timeout: 10
+      Role:
+        Fn::GetAtt:
+          - LambdaRole
+          - Arn
+      VpcConfig:
+        SecurityGroupIds:
+          - Ref: DefaultNetwork
+        SubnetIds:
+          - Ref: LabSubnet1
+          - Ref: LabSubnet2
+          - Ref: LabSubnet3
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+        - Key: service
+          Value: discounts
+    Type: AWS::Lambda::Function
+  DiscountsServiceURLInvokePermission:
+    Type: AWS::Lambda::Permission
+    DependsOn:
+      - DiscountsService
+    Properties:
+      FunctionName:
+        Ref: DiscountsService
+      FunctionUrlAuthType: "NONE"
+      Action: lambda:InvokeFunctionUrl
+      Principal: "*"
+  DiscountsServiceURL:
+    Type: AWS::Lambda::Url
+    DependsOn:
+      - DiscountsService
+    Properties:
+      AuthType: "NONE"
+      Cors:
+        AllowMethods:
+          - GET
+        AllowOrigins:
+          - "*"
+      TargetFunctionArn:
+        Ref: DiscountsService
+  FrontendService:
+    DependsOn:
+      - FrontendTCP3000Listener
+      - DBInstance
+      - DiscountsServiceURL
+      - AdvertisementsService
+    Properties:
+      Cluster:
+        Fn::GetAtt:
+          - Cluster
+          - Arn
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DeploymentController:
+        Type: ECS
+      DesiredCount: 1
+      LaunchType: FARGATE
+      LoadBalancers:
+        - ContainerName: frontend
+          ContainerPort: 3000
+          TargetGroupArn:
+            Ref: FrontendTCP3000TargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - Ref: DefaultNetwork
+          Subnets:
+            - Ref: LabSubnet1
+            - Ref: LabSubnet2
+            - Ref: LabSubnet3
+      PlatformVersion: 1.4.0
+      PropagateTags: SERVICE
+      SchedulingStrategy: REPLICA
+      ServiceRegistries:
+        - RegistryArn:
+            Fn::GetAtt:
+              - FrontendServiceDiscoveryEntry
+              - Arn
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+        - Key: service
+          Value: frontend
+      TaskDefinition:
+        Ref: FrontendTaskDefinition
+    Type: AWS::ECS::Service
+  FrontendServiceDiscoveryEntry:
+    Properties:
+      Description: '"frontend" service discovery entry in Cloud Map'
+      DnsConfig:
+        DnsRecords:
+          - TTL: 60
+            Type: A
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: frontend
+      NamespaceId:
+        Ref: CloudMap
+    Type: AWS::ServiceDiscovery::Service
+  FrontendTCP3000Listener:
+    Properties:
+      DefaultActions:
+        - ForwardConfig:
+            TargetGroups:
+              - TargetGroupArn:
+                  Ref: FrontendTCP3000TargetGroup
+          Type: forward
+      LoadBalancerArn:
+        Ref: LoadBalancer
+      Port: 3000
+      Protocol: TCP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  FrontendTCP3000TargetGroup:
+    Properties:
+      Port: 3000
+      Protocol: TCP
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+      TargetType: ip
+      VpcId:
+        Ref: LabVPC
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  FrontendTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        - Name: frontend
+          Environment:
+            - Name: ADS_ROUTE
+              Value: http://advertisements.lab.local
+            - Name: ADS_PORT
+              Value: 5002
+            - Name: DISCOUNTS_ROUTE
+              Value:
+                Fn::GetAtt:
+                  - DiscountsServiceURL
+                  - FunctionUrl
+            - Name: DISCOUNTS_PORT
+              Value: 443
+            - Name: POSTGRES_USER
+              Value: postgres
+          Essential: True
+          Image: public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.1
+          LinuxParameters: {}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: LogGroup
+              awslogs-region:
+                Ref: AWS::Region
+              awslogs-stream-prefix: lab
+          PortMappings:
+            - ContainerPort: 3000
+              HostPort: 3000
+              Protocol: tcp
+      Cpu: "256"
+      ExecutionRoleArn:
+        Ref: FrontendTaskExecutionRole
+      Family: lab-frontend
+      Memory: "512"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+  FrontendTaskExecutionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: 2012-10-17
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+        - Key: service
+          Value: frontend
+    Type: AWS::IAM::Role
+  LoadBalancer:
+    Properties:
+      LoadBalancerAttributes:
+        - Key: load_balancing.cross_zone.enabled
+          Value: True
+      Scheme: internet-facing
+      Subnets:
+        - Ref: LabSubnet1
+        - Ref: LabSubnet2
+        - Ref: LabSubnet3
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+      Type: network
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+  LogGroup:
+    Properties:
+      LogGroupName: awslab
+    Type: AWS::Logs::LogGroup
