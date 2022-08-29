@@ -11,7 +11,7 @@ module "ecs" {
 
   cluster_name             = "prod-cluster"
   worker_node_count        = 1
-  app_name                 = "domain-tester-servicelication"
+  app_name                 = "domain-tester-service"
   app_task_definition_file = var.app_task_definition_file
   ddApiKey                 = var.ddApiKey
 }
