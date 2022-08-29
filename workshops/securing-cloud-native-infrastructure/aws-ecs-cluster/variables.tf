@@ -12,11 +12,6 @@ variable "app_name" {
   description = "Name of the application to deploy on ECS"
 }
 
-variable "app_ecr_url" {
-  type        = string
-  description = "ECR URL of the application to deploy to the cluster"
-}
-
 variable "app_task_definition_file" {
   type        = string
   description = "Path to the application ECS task definition file"

@@ -42,7 +42,6 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_app_ecr_url"></a> [app\_ecr\_url](#input\_app\_ecr\_url) | ECR URL of the application to deploy to the cluster | `string` | n/a | yes |
 | <a name="input_app_max_memory"></a> [app\_max\_memory](#input\_app\_max\_memory) | Maximal app memory | `string` | `"3000"` | no |
 | <a name="input_app_name"></a> [app\_name](#input\_app\_name) | Name of the application to deploy on ECS | `string` | n/a | yes |
 | <a name="input_app_task_definition_file"></a> [app\_task\_definition\_file](#input\_app\_task\_definition\_file) | Path to the application ECS task definition file | `string` | n/a | yes |
