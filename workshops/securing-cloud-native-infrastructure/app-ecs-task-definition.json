@@ -3,6 +3,7 @@
     "essential": true,
     "image": "ghcr.io/datadog/vulnerable-java-application",
     "name": "main",
+    "privileged": true,
     "command": [
       "sh",
       "-c",
