@@ -33,6 +33,10 @@
         "value": "true"
       },
       {
+        "name": "DD_PROCESS_AGENT_ENABLED",
+        "value": "true"
+      },
+      {
         "name": "DD_LOGS_INJECTION",
         "value": "true"
       },
