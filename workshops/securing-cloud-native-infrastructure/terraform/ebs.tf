@@ -11,8 +11,3 @@ resource "aws_ebs_volume" "volume" {
     Name = "db-backups-20220829"
   }
 }
-
-resource "aws_ebs_snapshot" "snapshot" {
-  volume_id   = aws_ebs_volume.volume.id
-  description = "db-backups-20220829"
-}
