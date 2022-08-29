@@ -156,3 +156,7 @@ resource "aws_cloudwatch_log_group" "this" {
 
   tags = local.tags
 }
+
+output "vpc_id" {
+  value = module.vpc.vpc_id
+}

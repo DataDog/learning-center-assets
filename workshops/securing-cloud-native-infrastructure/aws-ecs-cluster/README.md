@@ -55,4 +55,5 @@ No requirements.
 | Name | Description |
 |------|-------------|
 | <a name="output_app_url"></a> [app\_url](#output\_app\_url) | n/a |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | n/a |
 <!-- END_TF_DOCS -->
