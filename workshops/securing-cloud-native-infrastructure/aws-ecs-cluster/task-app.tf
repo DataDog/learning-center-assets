@@ -1,6 +1,6 @@
 
 
-# Ecommerce app
+# Application
 resource "aws_ecs_service" "app" {
   name = var.app_name
 

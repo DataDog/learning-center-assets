@@ -43,7 +43,7 @@ module "ecs" {
 
   # ASG powering worker instances
   autoscaling_capacity_providers = {
-    ecommerce-ec2-asg = {
+    ec2-capacity-provider = {
       auto_scaling_group_arn         = module.autoscaling.autoscaling_group_arn
       managed_termination_protection = "DISABLED"
 
