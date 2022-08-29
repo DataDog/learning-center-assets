@@ -22,7 +22,6 @@ Resources:
           Value: AWSLab
   AttachGateway:
     Type: AWS::EC2::VPCGatewayAttachment
-    DependsOn: LabVPC
     Properties:
       VpcId:
         Ref: LabVPC
@@ -30,7 +29,6 @@ Resources:
         Ref: LabInternetGateway
   LabRouteTable:
     Type: "AWS::EC2::RouteTable"
-    DependsOn: [LabVPC, LabInternetGateway, AttachGateway]
     Properties:
       VpcId:
         Ref: LabVPC
@@ -39,7 +37,6 @@ Resources:
           Value: AWSLab
   LabDefaultRoute:
     Type: AWS::EC2::Route
-    DependsOn: LabInternetGateway
     Properties:
       RouteTableId:
         Ref: LabRouteTable
@@ -48,7 +45,6 @@ Resources:
         Ref: LabInternetGateway
   LabSubnet1:
     Type: "AWS::EC2::Subnet"
-    DependsOn: LabRouteTable
     Properties:
       AvailabilityZone: "us-west-2a"
       CidrBlock: "10.0.0.0/24"
@@ -60,7 +56,6 @@ Resources:
           Value: AWSLab
   LabSubnet2:
     Type: "AWS::EC2::Subnet"
-    DependsOn: LabRouteTable
     Properties:
       AvailabilityZone: "us-west-2b"
       CidrBlock: "10.0.1.0/24"
@@ -72,7 +67,6 @@ Resources:
           Value: AWSLab
   LabSubnet3:
     Type: "AWS::EC2::Subnet"
-    DependsOn: LabRouteTable
     Properties:
       AvailabilityZone: "us-west-2c"
       CidrBlock: "10.0.2.0/24"
@@ -84,7 +78,6 @@ Resources:
           Value: AWSLab
   LabRouteAc1:
     Type: "AWS::EC2::SubnetRouteTableAssociation"
-    DependsOn: LabDefaultRoute
     Properties:
       RouteTableId:
         Ref: LabRouteTable
@@ -92,7 +85,6 @@ Resources:
         Ref: LabSubnet1
   LabRouteAc2:
     Type: "AWS::EC2::SubnetRouteTableAssociation"
-    DependsOn: LabDefaultRoute
     Properties:
       RouteTableId:
         Ref: LabRouteTable
@@ -100,17 +92,12 @@ Resources:
         Ref: LabSubnet2
   LabRouteAc3:
     Type: "AWS::EC2::SubnetRouteTableAssociation"
-    DependsOn: LabDefaultRoute
     Properties:
       RouteTableId:
         Ref: LabRouteTable
       SubnetId:
         Ref: LabSubnet3
   DBSubnetGroup:
-    DependsOn:
-      - LabSubnet1
-      - LabSubnet2
-      - LabSubnet3
     Type: AWS::RDS::DBSubnetGroup
     Properties:
       DBSubnetGroupDescription: DBSubnetGroup for the lab RDS instance
@@ -124,8 +111,6 @@ Resources:
           Value: "Intro to AWS"
   DBInstance:
     Type: "AWS::RDS::DBInstance"
-    DependsOn:
-      - DBSubnetGroup
     Properties:
       DBName: AdsDiscountsDB
       Engine: postgres
@@ -134,11 +119,11 @@ Resources:
       DBInstanceClass: db.t3.micro
       VPCSecurityGroups:
         - Ref: DefaultNetwork
-      DBSubnetGroupName: LabDBSubnetGroup
+      DBSubnetGroupName: 
+        Ref: DBSubnetGroup
       AllocatedStorage: 20
   AdvertisementsService:
     DependsOn:
-      - AdvertisementsTCP5002Listener
       - DBInstance
     Properties:
       Cluster:
@@ -364,7 +349,6 @@ Resources:
       Path: /
   DiscountsService:
     DependsOn:
-      - LambdaRole
       - DBInstance
     Properties:
       Handler: lambda_function.lambda_handler
@@ -398,8 +382,6 @@ Resources:
     Type: AWS::Lambda::Function
   DiscountsServiceURLInvokePermission:
     Type: AWS::Lambda::Permission
-    DependsOn:
-      - DiscountsService
     Properties:
       FunctionName:
         Ref: DiscountsService
@@ -408,8 +390,6 @@ Resources:
       Principal: "*"
   DiscountsServiceURL:
     Type: AWS::Lambda::Url
-    DependsOn:
-      - DiscountsService
     Properties:
       AuthType: "NONE"
       Cors:
@@ -421,10 +401,7 @@ Resources:
         Ref: DiscountsService
   FrontendService:
     DependsOn:
-      - FrontendTCP3000Listener
       - DBInstance
-      - DiscountsServiceURL
-      - AdvertisementsService
     Properties:
       Cluster:
         Fn::GetAtt:

@@ -116,7 +116,7 @@ Resources:
       VPCSecurityGroups:
         - Ref: DefaultNetwork
       DBSubnetGroupName: 
-        - Ref: DBSubnetGroup
+        Ref: DBSubnetGroup
       AllocatedStorage: 20
   AdvertisementsService:
     DependsOn:
