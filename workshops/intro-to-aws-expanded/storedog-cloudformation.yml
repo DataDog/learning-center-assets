@@ -200,7 +200,7 @@ Resources:
         Ref: LabVPC
       HealthCheckIntervalSeconds: 10
       HealthyThresholdCount: 2
-      UnhealthyThresholdCount: 6
+      UnhealthyThresholdCount: 2
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
   AdvertisementsTaskDefinition:
     Type: AWS::ECS::TaskDefinition
@@ -468,7 +468,7 @@ Resources:
         Ref: LabVPC
       HealthCheckIntervalSeconds: 10
       HealthyThresholdCount: 2
-      UnhealthyThresholdCount: 6
+      UnhealthyThresholdCount: 2
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
   FrontendTaskDefinition:
     Type: AWS::ECS::TaskDefinition
