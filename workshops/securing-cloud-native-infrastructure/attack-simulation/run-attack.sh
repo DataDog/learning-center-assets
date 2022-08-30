@@ -62,6 +62,10 @@ aws sts get-caller-identity
 randomSleep
 
 # Enumerate EBS volumes
+echo "Listing S3 buckets"
+aws s3 ls
+randomSleep
+
 echo "Listing EBS volumes and finding a juicy one"
 VOLUME_ID=$(aws ec2 describe-volumes | jq -r '.Volumes[] | select(.Size == 1) | .VolumeId')
 
