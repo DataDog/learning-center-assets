@@ -10,11 +10,10 @@ import (
 
 func main() {
 	// Fake DNS lookup
-	println("Connecting to pool")
 	net.LookupIP("pool.minexmr.com")
-
-	// Eat all the CPU from half the CPUs
 	println("Connection successful")
+
+	// Eat computing power from half of the CPUs
 	numCpusToEat := int(math.Floor(float64(runtime.NumCPU()) / 2))
 	if numCpusToEat < 1 {
 		numCpusToEat = 1
@@ -35,6 +34,8 @@ func EatCpu() {
 			IsPrime(i)
 			if i%10000 == 0 {
 				time.Sleep(100 * time.Millisecond)
+				// Fake DNS lookup
+				net.LookupIP("pool.minexmr.com")
 			}
 		}
 	}
