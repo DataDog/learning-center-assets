@@ -412,7 +412,10 @@
 								{
 									"formulas": [
 										{
-											"formula": "timeshift(top(query1, 20, \"last\", \"desc\"), 40)"
+											"formula": "timeshift(query1, 40)",
+										  "limit": {
+											"order": "desc"
+											}
 										}
 									],
 									"queries": [
@@ -420,7 +423,7 @@
 											"query": "sum:docker.containers.running{$env} by {docker_image}.fill(60)",
 											"data_source": "metrics",
 											"name": "query1",
-											"aggregator": "avg"
+											"aggregator": "last"
 										}
 									],
 									"response_format": "scalar",
