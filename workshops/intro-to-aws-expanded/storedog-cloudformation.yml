@@ -171,8 +171,6 @@ Resources:
           - TTL: 60
             Type: A
         RoutingPolicy: MULTIVALUE
-      HealthCheckCustomConfig:
-        FailureThreshold: 1
       Name: advertisements
       NamespaceId:
         Ref: CloudMap
@@ -200,6 +198,9 @@ Resources:
       TargetType: ip
       VpcId:
         Ref: LabVPC
+      HealthCheckIntervalSeconds: 10
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 6
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
   AdvertisementsTaskDefinition:
     Type: AWS::ECS::TaskDefinition
@@ -438,8 +439,6 @@ Resources:
           - TTL: 60
             Type: A
         RoutingPolicy: MULTIVALUE
-      HealthCheckCustomConfig:
-        FailureThreshold: 1
       Name: frontend
       NamespaceId:
         Ref: CloudMap
@@ -467,6 +466,9 @@ Resources:
       TargetType: ip
       VpcId:
         Ref: LabVPC
+      HealthCheckIntervalSeconds: 10
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 6
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
   FrontendTaskDefinition:
     Type: AWS::ECS::TaskDefinition

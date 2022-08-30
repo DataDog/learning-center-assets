@@ -204,6 +204,9 @@ Resources:
       TargetType: ip
       VpcId:
         Ref: LabVPC
+      HealthCheckIntervalSeconds: 10
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 6
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
   AdvertisementsTaskDefinition:
     Type: AWS::ECS::TaskDefinition
@@ -481,6 +484,9 @@ Resources:
       TargetType: ip
       VpcId:
         Ref: LabVPC
+      HealthCheckIntervalSeconds: 10
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 6
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
   FrontendTaskDefinition:
     Type: AWS::ECS::TaskDefinition
