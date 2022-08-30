@@ -16,6 +16,11 @@ authenticationHeaders = {
 def getAllRules():
   print("Retrieving all CSPM rules...")
   response = requests.get('https://api.datadoghq.com/api/v2/security_monitoring/rules?page[size]=10000', headers=authenticationHeaders)
+
+  if response.status_code != 200:
+    sys.stderr.write(f"Failed with status code {response.status_code}: {response.text}\n")
+    sys.exit(1)
+  
   rules = response.json().get('data')
   
   result = {}
