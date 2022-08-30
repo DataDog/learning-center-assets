@@ -8,6 +8,9 @@ resource "datadog_integration_azure" "azure-integration" {
 
 # Set up logging
 # c.f.
+provider "azurerm" {
+  features {}
+}
 data "http" "arm-template" {
   url = "https://raw.githubusercontent.com/DataDog/datadog-serverless-functions/master/azure/deploy-to-azure/parent_template.json"
 }
