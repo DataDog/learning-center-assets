@@ -47,7 +47,8 @@ services:
     image: public.ecr.aws/x2b9z2t7/storedog/frontend:1.0.1
     command: yarn dev
     volumes:
-      - /root/lab/.env:/storedog-app/site/.env'
+      - /root/lab/storedog-frontend/services/frontend/site:/storedog-app/site
+      - /root/lab/.env:/storedog-app/site/.env.local
     ports:
       - '${FRONTEND_PORT-3000}:${FRONTEND_PORT-3000}'
     environment:
