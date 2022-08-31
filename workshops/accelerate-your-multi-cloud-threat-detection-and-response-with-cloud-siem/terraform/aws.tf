@@ -42,7 +42,7 @@ POLICY
 }
 resource "aws_iam_user_policy_attachment" "viewonly" {
   user       = aws_iam_user.vulnerableapp.name
-  policy_arn = "arn:aws:iam::aws:policy/ViewOnlyAccess"
+  policy_arn = "arn:aws:iam::aws:policy/job-function/ViewOnlyAccess"
 }
 resource "aws_iam_user_policy_attachment" "vulnerableapp" {
   user       = aws_iam_user.vulnerableapp.name
