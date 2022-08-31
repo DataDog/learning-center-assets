@@ -16,12 +16,11 @@ if azureToken is None:
 _, subscriptionId, resourceGroup, diskName = sys.argv
 
 beginExportUrl = f'https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/disks/{diskName}/beginGetAccess?api-version=2022-03-02'
-headers = {
-  'Authorization': f'Bearer {azureToken}'
-}
+
 result = requests.post(
   url=beginExportUrl, 
-  headers=headers | {
+  headers={
+    'Authorization': f'Bearer {azureToken}',
     'Content-Type': 'application/json',
     'Accept': 'application/json'
   }, 
@@ -36,7 +35,9 @@ if statusUrl is None:
   sys.stderr.write(f'Missing redirect, unknown error\n')
   sys.exit(1)
 
-result = requests.get(statusUrl, headers=headers)
+result = requests.get(statusUrl, headers={
+  'Authorization': f'Bearer {azureToken}'
+})
 sasUrl = result.json().get('accessSAS')
 if sasUrl is None:
   sys.stderr.write(f'Did not receive an access SAS. Response: {result.text}\n')

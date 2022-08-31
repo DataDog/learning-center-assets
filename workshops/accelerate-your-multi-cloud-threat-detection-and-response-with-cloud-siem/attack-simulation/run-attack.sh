@@ -41,7 +41,8 @@ randomSleep
 
 # Azure stuff
 azureCreds=$(request "127.0.0.1 && curl 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fmanagement.azure.com' -H Metadata:true -s")
-export AZURE_TOKEN=$(echo "$azureCreds" | grep -oE '{"access_token":.+}' | jq -r '.access_token' )
+echo $azureCreds
+export AZURE_TOKEN=$(echo "$azureCreds" | grep -oE '\{"access_token":.+}' | jq -r '.access_token' )
 echo "Retrieved Azure managed identity token: $AZURE_TOKEN"
 randomSleep
 sasUrl=$(python3 share-disk.py $ARM_SUBSCRIPTION_ID rg-backups backups_v0)
