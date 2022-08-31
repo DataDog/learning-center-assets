@@ -102,7 +102,7 @@ data "azurerm_subscription" "subscription" {}
 resource "azurerm_role_assignment" "app" {
   scope                = data.azurerm_subscription.subscription.id
   role_definition_name = "Disk Snapshot Contributor"
-  principal_id         = azurerm_container_group.app.identity.principal_id
+  principal_id         = azurerm_container_group.app.identity[0].principal_id
 }
 
 
