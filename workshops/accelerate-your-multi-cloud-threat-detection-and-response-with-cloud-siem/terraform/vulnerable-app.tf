@@ -11,6 +11,15 @@ resource "random_string" "random" {
 }
 
 
+# resource "azurerm_log_analytics_workspace" "applogs" {
+#   name                = "vulnerable-app-logs"
+#   location            = azurerm_resource_group.app.location
+#   resource_group_name = azurerm_resource_group.app.name
+#   sku                 = "PerGB2018"
+#   retention_in_days   = 30 # minimum
+# }
+
+
 resource "azurerm_container_group" "app" {
   name                = "vulnerable-java-app"
   location            = azurerm_resource_group.app.location
@@ -18,6 +27,14 @@ resource "azurerm_container_group" "app" {
   dns_name_label      = "domain-tester-service-${random_string.random.result}"
   ip_address_type     = "Public"
   os_type             = "Linux"
+
+  # diagnostics {
+  #   log_analytics {
+  #     log_type      = "ContainerInstanceLogs"
+  #     workspace_id  = azurerm_log_analytics_workspace.applogs.workspace_id
+  #     workspace_key = azurerm_log_analytics_workspace.applogs.primary_shared_key
+  #   }
+  # }
 
   container {
     name   = "app"

