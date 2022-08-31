@@ -13,7 +13,7 @@ const puppeteer = require('puppeteer');
   await page.keyboard.press('Enter');
   await page.waitForTimeout(5000);
   await page.goto('https://app.datadoghq.com/logs')
-  await page.waitForTimeout(5000);
+  await page.waitForTimeout(10000);
   await page.screenshot({ path: '/tmp/screenshot.png' });
   await browser.close();
 })();
