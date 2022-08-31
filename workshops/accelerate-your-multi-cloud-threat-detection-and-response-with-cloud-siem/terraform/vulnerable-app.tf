@@ -91,4 +91,20 @@ EOT
       }
     }
   }
+
+  identity {
+    type = "SystemAssigned"
+  }
 }
+
+data "azurerm_subscription" "subscription" {}
+
+resource "azurerm_role_assignment" "app" {
+  scope                = data.azurerm_subscription.subscription.id
+  role_definition_name = "Disk Snapshot Contributor"
+  principal_id         = azurerm_container_group.app.principal_id
+}
+
+
+
+
