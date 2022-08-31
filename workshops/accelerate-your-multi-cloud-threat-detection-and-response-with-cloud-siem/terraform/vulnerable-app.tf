@@ -37,10 +37,32 @@ resource "azurerm_container_group" "app" {
   # }
 
   container {
+    name   = "datadog-agent"
+    image  = "public.ecr.aws/datadog/agent:latest"
+    cpu    = "0.5"
+    memory = "2"
+
+    environment_variables = {
+      "DD_API_KEY"     = var.ddApiKey,
+      "DD_APM_ENABLED" = "true",
+    }
+  }
+
+  container {
     name   = "app"
     image  = "ghcr.io/datadog/vulnerable-java-application:latest"
     cpu    = "0.5"
     memory = "2"
+
+    environment_variables = {
+      "DD_TRACE_AGENT_URL"   = "127.0.0.1:8126",
+      "DD_ENV"               = "production",
+      "DD_SERVICE"           = "domain-tester-service",
+      "DD_VERSION"           = "1.0",
+      "DD_PROFILING_ENABLED" = "true"
+      "DD_TRACE_SAMPLE_RATE" = "1",
+      "DD_APPSEC_ENABLED"    = "true"
+    }
 
     ports {
       port     = 8000
