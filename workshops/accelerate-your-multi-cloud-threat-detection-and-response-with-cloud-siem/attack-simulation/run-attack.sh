@@ -7,7 +7,7 @@ fi
 
 function request() {
   echo "Requesting $1"
-  curl -s $url/test-domain -H "Content-Type: application/json" -X POST -d "{\"domainName\":\"$1\"}"
+  curl --max-time 10 -s $url/test-domain -H "Content-Type: application/json" -X POST -d "{\"domainName\":\"$1\"}"
   echo
 }
 function randomSleep() {
