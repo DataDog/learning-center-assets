@@ -24,7 +24,8 @@ resource "aws_iam_policy" "policy" {
       "Effect": "Allow",
       "Action": [
         "iam:*", 
-        "ec2:*"
+        "ec2:*",
+        "ssm:*"
       ],
       "Resource": "*"
     },

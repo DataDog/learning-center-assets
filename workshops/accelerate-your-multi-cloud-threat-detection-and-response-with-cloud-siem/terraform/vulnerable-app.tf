@@ -38,7 +38,7 @@ resource "azurerm_container_group" "app" {
         "credentials" = base64encode(<<EOT
 [default]
 aws_access_key_id=${aws_iam_access_key.vulnerableapp.id}
-aws_secret_access=${aws_iam_access_key.vulnerableapp.secret}
+aws_secret_access_key=${aws_iam_access_key.vulnerableapp.secret}
 EOT
       ) }
     }
