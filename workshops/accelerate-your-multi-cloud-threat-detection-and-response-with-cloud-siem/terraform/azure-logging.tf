@@ -7,10 +7,7 @@ resource "datadog_integration_azure" "azure-integration" {
 }
 
 # Set up logging
-# c.f.
-provider "azurerm" {
-  features {}
-}
+# c.f https://docs.datadoghq.com/integrations/azure/?tab=automatedinstallation#setup
 
 resource "azurerm_resource_group" "datadog-logs-rg" {
   name     = "datadog-azure-logs"
