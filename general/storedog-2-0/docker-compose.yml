@@ -47,7 +47,7 @@ services:
     image: public.ecr.aws/x2b9z2t7/storedog/frontend:1.0.1
     command: yarn dev
     volumes:
-      - '/root/lab/storedog-frontend/services/frontend/site:/storedog-app/site'
+      - /root/lab/.env:/storedog-app/site/.env'
     ports:
       - '${FRONTEND_PORT-3000}:${FRONTEND_PORT-3000}'
     environment:
@@ -62,14 +62,6 @@ services:
       - POSTGRES_PASSWORD
       - DD_CLIENT_TOKEN
       - DD_APPLICATION_ID
-      - NEXT_PUBLIC_ADS_ROUTE
-      - NEXT_PUBLIC_ADS_PORT
-      - NEXT_PUBLIC_DISCOUNTS_ROUTE
-      - NEXT_PUBLIC_DISCOUNTS_PORT
-      - NEXT_PUBLIC_SPREE_IMAGE_HOST
-      - NEXT_PUBLIC_SPREE_ALLOWED_IMAGE_DOMAIN
-      - NEXT_PUBLIC_SPREE_API_HOST
-      - NEXT_PUBLIC_SPREE_CLIENT_HOST
     depends_on:
       - datadog
       - db
@@ -155,7 +147,6 @@ services:
     volumes:
       - /root/nginx-default.conf:/etc/nginx/conf.d/default.conf
       - /root/nginx-status.conf:/etc/nginx/conf.d/status.conf
-      - /root/lab/storedog-frontend/services/frontend/site:/storedog-app/site
     labels:
       com.datadoghq.ad.logs: '[{"source": "nginx", "service": "webserver"}]'
       com.datadoghq.ad.check_names: '["nginx"]'
