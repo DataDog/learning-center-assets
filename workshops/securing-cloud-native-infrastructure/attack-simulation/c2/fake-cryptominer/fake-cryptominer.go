@@ -30,7 +30,7 @@ func EatCpu() {
 	time.Sleep(5 * time.Minute)
 
 	for {
-		for i := 1; i <= 1000000000; i++ {
+		for i := 1; i <= 10000000000; i++ {
 			IsPrime(i)
 			if i%10000 == 0 {
 				time.Sleep(100 * time.Millisecond)
