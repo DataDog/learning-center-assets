@@ -56,6 +56,10 @@
       {
         "name": "DD_CWS_ENABLED",
         "value": "true"
+      },
+      {
+        "name": "DD_TAGS",
+        "value": "git.commit.sha:f716b4324da555823e9b0b79bd59d95235bfd5d5 git.repository_url:https://github.com/DataDog/vulnerable-java-application"
       }
     ]
   }
