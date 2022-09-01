@@ -1,0 +1,31 @@
+<% @body_id = 'home-page' %>
+<% content_for :sidebar do %>
+  <% if ENV["useSSR"] == 'true' %>
+    <div id="discount-block" style="padding:10px;background-color:rgb(114,206,74,0.5);margin-top:48px;border-radius:5px;">
+      <h3>
+        <%= @discounts['name'] %>!
+      </h3><br /> 
+      <strong>Enter coupon code '<%= @discounts['code']%>' at checkout for a $<%= '%.2f' % @discounts['value'] %> discount</strong>
+    </div>
+  <% else %>
+    <div id="discount-block" style="visibility:hidden;padding:10px;background-color:rgb(114,206,74,0.5);margin-top:48px;border-radius:5px;">
+      <h3 id="discount-name"></h3><br /> 
+      <strong>Enter coupon code '<span id="discount-code"></span>' at checkout for a $<span id="discount-value"></span> discount</strong>
+    </div>
+  <% end %>
+  <div data-hook="homepage_sidebar_navigation">
+    <%= render partial: 'spree/shared/taxonomies' %>
+  </div>
+<% end %>
+
+<div data-hook="homepage_products">
+  <% if ENV["useSSR"] == 'true' %>
+    <br /><center><a href="<%= @ads['url'] %>"><img src="data:image/png;base64,<%= @ads['base64'] %>" /></a></center>
+  <% else %>
+    <div id="ads-block" style="visibility:hidden"><center><a id="ad-url" href=""><img id="ad-image" src=""></a></center></div>
+  <% end %>
+  <% cache(cache_key_for_products) do %>
+    <%= render partial: 'spree/shared/products', locals: { products: @products } %>
+  <% end %>
+</div>
+
