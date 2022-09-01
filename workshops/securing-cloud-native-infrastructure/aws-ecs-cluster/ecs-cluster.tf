@@ -74,6 +74,23 @@ data "aws_ssm_parameter" "ecs_optimized_ami" {
   name = "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended"
 }
 
+resource "aws_iam_policy" "ecs-cluster-policy" {
+  name = "ecs-cluster-policy"
+  path = "/"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = [
+        # NOTE: This is bad! But is intended for the workshop purposes
+        "*"
+      ]
+      Effect   = "Allow"
+      Resource = "*"
+    }]
+  })
+}
+
 module "autoscaling" {
   source  = "terraform-aws-modules/autoscaling/aws"
   version = "~> 6.5.2"
@@ -92,10 +109,7 @@ module "autoscaling" {
   iam_role_name               = local.name
   iam_role_description        = "ECS role for ${local.name}"
   iam_role_policies = {
-    #AmazonEC2ContainerServiceforEC2Role = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
-    #AmazonSSMManagedInstanceCore        = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-    # NOTE: This is bad! But is intended for the workshop purposes
-    AdministratorAccess = "arn:aws:iam::aws:policy/AdministratorAccess"
+    ECSProductionClusterRole = aws_iam_policy.ecs-cluster-policy.arn
   }
 
   vpc_zone_identifier = module.vpc.private_subnets
