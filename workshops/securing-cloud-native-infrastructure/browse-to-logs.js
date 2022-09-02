@@ -14,6 +14,6 @@ const puppeteer = require('puppeteer');
   await page.waitForTimeout(5000);
   await page.goto('https://app.datadoghq.com/logs')
   await page.waitForTimeout(10000);
-  await page.screenshot({ path: '/tmp/screenshot.png' });
+  await page.waitForNavigation({ waitUntil: 'networkidle2' })
   await browser.close();
 })();
