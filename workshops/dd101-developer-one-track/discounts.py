@@ -27,7 +27,7 @@ def hello():
 @app.route('/discount', methods=['GET', 'POST'])
 def status():
     if flask_request.method == 'GET':
-          discounts = Discount.query.all()
+          discounts = Discount.query.options(joinedload('*')).all()
           if random.randint(1, 10) > 7:
             app.logger.error("An error occurred while calculating influencer vectors")
           app.logger.info(f"Discounts available: {len(discounts)}")
