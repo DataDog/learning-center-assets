@@ -8,8 +8,9 @@ services:
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS='{"my.custom.label.team":"team"}'
-      - DD_TAGS='${DD_TAGS-env:product-analytics-workshop}'
+      - DD_TAGS='${DD_TAGS-env:storedog-2-0-demo}'
       - DD_HOSTNAME=${DD_HOSTNAME-lab-host}
+      - DD_HOSTNAME
       - DD_APM_NON_LOCAL_TRAFFIC=true
     ports:
       - 127.0.0.1:8126:8126/tcp
@@ -74,8 +75,8 @@ services:
       com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'frontend'
   backend:
-    image: public.ecr.aws/x2b9z2t7/storedog/backend:1.0.2
-    # command: bash -c "rm -rf tmp/pids/server.pid && yarn install && yarn build && bundle install && bundle exec rails s -b 0.0.0.0 -p 4000"
+    image: public.ecr.aws/x2b9z2t7/storedog/backend:1.0.1
+    command: bash -c "rm -rf tmp/pids/server.pid && yarn install && yarn build && bundle install && bundle exec rails s -b 0.0.0.0 -p 4000"
     depends_on:
       - 'db'
       - 'redis'
@@ -84,7 +85,6 @@ services:
     volumes:
       - '/root/bundle_cache:/bundle'
       - '/root/database.yml:/app/config/database.yml'
-      - /root/lab/storedog-backend/services/backend/storage:/app/storage
     environment:
       - REDIS_URL
       - DB_HOST=db
