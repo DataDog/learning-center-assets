@@ -101,6 +101,15 @@ MongoClient.connect(db, (err, db) => {
 
     }));
 
+    //ASM Workshop Uncomment here for User ID
+    //app.use((req, res, next) => {
+    //    if (req.session && req.session.userId) {
+    //        tracer.setUser({ id: req.session.userId })
+    //    }
+    //    next()
+    //});
+
+
     /*
     // Fix for A8 - CSRF
     // Enable Express csrf protection
