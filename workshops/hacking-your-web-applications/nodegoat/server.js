@@ -102,12 +102,12 @@ MongoClient.connect(db, (err, db) => {
     }));
 
     //ASM Workshop User ID activation
-    app.use((req, res, next) => {
-        if (req.session && req.session.userId) {
-            tracer.setUser({ id: req.session.userId })
-        }
-        next()
-    });
+    //app.use((req, res, next) => {
+    //    if (req.session && req.session.userId) {
+    //        tracer.setUser({ id: req.session.userId })
+    //    }
+    //    next()
+    //});
 
 
     /*
