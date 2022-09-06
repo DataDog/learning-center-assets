@@ -7,7 +7,7 @@ services:
     depends_on:
       - datadog-agent
     ports:
-      - "8080:80"
+      - "4000:80"
     labels:
       my.custom.label.team: 'app'
 
