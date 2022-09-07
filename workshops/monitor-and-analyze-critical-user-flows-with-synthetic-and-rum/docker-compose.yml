@@ -8,7 +8,7 @@ services:
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS='{"my.custom.label.team":"team"}'
-      - DD_TAGS='${DD_TAGS-env:product-analytics-workshop}'
+      - DD_TAGS='${DD_TAGS-env:monitor-user-flows-workshop}'
       - DD_HOSTNAME=${DD_HOSTNAME-lab-host}
       - DD_APM_NON_LOCAL_TRAFFIC=true
     ports:
