@@ -38,7 +38,7 @@ resource "azurerm_container_group" "app" {
 
   container {
     name   = "datadog-agent"
-    image  = "public.ecr.aws/datadog/agent:latest"
+    image  = "datadog/agent:latest"
     cpu    = "0.5"
     memory = "2"
 
