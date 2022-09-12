@@ -7,9 +7,9 @@ services:
       - DD_LOGS_ENABLED=true
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
-      - DD_TAGS='env:dd201'
+      - DD_TAGS='env:observability-pipelines'
       - DD_APM_NON_LOCAL_TRAFFIC=true
-      - DD_HOSTNAME=dd201-host
+      - DD_HOSTNAME=observability-pipelines-host
     ports:
       - 127.0.0.1:8126:8126/tcp
     volumes:
@@ -24,7 +24,7 @@ services:
       - POSTGRES_USER
       - POSTGRES_HOST=db
       - DD_SERVICE=discounts-service
-      - DD_ENV=dd201
+      - DD_ENV=observability-pipelines
       - DD_LOGS_INJECTION=true
       - DD_TRACE_SAMPLE_RATE=1
       - DD_PROFILING_ENABLED=true
@@ -36,7 +36,7 @@ services:
       - datadog
       - db
     labels:
-      com.datadoghq.tags.env: 'dd201'
+      com.datadoghq.tags.env: 'observability-pipelines'
       com.datadoghq.tags.service: 'discounts-service'
       com.datadoghq.tags.version: '2.1.2'
       my.custom.label.team: 'discounts'
@@ -44,7 +44,7 @@ services:
   frontend:
     environment:
       - DD_SERVICE=store-frontend
-      - DD_ENV=dd201
+      - DD_ENV=observability-pipelines
       - DD_LOGS_INJECTION=true
       - DD_TRACE_SAMPLE_RATE=1
       - DD_PROFILING_ENABLED=true
@@ -60,7 +60,7 @@ services:
       - discounts
       - advertisements
     labels:
-      com.datadoghq.tags.env: 'dd201'
+      com.datadoghq.tags.env: 'observability-pipelines'
       com.datadoghq.tags.service: 'store-frontend'
       com.datadoghq.tags.version: '2.1.2'
       my.custom.label.team: 'frontend'
@@ -73,7 +73,7 @@ services:
       - POSTGRES_USER
       - POSTGRES_HOST=db
       - DD_SERVICE=advertisements-service
-      - DD_ENV=dd201
+      - DD_ENV=observability-pipelines
       - DD_LOGS_INJECTION=true
       - DD_TRACE_SAMPLE_RATE=1
       - DD_PROFILING_ENABLED=true
@@ -85,7 +85,7 @@ services:
       - datadog
       - db
     labels:
-      com.datadoghq.tags.env: 'dd201'
+      com.datadoghq.tags.env: 'observability-pipelines'
       com.datadoghq.tags.service: 'advertisements-service'
       com.datadoghq.tags.version: '2.1.2'
       my.custom.label.team: 'advertisements'
@@ -99,7 +99,7 @@ services:
     ports:
       - '5432:5432'
     labels:
-      com.datadoghq.tags.env: 'dd201'
+      com.datadoghq.tags.env: 'observability-pipelines'
       com.datadoghq.tags.service: 'database'
       com.datadoghq.tags.version: '11'
       my.custom.label.team: 'database'
