@@ -7,14 +7,13 @@ const puppeteer = require('puppeteer');
 (async () => {
   const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
   const page = await browser.newPage();
-  await page.setDefaultNavigationTimeout(120*1000); // milliseconds
   await page.goto('https://app.datadoghq.com');
   await page.type('input[id=username]', process.env.LABUSER);
   await page.type('input[name=password]', process.env.NEWPASSWORD);
   await page.keyboard.press('Enter');
   await page.waitForTimeout(5000);
   await page.goto('https://app.datadoghq.com/logs')
-  await page.waitForTimeout(10000);
-  await page.waitForNavigation({ waitUntil: 'networkidle2' })
+  await page.waitForTimeout(20000);
+  await page.screenshot({ path: '/tmp/logs-screenshot.png' });
   await browser.close();
 })();
