@@ -19,7 +19,7 @@ services:
       - DD_LOGS_ENABLED=true
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
     env_file:
-      - ../.env
+      - ../env
     ports:
       - "8126:8126"
     volumes:
