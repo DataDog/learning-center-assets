@@ -75,15 +75,14 @@ services:
       com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'frontend'
   backend:
-    image: public.ecr.aws/x2b9z2t7/storedog/backend:1.0.1
-    command: bash -c "rm -rf tmp/pids/server.pid && yarn install && yarn build && bundle install && bundle exec rails s -b 0.0.0.0 -p 4000"
+    image: public.ecr.aws/x2b9z2t7/storedog/backend:1.0.5
+    command: wait-for-it db:5432 -- bundle exec rails s -b 0.0.0.0 -p 4000
     depends_on:
       - 'db'
       - 'redis'
     ports:
       - '${ADMIN_PORT:-4000}:${ADMIN_PORT:-4000}'
     volumes:
-      - '/root/bundle_cache:/bundle'
       - '/root/database.yml:/app/config/database.yml'
     environment:
       - REDIS_URL
@@ -95,14 +94,13 @@ services:
       - NEXT_PUBLIC_SPREE_API_HOST
       - NEXT_PUBLIC_SPREE_CLIENT_HOST
   worker:
-    image: public.ecr.aws/x2b9z2t7/storedog/backend:1.0.1
-    command: bash -c "bundle install && bundle exec sidekiq -C config/sidekiq.yml"
+    image: public.ecr.aws/x2b9z2t7/storedog/backend:1.0.5
+    command: wait-for-it db:5432 -- bundle exec sidekiq -C config/sidekiq.yml
     depends_on:
       - db
       - redis
       - backend
     volumes:
-      - '/root/bundle_cache:/bundle'
       - '/root/database.yml:/app/config/database.yml'
     environment:
       - REDIS_URL
