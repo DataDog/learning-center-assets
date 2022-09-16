@@ -21,6 +21,68 @@ def extend_email(email, extension):
     email_parts = email.split("@")
     return "{start}+{insert}@{end}".format(start=email_parts[0], insert=extension, end=email_parts[1])
 
+
+def find_user(username):
+    configuration = Configuration()
+    with ApiClient(configuration) as api_client:
+        api_instance = users_api.UsersApi(api_client)
+        try:
+            api_response = api_instance.list_users(filter=username)
+            return api_response.meta.page.total_filtered_count > 0
+        except ApiException as e:
+            print("Exception searching for user {0}: {1}\n".format(
+                username, e))
+            sys.exit(1)
+
+
+def create_user(username, email):
+    configuration = Configuration()
+    with ApiClient(configuration) as api_client:
+        api_instance = users_api.UsersApi(api_client)
+        body = UserCreateRequest(
+            data=UserCreateData(
+                attributes=UserCreateAttributes(
+                    name=username,
+                    email=email
+                ),
+                type=UsersType("users")
+            )
+        )
+        try:
+            api_response = api_instance.create_user(body)
+            return api_response.data.id
+        except ApiException as e:
+            print("Exception creating user {0}: {1}\n".format(username, e))
+            sys.exit(1)
+
+
+def invite_user(user_id):
+    configuration = Configuration()
+    with ApiClient(configuration) as api_client:
+        api_instance = users_api.UsersApi(api_client)
+        body = UserInvitationsRequest(
+            data=[
+                UserInvitationData(
+                    relationships=UserInvitationRelationships(
+                        user=RelationshipToUser(
+                            data=RelationshipToUserData(
+                                id=user_id,
+                                type=UsersType("users"),
+                            ),
+                        ),
+                    ),
+                    type=UserInvitationsType("user_invitations"),
+                ),
+            ],
+        )
+        try:
+            api_response = api_instance.send_invitations(body)
+            return api_response.data[0].id
+        except ApiException as e:
+            print("Exception sending invitation to user id {0}: {1}\n".format(
+                user_id, e))
+            sys.exit(1)
+
 def find_dashboard(dashboard_name):
     configuration = ConfigurationV1()
     with ApiClientV1(configuration) as api_client:
@@ -106,7 +168,29 @@ monitor_name = "Monitor for Incident Management Workshop"
 dashboard_name = "Storedog Frontend Dashboard"
 dashboard = {}
 
-with console.status("Creating dashboard") as status:
+with console.status("Creating users") as status:
+
+    users = [
+        {"name": "Ad Service Engineer", "slug": "ad_service_engineer"},
+        {"name": "On-Call Engineer", "slug": "oncall_engineer"}
+    ]
+
+    for user in users:
+
+        email = extend_email(lab_user_email, user["slug"])
+        status.update("Finding user {0}".format(user["name"]))
+        if not find_user(user["name"]):
+            status.update("Creating user {0}".format(user["name"]))
+            user_id = create_user(user["name"], email)
+            console.log(user["name"], "[green]created[/green]")
+            status.update("Inviting user {0}".format(user["name"]))
+            invitation_id = invite_user(user_id)
+            console.log("Invitation {0} sent".format(
+                invitation_id))
+        else:
+            console.log(user["name"], "[green]exists[/green]")
+
+    status.update("Creating dashboard")
     dashboard = find_dashboard(dashboard_name)
     if not dashboard:
         dashboard = create_dashboard(dashboard_json_path, api_key, app_key)
@@ -120,3 +204,5 @@ with console.status("Creating dashboard") as status:
         console.log("Monitor id {0} [green]created[/green]".format(monitor_id))
     else:
       console.log("Monitor [green]exists[/green]")
+
+
