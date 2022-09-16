@@ -8,8 +8,8 @@ services:
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
-      - DD_TAGS='${DD_TAGS-env:logs-workshop}'
-      - DD_HOSTNAME=${DD_HOSTNAME-logs-workshop-host}
+      - DD_TAGS='env:logs-workshop'
+      - DD_HOSTNAME='logs-workshop-host'
       - DD_APM_NON_LOCAL_TRAFFIC=true
     ports:
       - 127.0.0.1:8126:8126/tcp
@@ -130,17 +130,3 @@ services:
     depends_on:
       - frontend
     command: bash puppeteer.sh
-Footer
-© 2022 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
