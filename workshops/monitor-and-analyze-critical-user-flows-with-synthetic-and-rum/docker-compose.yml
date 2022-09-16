@@ -85,6 +85,7 @@ services:
       - '/root/bundle_cache:/bundle'
       - '/root/database.yml:/app/config/database.yml'
       - /root/lab/storedog-backend/services/backend/storage:/app/storage
+      - /root/lab/storedog-backend/services/ads:/app
     environment:
       - REDIS_URL
       - DB_HOST=db
