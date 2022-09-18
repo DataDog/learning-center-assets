@@ -1,6 +1,7 @@
 create user datadog with password 'datadog';
 grant pg_monitor to datadog;
 grant SELECT ON pg_stat_database to datadog;
+
 --
 -- PostgreSQL database dump
 --
@@ -4718,39 +4719,37 @@ COPY public.active_storage_attachments (id, name, record_type, record_id, blob_i
 34	image	ActiveStorage::VariantRecord	25	34	2022-09-02 18:39:43.311487
 35	image	ActiveStorage::VariantRecord	26	35	2022-09-02 18:40:17.550299
 36	image	ActiveStorage::VariantRecord	27	36	2022-09-02 18:40:36.17104
-37	attachment	Spree::Asset	8	37	2022-09-02 18:41:29.405478
-38	image	ActiveStorage::VariantRecord	28	38	2022-09-02 18:41:30.370407
-39	image	ActiveStorage::VariantRecord	29	39	2022-09-02 18:41:42.757269
-40	image	ActiveStorage::VariantRecord	30	40	2022-09-02 18:41:57.192647
-41	attachment	Spree::Asset	9	41	2022-09-02 18:43:39.198973
-42	image	ActiveStorage::VariantRecord	31	42	2022-09-02 18:43:40.032782
-43	image	ActiveStorage::VariantRecord	32	43	2022-09-02 18:43:53.606565
-44	image	ActiveStorage::VariantRecord	33	44	2022-09-02 18:43:53.921037
-45	attachment	Spree::Asset	10	45	2022-09-02 18:45:13.035847
-46	image	ActiveStorage::VariantRecord	34	46	2022-09-02 18:45:13.885344
-47	image	ActiveStorage::VariantRecord	35	47	2022-09-02 18:45:40.286588
-48	image	ActiveStorage::VariantRecord	36	48	2022-09-02 18:46:25.047327
 49	image	ActiveStorage::VariantRecord	37	49	2022-09-02 18:46:54.434274
-50	attachment	Spree::Asset	11	50	2022-09-02 18:51:15.631464
-51	image	ActiveStorage::VariantRecord	38	51	2022-09-02 18:51:16.471721
-52	image	ActiveStorage::VariantRecord	39	52	2022-09-02 18:51:22.356054
-53	image	ActiveStorage::VariantRecord	40	53	2022-09-02 18:51:39.998209
-54	attachment	Spree::Asset	12	54	2022-09-02 18:53:24.852604
-55	image	ActiveStorage::VariantRecord	41	55	2022-09-02 18:53:25.955725
-56	image	ActiveStorage::VariantRecord	42	56	2022-09-02 18:54:27.606938
-57	image	ActiveStorage::VariantRecord	43	57	2022-09-02 18:54:43.472291
-58	attachment	Spree::Asset	13	58	2022-09-02 18:58:02.946654
-59	image	ActiveStorage::VariantRecord	44	59	2022-09-02 18:58:03.794369
-60	image	ActiveStorage::VariantRecord	45	60	2022-09-02 18:58:25.306884
-61	image	ActiveStorage::VariantRecord	46	61	2022-09-02 18:58:47.578255
-62	attachment	Spree::Asset	14	62	2022-09-02 18:59:30.636295
-63	image	ActiveStorage::VariantRecord	47	63	2022-09-02 18:59:31.472547
-64	image	ActiveStorage::VariantRecord	48	64	2022-09-02 19:00:47.140422
-65	image	ActiveStorage::VariantRecord	49	65	2022-09-02 19:00:51.252578
-66	attachment	Spree::Asset	15	66	2022-09-02 19:02:32.293027
-67	image	ActiveStorage::VariantRecord	50	67	2022-09-02 19:02:33.100241
-68	image	ActiveStorage::VariantRecord	51	68	2022-09-02 19:03:50.051395
-69	image	ActiveStorage::VariantRecord	52	69	2022-09-02 19:03:56.705184
+77	image	ActiveStorage::VariantRecord	60	77	2022-09-13 20:45:20.994954
+78	attachment	Spree::Asset	8	78	2022-09-13 20:55:14.204373
+79	image	ActiveStorage::VariantRecord	61	79	2022-09-13 20:55:15.559455
+80	image	ActiveStorage::VariantRecord	62	80	2022-09-13 20:55:19.220519
+81	image	ActiveStorage::VariantRecord	63	81	2022-09-13 20:56:01.27318
+82	attachment	Spree::Asset	9	82	2022-09-13 20:56:26.336847
+83	image	ActiveStorage::VariantRecord	64	83	2022-09-13 20:56:27.643058
+84	image	ActiveStorage::VariantRecord	65	84	2022-09-13 20:57:15.231813
+85	attachment	Spree::Asset	10	85	2022-09-13 20:57:51.310359
+86	attachment	Spree::Asset	12	86	2022-09-13 20:58:02.736356
+87	attachment	Spree::Asset	11	87	2022-09-13 20:58:22.800752
+88	image	ActiveStorage::VariantRecord	66	88	2022-09-13 20:58:23.694078
+89	image	ActiveStorage::VariantRecord	67	89	2022-09-13 20:58:25.308738
+90	attachment	Spree::Asset	14	90	2022-09-13 20:58:36.663073
+91	image	ActiveStorage::VariantRecord	68	91	2022-09-13 20:58:38.29224
+92	attachment	Spree::Asset	13	92	2022-09-13 20:58:51.555379
+93	image	ActiveStorage::VariantRecord	69	93	2022-09-13 20:58:52.720018
+94	image	ActiveStorage::VariantRecord	70	94	2022-09-13 20:58:55.871559
+95	image	ActiveStorage::VariantRecord	71	95	2022-09-13 20:58:55.886657
+96	image	ActiveStorage::VariantRecord	72	96	2022-09-13 20:58:56.006781
+97	image	ActiveStorage::VariantRecord	73	97	2022-09-13 20:58:56.226471
+98	image	ActiveStorage::VariantRecord	74	98	2022-09-13 20:58:56.321614
+99	image	ActiveStorage::VariantRecord	75	99	2022-09-13 20:58:56.390544
+100	attachment	Spree::Asset	15	100	2022-09-13 20:59:13.185735
+101	image	ActiveStorage::VariantRecord	76	101	2022-09-13 20:59:14.23223
+102	image	ActiveStorage::VariantRecord	78	102	2022-09-13 20:59:35.309674
+103	image	ActiveStorage::VariantRecord	77	103	2022-09-13 20:59:35.415531
+104	image	ActiveStorage::VariantRecord	79	104	2022-09-13 20:59:35.512547
+105	image	ActiveStorage::VariantRecord	80	105	2022-09-13 20:59:35.586156
+106	image	ActiveStorage::VariantRecord	81	106	2022-09-13 20:59:35.592875
 \.
 
 
@@ -4787,39 +4786,37 @@ COPY public.active_storage_blobs (id, key, filename, content_type, metadata, ser
 34	dbagqumqgq1z6319o338j7bmt5pq	octo-bits.jpeg	image/jpeg	{"identified":true}	local	49159	sqkjHyWt2rPAY5q7ruUqgQ==	2022-09-02 18:39:43.304605
 35	msm81dgmxk4ggqiud2bv4j9waoie	octo-bits.jpeg	image/jpeg	{"identified":true}	local	38361	oeUTnZsxghMF1aO5O7v+KQ==	2022-09-02 18:40:17.543007
 36	pk18k7l7xvz7fcz9ecz20m01mbg1	octo-bits.jpeg	image/jpeg	{"identified":true}	local	40567	SrFwtDhvXJzhWls05pzdzw==	2022-09-02 18:40:36.165326
-37	joru4prw3skdtc8i4ia5dwq5874k	og-bits.jpeg	image/jpeg	{"identified":true}	local	1151702	0Yuvf2ntSpa0Gb5VGtepzw==	2022-09-02 18:41:29.400716
-38	ndmbmj2or9w5lgnwmyyexp34n509	og-bits.jpeg	image/jpeg	{"identified":true}	local	972140	/hpLInzJskGPWV9QIVLLQQ==	2022-09-02 18:41:30.363907
-39	8cknyjfznqw5id8jzny40hewyyrm	og-bits.jpeg	image/jpeg	{"identified":true}	local	962633	zQSTI0DGiSAJC+4llwmG4w==	2022-09-02 18:41:42.751172
-40	hpskdx8sfybt0o39s4e2veuqv6nd	og-bits.jpeg	image/jpeg	{"identified":true}	local	960237	0ycR/MiYr8+o+583UKvgow==	2022-09-02 18:41:57.186764
-41	2fy5a3t0idckqt117wqp88l1haj8	rainbow-bits.jpeg	image/jpeg	{"identified":true}	local	259193	efsoMAdOKxIbVSCwg2/YFA==	2022-09-02 18:43:39.193486
-42	tasu842mlz829y8ps7va67ttq7my	rainbow-bits.jpeg	image/jpeg	{"identified":true}	local	50906	hzjMyPp7yLnGK08HEKI4+w==	2022-09-02 18:43:40.026081
-43	t8sfq5w9vte2byg1ql3vrf6erjz6	rainbow-bits.jpeg	image/jpeg	{"identified":true}	local	39231	M0FtcE3lsZSDoTezBEVyuQ==	2022-09-02 18:43:53.600409
-44	vk66376ys3oh94khxr2gyaqe718p	rainbow-bits.jpeg	image/jpeg	{"identified":true}	local	41520	7VX0r/Epk4dnKEc+Y+7Lbw==	2022-09-02 18:43:53.914537
-45	8844gxgfc9ul1djle5kf8sqmgiyc	space-bits.jpeg	image/jpeg	{"identified":true}	local	204816	v5mgn8jlxaBVDDh8LeBNyg==	2022-09-02 18:45:13.031525
-46	62xky8otdpnd1lm3zr07z7udt2bx	space-bits.jpeg	image/jpeg	{"identified":true}	local	19381	TW13drxdEW5pz68O0zNuOw==	2022-09-02 18:45:13.879897
-47	p7d5guboq24b265ytl0u5w20hzjl	space-bits.jpeg	image/jpeg	{"identified":true}	local	8347	AiFsjCezMe9MF+xL73BFvg==	2022-09-02 18:45:40.280398
-48	88hekent0qoefm8b69builrth0xv	space-bits.jpeg	image/jpeg	{"identified":true}	local	5508	T3qb/i/Dp1OXe0QZ6lxzAQ==	2022-09-02 18:46:25.041158
 49	77of4hptz6t0rf0gn04v0kqjt4dm	octo-bits.jpeg	image/jpeg	{"identified":true}	local	100180	VZ6BkQVMlbvYs4EqLM/Auw==	2022-09-02 18:46:54.428156
-50	7vxzmrg3zgfub67kf82hb5vifqzu	student-bits.jpeg	image/jpeg	{"identified":true}	local	1092884	wklF2uDWboHOf4qkukL3Gg==	2022-09-02 18:51:15.627087
-51	blxpqifldxzmb0nby4czkfn4u9q6	student-bits.jpeg	image/jpeg	{"identified":true}	local	934184	Ur0hmwkICrISUfpSgAVzcw==	2022-09-02 18:51:16.466087
-52	hmndfefa02esgzpaqksemkf51q88	student-bits.jpeg	image/jpeg	{"identified":true}	local	924503	pu5jsJqi/HYNK0LTZ4rcEg==	2022-09-02 18:51:22.350875
-53	sskbwu2e4lqf6vdd9po2ozhnfm6d	student-bits.jpeg	image/jpeg	{"identified":true}	local	922000	lVdVBn+UTlr3ndnRG9nrfg==	2022-09-02 18:51:39.990319
-54	3oi8wwgyay2a5vsted2felpry3yw	stonk-bits.jpeg	image/jpeg	{"identified":true}	local	211078	PB5hl6/YiHQKDvQmpvH8/w==	2022-09-02 18:53:24.848653
-55	9levi783acolroehz6wn0cm0mzwa	stonk-bits.jpeg	image/jpeg	{"identified":true}	local	47293	Vqnn8/ONG6Qzb1/s1FFEMw==	2022-09-02 18:53:25.948674
-56	c9cjtgt3p7hdujcaxt41t08u1kux	stonk-bits.jpeg	image/jpeg	{"identified":true}	local	38358	1RpJqbKy+qefjdu1X5ZWqQ==	2022-09-02 18:54:27.600619
-61	eb2a2zd73ok9x0rlw0o164mduamd	summit-denver.jpeg	image/jpeg	{"identified":true}	local	38249	KIpZ6xWcIwScorOuJILSVQ==	2022-09-02 18:58:47.573392
-57	gs1oqg4v74c76h2f8zsqj0p91yjc	stonk-bits.jpeg	image/jpeg	{"identified":true}	local	40088	fdq55rYupPV6x9aLfruPXw==	2022-09-02 18:54:43.46527
-58	e3ltmq2g8mfvj4wifyzt7uj3w5ns	summit-denver.jpeg	image/jpeg	{"identified":true}	local	265693	0yTT+jLLPh/PFOEHlfEgcg==	2022-09-02 18:58:02.942127
-59	2qzh6w5ugc805s50nivs2k1xxfvi	summit-denver.jpeg	image/jpeg	{"identified":true}	local	48059	CXWmqZ1vH06pKaFssa5s8w==	2022-09-02 18:58:03.78899
-60	rwst4dkl9wdsmq13w2fwj04ha284	summit-denver.jpeg	image/jpeg	{"identified":true}	local	36250	xIzrcJB4sJTSc+CjUn+u0w==	2022-09-02 18:58:25.300309
-62	o72a5s5ye01ie6mtx8h7olnldvko	sunset-bits.jpeg	image/jpeg	{"identified":true}	local	216353	aXoMYGfRJSfhcGrhVRbMnQ==	2022-09-02 18:59:30.632119
-63	picolufbbcsybadgh89nutlhun53	sunset-bits.jpeg	image/jpeg	{"identified":true}	local	46938	lHVXqqxJgx6PoGGedTHq3A==	2022-09-02 18:59:31.465768
-64	cj1dxfmw44hktr8lhbwzpw7aoxz5	sunset-bits.jpeg	image/jpeg	{"identified":true}	local	38098	/9sG1YpOsD/dvxgbei6LPw==	2022-09-02 19:00:47.135101
-65	41wprtxdhsy40nh2h3igvhpdh982	sunset-bits.jpeg	image/jpeg	{"identified":true}	local	39803	VzZgZrPB82opPBFfJq8MOg==	2022-09-02 19:00:51.237116
-66	75n1re2ozjbz45a88irjss1pu9e6	aapihm-bits.jpeg	image/jpeg	{"identified":true}	local	343741	eZTuAgNrYgfLggtJUa1c/w==	2022-09-02 19:02:32.288992
-67	kwchc38i5j2uqyrfui13h914doju	aapihm-bits.jpeg	image/jpeg	{"identified":true}	local	54179	N+Kdai0kqbj/tKP/g2CnAw==	2022-09-02 19:02:33.094375
-68	opa2g8bl3tpm0ecip3f4yun9hcd8	aapihm-bits.jpeg	image/jpeg	{"identified":true}	local	38773	ClHnVE8vXEF1CTGVX96zNQ==	2022-09-02 19:03:50.044951
-69	006gnisak94ytqimt378gbad2hf9	aapihm-bits.jpeg	image/jpeg	{"identified":true}	local	41613	jrWG/WtbBlWrj/ei8oz6YQ==	2022-09-02 19:03:56.699474
+77	tcuywtfa5bo7iswkbmocinkv4obn	bits-by-dre.jpeg	image/jpeg	{"identified":true}	local	51236	EfpZWM2xmoj7MQuE71RIyQ==	2022-09-13 20:45:20.984736
+78	tq3q5lsbdzh1hfwfto2ub0dwuuul	og-bits.jpeg	image/jpeg	{"identified":true}	local	1151702	0Yuvf2ntSpa0Gb5VGtepzw==	2022-09-13 20:55:14.197795
+79	rcp1c0ffcrahrxl6ddwdj502lrzh	og-bits.jpeg	image/jpeg	{"identified":true}	local	972140	/hpLInzJskGPWV9QIVLLQQ==	2022-09-13 20:55:15.55344
+80	vn912gigj022zdj21b018id2vb0h	og-bits.jpeg	image/jpeg	{"identified":true}	local	1024852	m8dJdUhVnmZxI7oDBj56eg==	2022-09-13 20:55:19.207845
+81	fk0o9nsutjpswot205kna7pdoj02	og-bits.jpeg	image/jpeg	{"identified":true}	local	962633	zQSTI0DGiSAJC+4llwmG4w==	2022-09-13 20:56:01.257696
+82	ox4iruasiwuftdu71u98l5t4rpgm	rainbow-bits.jpeg	image/jpeg	{"identified":true}	local	259193	efsoMAdOKxIbVSCwg2/YFA==	2022-09-13 20:56:26.329573
+83	v2d6kiibpmi2n5wei0zvfmgcrcp6	rainbow-bits.jpeg	image/jpeg	{"identified":true}	local	50906	hzjMyPp7yLnGK08HEKI4+w==	2022-09-13 20:56:27.635727
+84	6f852pkntrw16c0w9wzpdx2rnmud	rainbow-bits.jpeg	image/jpeg	{"identified":true}	local	110174	Mr9AnVJZuwi+NMzBR409mQ==	2022-09-13 20:57:15.200353
+85	rp62efuo0c81qrdzczbw9vbu1eih	space-bits.jpeg	image/jpeg	{"identified":true}	local	204816	v5mgn8jlxaBVDDh8LeBNyg==	2022-09-13 20:57:51.289216
+86	azwswza6kecyh2bmfnlpr7besvvb	stonk-bits.jpeg	image/jpeg	{"identified":true}	local	211078	PB5hl6/YiHQKDvQmpvH8/w==	2022-09-13 20:58:02.72886
+87	l0idqd59oxu5iz00z9m3iep48pjm	student-bits.jpeg	image/jpeg	{"identified":true}	local	1092884	wklF2uDWboHOf4qkukL3Gg==	2022-09-13 20:58:22.795426
+88	t2gbiuwefu2cu69nx6ef7mxvlkyf	stonk-bits.jpeg	image/jpeg	{"identified":true}	local	47293	Vqnn8/ONG6Qzb1/s1FFEMw==	2022-09-13 20:58:23.685776
+89	1cn3v98qnmqwts7m6l5xkbhzvffn	student-bits.jpeg	image/jpeg	{"identified":true}	local	934184	Ur0hmwkICrISUfpSgAVzcw==	2022-09-13 20:58:25.299251
+90	ziae3tzvaen6pm7pdzsya7rv46l3	sunset-bits.jpeg	image/jpeg	{"identified":true}	local	216353	aXoMYGfRJSfhcGrhVRbMnQ==	2022-09-13 20:58:36.655123
+91	oifpdmfenjck5p39s91m8ij5ya5a	sunset-bits.jpeg	image/jpeg	{"identified":true}	local	46938	lHVXqqxJgx6PoGGedTHq3A==	2022-09-13 20:58:38.271792
+92	8drwmhakoag0ra8a1myjdr80mt57	summit-denver.jpeg	image/jpeg	{"identified":true}	local	265693	0yTT+jLLPh/PFOEHlfEgcg==	2022-09-13 20:58:51.549532
+93	q869nghoropy7vm31r30cgs85x0d	summit-denver.jpeg	image/jpeg	{"identified":true}	local	48059	CXWmqZ1vH06pKaFssa5s8w==	2022-09-13 20:58:52.713025
+94	5beayoc679qsbk1udyydvujp3tuv	summit-denver.jpeg	image/jpeg	{"identified":true}	local	38249	KIpZ6xWcIwScorOuJILSVQ==	2022-09-13 20:58:55.863754
+95	j4j2wb67ekv1hle6t5z2aq19gstf	space-bits.jpeg	image/jpeg	{"identified":true}	local	8347	AiFsjCezMe9MF+xL73BFvg==	2022-09-13 20:58:55.87748
+96	wpik6q4kgdlnd8zy9vxfayze9bxl	stonk-bits.jpeg	image/jpeg	{"identified":true}	local	40088	fdq55rYupPV6x9aLfruPXw==	2022-09-13 20:58:55.995317
+97	osvherjecbdx3ezy3jvar6vvfwrk	rainbow-bits.jpeg	image/jpeg	{"identified":true}	local	41520	7VX0r/Epk4dnKEc+Y+7Lbw==	2022-09-13 20:58:56.197497
+98	niywd6phcjdfuxw97lxi1y8t1sya	student-bits.jpeg	image/jpeg	{"identified":true}	local	924503	pu5jsJqi/HYNK0LTZ4rcEg==	2022-09-13 20:58:56.312249
+99	bfkgrq99dea00vq7i74ludx4q31l	sunset-bits.jpeg	image/jpeg	{"identified":true}	local	39803	VzZgZrPB82opPBFfJq8MOg==	2022-09-13 20:58:56.382249
+100	97xen0j7t6ketkwt4l8vobq14qq9	aapihm-bits.jpeg	image/jpeg	{"identified":true}	local	343741	eZTuAgNrYgfLggtJUa1c/w==	2022-09-13 20:59:13.18072
+101	dqc7t23uxsm5axhesoap039wqjeb	aapihm-bits.jpeg	image/jpeg	{"identified":true}	local	54179	N+Kdai0kqbj/tKP/g2CnAw==	2022-09-13 20:59:14.224158
+102	x0j50n6qwk4g0p72hy9h9gmz9l41	summit-denver.jpeg	image/jpeg	{"identified":true}	local	114428	xxurWrUOWSTgyBbYeJTC0w==	2022-09-13 20:59:35.288053
+103	bbxn5vhfqpqdykae8z2cdf5x3dgs	space-bits.jpeg	image/jpeg	{"identified":true}	local	76325	C5b9U36Azm+17rksRdyRmw==	2022-09-13 20:59:35.303957
+104	89to0ymiqabe72nctvgrgqzyrk0o	student-bits.jpeg	image/jpeg	{"identified":true}	local	979837	s8S7lz63WqubLuwyZkUlvQ==	2022-09-13 20:59:35.466817
+105	z8lp9oe5quoqzkewjtvj14rubeg0	aapihm-bits.jpeg	image/jpeg	{"identified":true}	local	110578	tyOLd68VxrlORI9USR6TnA==	2022-09-13 20:59:35.559995
+106	169tp3memt7id57sh22o8ejtcblg	sunset-bits.jpeg	image/jpeg	{"identified":true}	local	91553	l8Bed84NaeR7ZnrBeZ+OMg==	2022-09-13 20:59:35.559872
 \.
 
 
@@ -4850,31 +4847,29 @@ COPY public.active_storage_variant_records (id, blob_id, variation_digest) FROM 
 25	33	fwVpW23gRniI1V/Mq72agowuN5s=
 26	33	bBI9nAYRWRjVu1pk9y6xAFWlb5I=
 27	33	d3LOd3YXIQx0J6s9ItQoFa4APBo=
-28	37	fwVpW23gRniI1V/Mq72agowuN5s=
-29	37	d3LOd3YXIQx0J6s9ItQoFa4APBo=
-30	37	bBI9nAYRWRjVu1pk9y6xAFWlb5I=
-31	41	fwVpW23gRniI1V/Mq72agowuN5s=
-32	41	bBI9nAYRWRjVu1pk9y6xAFWlb5I=
-33	41	d3LOd3YXIQx0J6s9ItQoFa4APBo=
-34	45	fwVpW23gRniI1V/Mq72agowuN5s=
-35	45	d3LOd3YXIQx0J6s9ItQoFa4APBo=
-36	45	bBI9nAYRWRjVu1pk9y6xAFWlb5I=
 37	33	xKmKND+TjDHsG4nik8rAoillPTg=
-38	50	fwVpW23gRniI1V/Mq72agowuN5s=
-39	50	d3LOd3YXIQx0J6s9ItQoFa4APBo=
-40	50	bBI9nAYRWRjVu1pk9y6xAFWlb5I=
-41	54	fwVpW23gRniI1V/Mq72agowuN5s=
-42	54	bBI9nAYRWRjVu1pk9y6xAFWlb5I=
-43	54	d3LOd3YXIQx0J6s9ItQoFa4APBo=
-44	58	fwVpW23gRniI1V/Mq72agowuN5s=
-45	58	bBI9nAYRWRjVu1pk9y6xAFWlb5I=
-46	58	d3LOd3YXIQx0J6s9ItQoFa4APBo=
-47	62	fwVpW23gRniI1V/Mq72agowuN5s=
-48	62	bBI9nAYRWRjVu1pk9y6xAFWlb5I=
-49	62	d3LOd3YXIQx0J6s9ItQoFa4APBo=
-50	66	fwVpW23gRniI1V/Mq72agowuN5s=
-51	66	bBI9nAYRWRjVu1pk9y6xAFWlb5I=
-52	66	d3LOd3YXIQx0J6s9ItQoFa4APBo=
+60	12	LMY3gm7ksOYX5XlHmCdPt9vS3Xk=
+61	78	fwVpW23gRniI1V/Mq72agowuN5s=
+62	78	xKmKND+TjDHsG4nik8rAoillPTg=
+63	78	d3LOd3YXIQx0J6s9ItQoFa4APBo=
+64	82	fwVpW23gRniI1V/Mq72agowuN5s=
+65	82	xKmKND+TjDHsG4nik8rAoillPTg=
+66	86	fwVpW23gRniI1V/Mq72agowuN5s=
+67	87	fwVpW23gRniI1V/Mq72agowuN5s=
+68	90	fwVpW23gRniI1V/Mq72agowuN5s=
+69	92	fwVpW23gRniI1V/Mq72agowuN5s=
+70	92	d3LOd3YXIQx0J6s9ItQoFa4APBo=
+71	85	d3LOd3YXIQx0J6s9ItQoFa4APBo=
+72	86	d3LOd3YXIQx0J6s9ItQoFa4APBo=
+73	82	d3LOd3YXIQx0J6s9ItQoFa4APBo=
+74	87	d3LOd3YXIQx0J6s9ItQoFa4APBo=
+75	90	d3LOd3YXIQx0J6s9ItQoFa4APBo=
+76	100	fwVpW23gRniI1V/Mq72agowuN5s=
+77	85	xKmKND+TjDHsG4nik8rAoillPTg=
+78	92	xKmKND+TjDHsG4nik8rAoillPTg=
+79	87	xKmKND+TjDHsG4nik8rAoillPTg=
+80	100	xKmKND+TjDHsG4nik8rAoillPTg=
+81	90	xKmKND+TjDHsG4nik8rAoillPTg=
 \.
 
 
@@ -4893,31 +4888,9 @@ environment	development	2022-07-12 18:09:53.552384	2022-07-12 18:09:53.552384
 
 COPY public.friendly_id_slugs (id, slug, sluggable_id, sluggable_type, scope, created_at, deleted_at) FROM stdin;
 1	categories	1	Spree::Taxon	\N	2022-07-12 18:13:13.083664	\N
-2	categories/men	2	Spree::Taxon	\N	2022-07-12 18:13:14.080667	\N
-3	categories/women	3	Spree::Taxon	\N	2022-07-12 18:13:14.272231	\N
-4	categories/sportswear	4	Spree::Taxon	\N	2022-07-12 18:13:14.523262	\N
-5	categories/men/shirts	5	Spree::Taxon	\N	2022-07-12 18:13:14.68329	\N
-6	categories/men/t-shirts	6	Spree::Taxon	\N	2022-07-12 18:13:14.786199	\N
-7	categories/men/sweaters	7	Spree::Taxon	\N	2022-07-12 18:13:14.896758	\N
-8	categories/men/jackets-and-coats	8	Spree::Taxon	\N	2022-07-12 18:13:15.007581	\N
-9	categories/women/skirts	9	Spree::Taxon	\N	2022-07-12 18:13:15.113846	\N
-10	categories/women/dresses	10	Spree::Taxon	\N	2022-07-12 18:13:15.2217	\N
-11	categories/women/shirts-and-blouses	11	Spree::Taxon	\N	2022-07-12 18:13:15.332583	\N
-12	categories/women/sweaters	12	Spree::Taxon	\N	2022-07-12 18:13:15.440709	\N
-13	categories/women/tops-and-t-shirts	13	Spree::Taxon	\N	2022-07-12 18:13:15.544872	\N
-14	categories/women/jackets-and-coats	14	Spree::Taxon	\N	2022-07-12 18:13:15.653372	\N
-15	categories/sportswear/tops	15	Spree::Taxon	\N	2022-07-12 18:13:15.759122	\N
-16	categories/sportswear/sweatshirts	16	Spree::Taxon	\N	2022-07-12 18:13:15.872582	\N
-17	categories/sportswear/pants	17	Spree::Taxon	\N	2022-07-12 18:13:15.980192	\N
 18	categories/new	18	Spree::Taxon	\N	2022-07-12 18:13:16.078291	\N
 19	categories/bestsellers	19	Spree::Taxon	\N	2022-07-12 18:13:16.175428	\N
 20	categories/trending	20	Spree::Taxon	\N	2022-07-12 18:13:16.278428	\N
-21	categories/streetstyle	21	Spree::Taxon	\N	2022-07-12 18:13:16.38138	\N
-22	categories/summer-sale	22	Spree::Taxon	\N	2022-07-12 18:13:16.481395	\N
-23	categories/new-collection	23	Spree::Taxon	\N	2022-07-12 18:13:16.576708	\N
-24	categories/new-collection/summer-2022	24	Spree::Taxon	\N	2022-07-12 18:13:16.677109	\N
-25	categories/special-offers	25	Spree::Taxon	\N	2022-07-12 18:13:16.783992	\N
-26	categories/special-offers/30-percent-off	26	Spree::Taxon	\N	2022-07-12 18:13:16.885386	\N
 63	midi-skirt-with-bottoms	37	Spree::Product	\N	2022-07-12 18:13:30.823182	2022-09-02 16:28:29.055025
 71	pleated-skirt-2	45	Spree::Product	\N	2022-07-12 18:13:33.741768	2022-09-02 16:28:32.708205
 33	regular-shirt	7	Spree::Product	\N	2022-07-12 18:13:19.566485	2022-09-02 16:28:35.26686
@@ -4975,6 +4948,20 @@ COPY public.friendly_id_slugs (id, slug, sluggable_id, sluggable_type, scope, cr
 117	loose-fitted-jacket	91	Spree::Product	\N	2022-07-12 18:13:51.85172	2022-09-02 16:28:28.237147
 125	oversize-t-shirt-wrapped-on-back	99	Spree::Product	\N	2022-07-12 18:13:54.955027	2022-09-02 16:28:31.060241
 97	oversized-knitted-sweater	71	Spree::Product	\N	2022-07-12 18:13:43.435431	2022-09-02 16:28:31.560588
+3	categories/women	3	Spree::Taxon	\N	2022-07-12 18:13:14.272231	2022-09-08 15:34:52.819141
+9	categories/women/skirts	9	Spree::Taxon	\N	2022-07-12 18:13:15.113846	2022-09-08 15:34:52.835567
+10	categories/women/dresses	10	Spree::Taxon	\N	2022-07-12 18:13:15.2217	2022-09-08 15:34:52.907897
+11	categories/women/shirts-and-blouses	11	Spree::Taxon	\N	2022-07-12 18:13:15.332583	2022-09-08 15:34:52.939048
+4	categories/sportswear	4	Spree::Taxon	\N	2022-07-12 18:13:14.523262	2022-09-08 15:34:54.460201
+15	categories/sportswear/tops	15	Spree::Taxon	\N	2022-07-12 18:13:15.759122	2022-09-08 15:34:54.480126
+16	categories/sportswear/sweatshirts	16	Spree::Taxon	\N	2022-07-12 18:13:15.872582	2022-09-08 15:34:54.537832
+17	categories/sportswear/pants	17	Spree::Taxon	\N	2022-07-12 18:13:15.980192	2022-09-08 15:34:54.567141
+21	categories/streetstyle	21	Spree::Taxon	\N	2022-07-12 18:13:16.38138	2022-09-08 15:34:58.105786
+22	categories/summer-sale	22	Spree::Taxon	\N	2022-07-12 18:13:16.481395	2022-09-08 15:35:00.062536
+23	categories/new-collection	23	Spree::Taxon	\N	2022-07-12 18:13:16.576708	2022-09-08 15:35:01.679377
+24	categories/new-collection/summer-2022	24	Spree::Taxon	\N	2022-07-12 18:13:16.677109	2022-09-08 15:35:01.696286
+25	categories/special-offers	25	Spree::Taxon	\N	2022-07-12 18:13:16.783992	2022-09-08 15:35:03.037446
+26	categories/special-offers/30-percent-off	26	Spree::Taxon	\N	2022-07-12 18:13:16.885386	2022-09-08 15:35:03.054373
 98	oversized-sweatshirt	72	Spree::Product	\N	2022-07-12 18:13:43.788205	2022-09-02 16:28:32.150322
 103	printed-t-shirt	77	Spree::Product	\N	2022-07-12 18:13:46.039057	2022-09-02 16:28:37.805941
 79	printed-slit-sleeves-dress	53	Spree::Product	\N	2022-07-12 18:13:36.843434	2022-09-02 16:28:38.422272
@@ -5048,6 +5035,19 @@ COPY public.friendly_id_slugs (id, slug, sluggable_id, sluggable_type, scope, cr
 154	april-2022-summit-denver-sticker	128	Spree::Product	\N	2022-09-02 18:57:21.707566	\N
 155	sunset-bits	129	Spree::Product	\N	2022-09-02 18:59:14.783891	\N
 156	asian-american-pacific-islander-heritage-month-bits	130	Spree::Product	\N	2022-09-02 19:01:55.426845	\N
+2	categories/men	2	Spree::Taxon	\N	2022-07-12 18:13:14.080667	2022-09-08 15:34:50.391933
+5	categories/men/shirts	5	Spree::Taxon	\N	2022-07-12 18:13:14.68329	2022-09-08 15:34:50.411443
+6	categories/men/t-shirts	6	Spree::Taxon	\N	2022-07-12 18:13:14.786199	2022-09-08 15:34:50.468818
+7	categories/men/sweaters	7	Spree::Taxon	\N	2022-07-12 18:13:14.896758	2022-09-08 15:34:50.505046
+8	categories/men/jackets-and-coats	8	Spree::Taxon	\N	2022-07-12 18:13:15.007581	2022-09-08 15:34:50.530938
+12	categories/women/sweaters	12	Spree::Taxon	\N	2022-07-12 18:13:15.440709	2022-09-08 15:34:52.967938
+13	categories/women/tops-and-t-shirts	13	Spree::Taxon	\N	2022-07-12 18:13:15.544872	2022-09-08 15:34:52.996035
+14	categories/women/jackets-and-coats	14	Spree::Taxon	\N	2022-07-12 18:13:15.653372	2022-09-08 15:34:53.025033
+157	categories/events	20	Spree::Taxon	\N	2022-09-08 15:35:17.890243	\N
+158	brands	27	Spree::Taxon	\N	2022-09-08 15:35:27.741904	\N
+159	brands/datadog	28	Spree::Taxon	\N	2022-09-08 15:35:34.002604	\N
+160	categories/stickers	29	Spree::Taxon	\N	2022-09-08 15:37:54.657045	\N
+161	aapi-heritage-month-bits	130	Spree::Product	\N	2022-09-08 15:40:49.280758	\N
 \.
 
 
@@ -5138,14 +5138,14 @@ COPY public.spree_assets (id, viewable_type, viewable_id, attachment_width, atta
 5	Spree::Variant	236	\N	\N	\N	1	\N	\N	\N	\N	Learning bits sticker	2022-09-02 17:36:28.595446	2022-09-02 17:36:28.63616	\N	\N
 6	Spree::Variant	237	\N	\N	\N	1	\N	\N	\N	\N	Money Bits sticker	2022-09-02 18:30:57.959969	2022-09-02 18:30:57.998578	\N	\N
 7	Spree::Variant	238	\N	\N	\N	1	\N	\N	\N	\N	Octo Bits sticker	2022-09-02 18:39:42.383161	2022-09-02 18:39:42.417844	\N	\N
-8	Spree::Variant	239	\N	\N	\N	1	\N	\N	\N	\N	OG Bits sticker	2022-09-02 18:41:29.371737	2022-09-02 18:41:29.409958	\N	\N
-9	Spree::Variant	240	\N	\N	\N	1	\N	\N	\N	\N	Rainbow Bits sticker	2022-09-02 18:43:39.165283	2022-09-02 18:43:39.203722	\N	\N
-10	Spree::Variant	241	\N	\N	\N	1	\N	\N	\N	\N	Space Bits sticker	2022-09-02 18:45:13.006084	2022-09-02 18:45:13.039783	\N	\N
-11	Spree::Variant	242	\N	\N	\N	1	\N	\N	\N	\N	Student Bits sticker	2022-09-02 18:51:15.601178	2022-09-02 18:51:15.635755	\N	\N
-12	Spree::Variant	243	\N	\N	\N	1	\N	\N	\N	\N	Stonk Bits sticker	2022-09-02 18:53:24.824158	2022-09-02 18:53:24.856601	\N	\N
-13	Spree::Variant	244	\N	\N	\N	1	\N	\N	\N	\N	Summit Denver stickers	2022-09-02 18:58:02.91531	2022-09-02 18:58:02.950742	\N	\N
-14	Spree::Variant	245	\N	\N	\N	1	\N	\N	\N	\N	Sunset Bits sticker	2022-09-02 18:59:30.607167	2022-09-02 18:59:30.640627	\N	\N
-15	Spree::Variant	246	\N	\N	\N	1	\N	\N	\N	\N	AAPIHM Bits sticker	2022-09-02 19:02:32.264095	2022-09-02 19:02:32.296925	\N	\N
+8	Spree::Variant	239	\N	\N	\N	1	\N	\N	\N	\N	OG Bits sticker	2022-09-02 18:41:29.371737	2022-09-13 20:55:14.211482	\N	\N
+9	Spree::Variant	240	\N	\N	\N	1	\N	\N	\N	\N	Rainbow Bits sticker	2022-09-02 18:43:39.165283	2022-09-13 20:56:26.343792	\N	\N
+10	Spree::Variant	241	\N	\N	\N	1	\N	\N	\N	\N	Space Bits sticker	2022-09-02 18:45:13.006084	2022-09-13 20:57:51.32745	\N	\N
+12	Spree::Variant	243	\N	\N	\N	1	\N	\N	\N	\N	Stonk Bits sticker	2022-09-02 18:53:24.824158	2022-09-13 20:58:02.744495	\N	\N
+11	Spree::Variant	242	\N	\N	\N	1	\N	\N	\N	\N	Student Bits sticker	2022-09-02 18:51:15.601178	2022-09-13 20:58:22.806642	\N	\N
+14	Spree::Variant	245	\N	\N	\N	1	\N	\N	\N	\N	Sunset Bits sticker	2022-09-02 18:59:30.607167	2022-09-13 20:58:36.669417	\N	\N
+13	Spree::Variant	244	\N	\N	\N	1	\N	\N	\N	\N	Summit Denver stickers	2022-09-02 18:58:02.91531	2022-09-13 20:58:51.560572	\N	\N
+15	Spree::Variant	246	\N	\N	\N	1	\N	\N	\N	\N	AAPIHM Bits sticker	2022-09-02 19:02:32.264095	2022-09-13 20:59:13.191025	\N	\N
 \.
 
 
@@ -5599,6 +5599,87 @@ COPY public.spree_inventory_units (id, state, variant_id, order_id, shipment_id,
 COPY public.spree_line_items (id, variant_id, order_id, quantity, price, created_at, updated_at, currency, cost_price, tax_category_id, adjustment_total, additional_tax_total, promo_total, included_tax_total, pre_tax_amount, taxable_adjustment_total, non_taxable_adjustment_total, public_metadata, private_metadata) FROM stdin;
 3	233	3	1	20.00	2022-09-02 17:23:28.931907	2022-09-02 17:23:29.334969	USD	\N	\N	0.00	0.00	0.00	0.00	20.0000	0.00	0.00	\N	\N
 4	235	4	1	5.00	2022-09-02 18:42:33.838861	2022-09-02 18:42:34.186913	USD	\N	\N	0.00	0.00	0.00	0.00	5.0000	0.00	0.00	\N	\N
+23	234	19	1	14.99	2022-09-13 20:44:51.628683	2022-09-13 20:44:52.019666	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+30	236	18	1	9.99	2022-09-13 20:45:22.613275	2022-09-13 20:45:23.516742	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+38	236	25	1	9.99	2022-09-13 20:47:18.625578	2022-09-13 20:47:18.991186	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+31	236	21	1	9.99	2022-09-13 20:45:22.830553	2022-09-13 20:45:24.020033	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+36	236	23	1	9.99	2022-09-13 20:47:13.042276	2022-09-13 20:47:13.326648	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+12	234	16	1	14.99	2022-09-13 20:42:57.546979	2022-09-13 20:42:58.21849	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+28	236	19	1	9.99	2022-09-13 20:45:22.020959	2022-09-13 20:45:22.4028	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+6	234	7	1	14.99	2022-09-13 20:41:04.241214	2022-09-13 20:41:05.140195	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+18	236	14	1	9.99	2022-09-13 20:43:28.276	2022-09-13 20:43:29.740885	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+5	234	10	1	14.99	2022-09-13 20:41:04.209604	2022-09-13 20:41:05.174027	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+7	234	11	1	14.99	2022-09-13 20:41:04.343489	2022-09-13 20:41:05.205564	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+13	234	14	1	14.99	2022-09-13 20:42:57.888629	2022-09-13 20:42:58.701566	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+8	234	12	1	14.99	2022-09-13 20:41:04.609584	2022-09-13 20:41:05.441235	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+15	234	17	1	14.99	2022-09-13 20:42:57.952481	2022-09-13 20:42:58.732567	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+20	236	16	1	9.99	2022-09-13 20:43:28.615427	2022-09-13 20:43:30.035119	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+22	234	20	1	14.99	2022-09-13 20:44:51.579162	2022-09-13 20:44:53.190626	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+14	234	13	1	14.99	2022-09-13 20:42:57.905112	2022-09-13 20:42:58.927906	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+41	234	30	1	14.99	2022-09-13 20:48:42.744139	2022-09-13 20:48:43.914163	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+21	236	15	1	9.99	2022-09-13 20:43:28.756594	2022-09-13 20:43:30.1031	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+16	234	15	1	14.99	2022-09-13 20:42:58.46677	2022-09-13 20:42:59.614915	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+19	236	17	1	9.99	2022-09-13 20:43:28.407091	2022-09-13 20:43:30.123097	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+10	236	11	1	9.99	2022-09-13 20:41:34.804127	2022-09-13 20:41:35.123113	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+42	234	31	1	14.99	2022-09-13 20:48:42.961563	2022-09-13 20:48:44.07321	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+11	236	12	1	9.99	2022-09-13 20:41:34.872687	2022-09-13 20:41:35.482082	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+9	236	10	1	9.99	2022-09-13 20:41:34.733022	2022-09-13 20:41:35.500638	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+33	234	25	1	14.99	2022-09-13 20:46:47.776578	2022-09-13 20:46:48.108889	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+17	236	13	1	9.99	2022-09-13 20:43:27.96608	2022-09-13 20:43:28.307589	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+24	234	22	1	14.99	2022-09-13 20:44:51.870759	2022-09-13 20:44:53.43091	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+27	236	20	1	9.99	2022-09-13 20:45:21.971254	2022-09-13 20:45:22.81613	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+25	234	18	1	14.99	2022-09-13 20:44:51.970477	2022-09-13 20:44:53.65498	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+34	234	27	1	14.99	2022-09-13 20:46:47.874037	2022-09-13 20:46:48.560334	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+26	234	21	1	14.99	2022-09-13 20:44:52.001684	2022-09-13 20:44:53.849221	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+32	234	23	1	14.99	2022-09-13 20:46:42.742771	2022-09-13 20:46:43.043268	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+35	234	26	1	14.99	2022-09-13 20:46:47.935215	2022-09-13 20:46:48.624158	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+29	236	22	1	9.99	2022-09-13 20:45:22.22858	2022-09-13 20:45:23.324954	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+43	234	32	1	14.99	2022-09-13 20:48:45.037503	2022-09-13 20:48:46.463152	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+37	236	26	1	9.99	2022-09-13 20:47:18.511908	2022-09-13 20:47:19.243035	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+39	236	27	1	9.99	2022-09-13 20:47:18.638282	2022-09-13 20:47:19.313414	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+40	234	28	1	14.99	2022-09-13 20:48:42.352813	2022-09-13 20:48:43.146383	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+45	236	31	1	9.99	2022-09-13 20:49:13.453841	2022-09-13 20:49:13.811563	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+46	236	30	1	9.99	2022-09-13 20:49:13.510551	2022-09-13 20:49:14.179381	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+44	236	28	1	9.99	2022-09-13 20:49:13.285772	2022-09-13 20:49:14.296414	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+56	234	42	1	14.99	2022-09-13 20:52:31.139324	2022-09-13 20:52:32.412199	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+75	234	50	1	14.99	2022-09-13 20:56:20.142008	2022-09-13 20:56:21.642173	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+47	236	32	1	9.99	2022-09-13 20:49:14.359853	2022-09-13 20:49:15.606806	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+61	236	42	1	9.99	2022-09-13 20:53:01.45346	2022-09-13 20:53:02.095736	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+57	234	38	1	14.99	2022-09-13 20:52:31.386917	2022-09-13 20:52:32.748613	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+65	234	45	1	14.99	2022-09-13 20:54:22.566046	2022-09-13 20:54:23.163103	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+60	236	39	1	9.99	2022-09-13 20:53:01.361555	2022-09-13 20:53:02.179532	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+48	234	33	1	14.99	2022-09-13 20:50:33.662894	2022-09-13 20:50:33.947669	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+64	234	43	1	14.99	2022-09-13 20:54:22.523549	2022-09-13 20:54:23.405786	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+62	236	41	1	9.99	2022-09-13 20:53:01.602896	2022-09-13 20:53:02.45003	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+81	236	52	1	9.99	2022-09-13 20:56:51.127219	2022-09-13 20:56:51.554956	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+59	234	40	1	14.99	2022-09-13 20:52:31.5348	2022-09-13 20:52:32.755039	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+63	236	38	1	9.99	2022-09-13 20:53:01.850918	2022-09-13 20:53:02.64684	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+55	234	41	1	14.99	2022-09-13 20:52:31.119837	2022-09-13 20:52:31.748556	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+74	234	48	1	14.99	2022-09-13 20:56:20.118571	2022-09-13 20:56:21.668928	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+49	234	35	1	14.99	2022-09-13 20:50:39.226287	2022-09-13 20:50:40.055416	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+79	236	50	1	9.99	2022-09-13 20:56:50.721588	2022-09-13 20:56:51.807577	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+50	234	36	1	14.99	2022-09-13 20:50:39.473184	2022-09-13 20:50:40.282371	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+73	234	49	1	14.99	2022-09-13 20:56:20.003682	2022-09-13 20:56:20.416573	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+51	234	34	1	14.99	2022-09-13 20:50:39.480747	2022-09-13 20:50:40.334234	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+66	234	44	1	14.99	2022-09-13 20:54:22.743446	2022-09-13 20:54:23.578999	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+69	236	45	1	9.99	2022-09-13 20:54:53.036372	2022-09-13 20:54:53.655685	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+84	236	54	1	9.99	2022-09-13 20:58:44.226183	2022-09-13 20:58:44.487666	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+70	236	44	1	9.99	2022-09-13 20:54:53.180092	2022-09-13 20:54:53.770228	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+52	236	35	1	9.99	2022-09-13 20:51:09.744356	2022-09-13 20:51:10.666085	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+53	236	34	1	9.99	2022-09-13 20:51:09.937982	2022-09-13 20:51:10.813828	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+54	236	36	1	9.99	2022-09-13 20:51:10.005167	2022-09-13 20:51:10.890725	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+58	234	39	1	14.99	2022-09-13 20:52:31.529798	2022-09-13 20:52:32.397012	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+67	234	46	1	14.99	2022-09-13 20:54:26.822761	2022-09-13 20:54:27.422543	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+82	234	54	1	14.99	2022-09-13 20:58:14.094521	2022-09-13 20:58:14.35307	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+71	236	46	1	9.99	2022-09-13 20:54:57.395904	2022-09-13 20:54:57.759013	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+72	236	47	1	9.99	2022-09-13 20:54:57.421686	2022-09-13 20:54:57.935448	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+68	234	47	1	14.99	2022-09-13 20:54:26.866765	2022-09-13 20:54:27.468938	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+77	234	51	1	14.99	2022-09-13 20:56:20.759088	2022-09-13 20:56:22.105599	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+85	236	55	1	9.99	2022-09-13 20:58:47.233066	2022-09-13 20:58:47.527631	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+83	234	55	1	14.99	2022-09-13 20:58:16.463383	2022-09-13 20:58:16.723359	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+80	236	48	1	9.99	2022-09-13 20:56:50.845036	2022-09-13 20:56:52.044859	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
+76	234	52	1	14.99	2022-09-13 20:56:20.705899	2022-09-13 20:56:22.31521	USD	1.14	\N	0.00	0.00	0.00	0.00	14.9900	0.00	0.00	\N	\N
+78	236	49	1	9.99	2022-09-13 20:56:50.35591	2022-09-13 20:56:50.963731	USD	1.10	\N	0.00	0.00	0.00	0.00	9.9900	0.00	0.00	\N	\N
 \.
 
 
@@ -5928,7 +6009,7 @@ COPY public.spree_oauth_access_grants (id, resource_owner_id, application_id, to
 
 COPY public.spree_oauth_access_tokens (id, resource_owner_id, application_id, token, refresh_token, expires_in, revoked_at, created_at, scopes, previous_refresh_token, resource_owner_type) FROM stdin;
 1	1	1	b84602d1aee3f43be73c5de6d8b9e5eb5bb5100aaf6bcbaa04e430d043fd7947	\N	\N	\N	2022-07-12 18:19:31.696499	admin		Spree::User
-2	2	1	bf12306a412e89b545cb84530bce376f24479a19f17ce6dce5fe0e92dcacf8e0	\N	\N	\N	2022-09-02 16:11:18.640547	admin		Spree::User
+2	2	1	67a069f660192e3ee50211a2380902ff9bc0f9fbc1d77bddd76cad619a02c794	\N	\N	\N	2022-09-02 16:11:18.640547	admin		Spree::User
 \.
 
 
@@ -6020,6 +6101,64 @@ COPY public.spree_orders (id, number, item_total, total, state, adjustment_total
 3	R691665949	20.00	20.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-02 16:37:05.152169	2022-09-02 17:23:28.937959	USD	\N	\N	0.00	0.00	0.00	spree	0.00	1	\N	\N	f	f	UCMORL6RsgD5KSCfX1ccUA1662136625088	\N	\N	1	0	0.00	0.00	\N	\N	\N
 1	R123456789	0.00	0.00	canceled	0.00	\N	2022-07-11 18:15:53.267702	\N	\N	0.00	\N	void	spree@example.com	\N	2022-07-12 18:15:52.595288	2022-09-02 18:27:34.308335	USD	\N	\N	0.00	0.00	0.00	spree	0.00	0	\N	\N	f	f	6kwqk1CtUk2kXQ-eZ_8gNQ1657649752595	2022-09-02 16:15:04.926634	2	1	0	0.00	0.00	\N	\N	\N
 4	R346838356	5.00	5.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-02 18:24:21.981797	2022-09-02 18:42:33.844218	USD	\N	\N	0.00	0.00	0.00	spree	0.00	1	\N	\N	f	f	hq9AnjpYeNJMsEOsENgKow1662143061896	\N	\N	1	0	0.00	0.00	\N	\N	\N
+5	R204709928	0.00	0.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-08 15:30:50.413539	2022-09-08 15:30:50.413539	USD	\N	\N	0.00	0.00	0.00	spree	0.00	0	\N	\N	f	f	HiSmJq5m74bASbPgs9hKzg1662651050359	\N	\N	1	0	0.00	0.00	\N	\N	\N
+6	R927290377	0.00	0.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-08 18:46:13.239791	2022-09-08 18:46:13.239791	USD	\N	\N	0.00	0.00	0.00	spree	0.00	0	\N	\N	f	f	tOproEPa7Tg_egjcghuBuA1662662773144	\N	\N	1	0	0.00	0.00	\N	\N	\N
+8	R216180865	0.00	0.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:40:39.537857	2022-09-13 20:40:39.537857	USD	\N	\N	0.00	0.00	0.00	spree	0.00	0	\N	\N	f	f	WAdND3JbK2OWo0hSSfR9PQ1663101639463	\N	\N	1	0	0.00	0.00	\N	\N	\N
+9	R709661596	0.00	0.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:40:39.762272	2022-09-13 20:40:39.762272	USD	\N	\N	0.00	0.00	0.00	spree	0.00	0	\N	\N	f	f	WWWk5s-DvvV5FIIHTU3eLA1663101639628	\N	\N	1	0	0.00	0.00	\N	\N	\N
+24	R035858575	0.00	0.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:46:23.250422	2022-09-13 20:46:23.250422	USD	\N	\N	0.00	0.00	0.00	spree	0.00	0	\N	\N	f	f	OoyVku4wMIEdkc97j0poww1663101983113	\N	\N	1	0	0.00	0.00	\N	\N	\N
+14	R114707512	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:42:37.176246	2022-09-13 20:43:28.302536	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	jsu3Rw2WAHmGWoLQOHvTFw1663101757144	\N	\N	1	0	0.00	0.00	\N	\N	\N
+19	R741717240	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:44:32.048317	2022-09-13 20:45:22.032435	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	kUky6yRrdse2KgnIY_zUeg1663101871967	\N	\N	1	0	0.00	0.00	\N	\N	\N
+16	R848546931	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:42:38.168432	2022-09-13 20:43:28.639448	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	XaB3s8LiapCQJAlj7MhRNA1663101758092	\N	\N	1	0	0.00	0.00	\N	\N	\N
+7	R390334667	14.99	14.99	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:40:39.456166	2022-09-13 20:41:04.250772	USD	\N	\N	0.00	0.00	0.00	spree	0.00	1	\N	\N	f	f	CnMT62wvwWCbZu3dOVn_Rg1663101639207	\N	\N	1	0	0.00	0.00	\N	\N	\N
+15	R255191158	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:42:38.11464	2022-09-13 20:43:28.783291	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	wOR-iN7YNFOhyEC2H2b7qA1663101758041	\N	\N	1	0	0.00	0.00	\N	\N	\N
+29	R787811537	0.00	0.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:48:22.46273	2022-09-13 20:48:22.46273	USD	\N	\N	0.00	0.00	0.00	spree	0.00	0	\N	\N	f	f	Hl6Ljr5p4rANMBxef6lE9w1663102102302	\N	\N	1	0	0.00	0.00	\N	\N	\N
+20	R419288521	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:44:32.236312	2022-09-13 20:45:21.980026	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	CIgK0fBkGeTaaTT40O-jqw1663101872187	\N	\N	1	0	0.00	0.00	\N	\N	\N
+17	R847096189	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:42:38.809459	2022-09-13 20:43:28.474413	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	OFk8MRGtK2lSvOvQb29x1w1663101758777	\N	\N	1	0	0.00	0.00	\N	\N	\N
+11	R840723731	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:40:40.242559	2022-09-13 20:41:34.811024	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	aaQwC1swzSxillt95Z9U-Q1663101640049	\N	\N	1	0	0.00	0.00	\N	\N	\N
+12	R552721805	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:40:40.410356	2022-09-13 20:41:34.885387	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	sOSjPvDn_4SVm1ODygyB2w1663101640340	\N	\N	1	0	0.00	0.00	\N	\N	\N
+10	R442325408	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:40:40.262394	2022-09-13 20:41:34.745041	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	kc0nVrRKOAIaSVbX1l7N8g1663101639848	\N	\N	1	0	0.00	0.00	\N	\N	\N
+13	R075587510	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:42:36.837657	2022-09-13 20:43:27.970977	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	tUjHW5ZklQ-YWswl7e-M2w1663101756810	\N	\N	1	0	0.00	0.00	\N	\N	\N
+26	R005638160	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:46:28.758835	2022-09-13 20:47:18.536939	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	eghZAxpzP9ZF-79b2TLUqw1663101988724	\N	\N	1	0	0.00	0.00	\N	\N	\N
+23	R123653711	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:46:23.137053	2022-09-13 20:47:13.047994	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	6K9qzvpJWhJZSILd0b9XRA1663101983035	\N	\N	1	0	0.00	0.00	\N	\N	\N
+22	R124150150	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:44:32.869556	2022-09-13 20:45:22.247319	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	0-Kb1UqsxqCwPoUnUF6Jnw1663101872834	\N	\N	1	0	0.00	0.00	\N	\N	\N
+18	R276779589	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:44:31.867248	2022-09-13 20:45:22.630709	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	Q8d7eCTpl8hURcVQ13u_kw1663101871824	\N	\N	1	0	0.00	0.00	\N	\N	\N
+32	R805165245	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:48:25.538708	2022-09-13 20:49:14.374306	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	WJbh-8HUtQU9Q_2w19gB-w1663102105498	\N	\N	1	0	0.00	0.00	\N	\N	\N
+21	R487927726	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:44:32.238569	2022-09-13 20:45:22.852748	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	VWxfagS9M-othhNGGhdbYg1663101872146	\N	\N	1	0	0.00	0.00	\N	\N	\N
+27	R689531836	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:46:28.861055	2022-09-13 20:47:18.653873	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	B3xGVyUzmqwQDdt8XpBBfA1663101988817	\N	\N	1	0	0.00	0.00	\N	\N	\N
+25	R469727062	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:46:28.225082	2022-09-13 20:47:18.636142	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	IMTOga4JFry9gZbZCZ5InA1663101988194	\N	\N	1	0	0.00	0.00	\N	\N	\N
+31	R918936651	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:48:24.377543	2022-09-13 20:49:13.460962	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	oFetZmmPbKEgp65ZmPKXTA1663102104314	\N	\N	1	0	0.00	0.00	\N	\N	\N
+34	R999519556	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:50:19.305181	2022-09-13 20:51:09.962408	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	Mabl_1Azd_Og6nu21PMeww1663102219258	\N	\N	1	0	0.00	0.00	\N	\N	\N
+30	R404535964	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:48:23.120556	2022-09-13 20:49:13.524533	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	QintnT3ioOgN_HjlDv8_Sw1663102103069	\N	\N	1	0	0.00	0.00	\N	\N	\N
+28	R782062766	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:48:22.199099	2022-09-13 20:49:13.29202	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	52PGI5HOOZ8o4TwhQGn99Q1663102102025	\N	\N	1	0	0.00	0.00	\N	\N	\N
+37	R157365849	0.00	0.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:50:19.951978	2022-09-13 20:50:19.951978	USD	\N	\N	0.00	0.00	0.00	spree	0.00	0	\N	\N	f	f	MHvj7GIMgQoWSCuO9levtg1663102219924	\N	\N	1	0	0.00	0.00	\N	\N	\N
+51	R380396795	14.99	14.99	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:56:00.983842	2022-09-13 20:56:20.790026	USD	\N	\N	0.00	0.00	0.00	spree	0.00	1	\N	\N	f	f	-fczciKKzou470GRdTcBmg1663102560923	\N	\N	1	0	0.00	0.00	\N	\N	\N
+40	R977050395	14.99	14.99	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:52:12.099499	2022-09-13 20:52:31.556158	USD	\N	\N	0.00	0.00	0.00	spree	0.00	1	\N	\N	f	f	bV5XprPbqOMzjaVfJLSLDQ1663102332061	\N	\N	1	0	0.00	0.00	\N	\N	\N
+33	R619989406	14.99	14.99	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:50:13.522459	2022-09-13 20:50:33.669029	USD	\N	\N	0.00	0.00	0.00	spree	0.00	1	\N	\N	f	f	m2v3_sm11feeJhUt-UEz_A1663102213496	\N	\N	1	0	0.00	0.00	\N	\N	\N
+46	R942455379	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:54:07.804113	2022-09-13 20:54:57.40555	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	beL5LxYTxktnXDfD_KcGrA1663102447773	\N	\N	1	0	0.00	0.00	\N	\N	\N
+53	R163749863	0.00	0.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:57:54.037515	2022-09-13 20:57:54.037515	USD	\N	\N	0.00	0.00	0.00	spree	0.00	0	\N	\N	f	f	vGzlnFRg7GIXQAXK5o2srA1663102673965	\N	\N	1	0	0.00	0.00	\N	\N	\N
+47	R919350832	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:54:08.242242	2022-09-13 20:54:57.427924	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	5K0c6NNThPxX5HdgNnKk2A1663102448208	\N	\N	1	0	0.00	0.00	\N	\N	\N
+43	R702931003	14.99	14.99	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:54:03.216732	2022-09-13 20:54:22.531404	USD	\N	\N	0.00	0.00	0.00	spree	0.00	1	\N	\N	f	f	IEiRkYakl_lqd71lBJ_sHg1663102443181	\N	\N	1	0	0.00	0.00	\N	\N	\N
+42	R251855715	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:52:12.935808	2022-09-13 20:53:01.462396	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	IN_fT1XvJ89V3I9C5BBAPQ1663102332895	\N	\N	1	0	0.00	0.00	\N	\N	\N
+39	R121101079	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:52:11.780082	2022-09-13 20:53:01.369656	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	Yw3uqe6EFMnbPE9PBSR5eA1663102331702	\N	\N	1	0	0.00	0.00	\N	\N	\N
+35	R454858211	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:50:19.408387	2022-09-13 20:51:09.753958	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	nzd04T10DGTH8vgcacTCUw1663102219344	\N	\N	1	0	0.00	0.00	\N	\N	\N
+41	R175818178	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:52:12.33814	2022-09-13 20:53:01.614702	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	2fRdrWj2jgdZqrRXghkP_g1663102332276	\N	\N	1	0	0.00	0.00	\N	\N	\N
+36	R813463955	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:50:19.613804	2022-09-13 20:51:10.02892	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	4GXX8bvaO1TkJJsfXzWEfw1663102219529	\N	\N	1	0	0.00	0.00	\N	\N	\N
+38	R790389214	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:52:11.645945	2022-09-13 20:53:01.87249	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	AS_thu3KZ7np_YyT76tGbg1663102331614	\N	\N	1	0	0.00	0.00	\N	\N	\N
+56	R227725774	0.00	0.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:57:57.553134	2022-09-13 20:57:57.553134	USD	\N	\N	0.00	0.00	0.00	spree	0.00	0	\N	\N	f	f	WPsT4tWCYNgQQgn4mpVZuQ1663102677500	\N	\N	1	0	0.00	0.00	\N	\N	\N
+49	R630607112	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:56:00.753713	2022-09-13 20:56:50.362021	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	gt_KsmYAtc-p3YwlWRv1Uw1663102560640	\N	\N	1	0	0.00	0.00	\N	\N	\N
+57	R809829761	0.00	0.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:57:58.409555	2022-09-13 20:57:58.409555	USD	\N	\N	0.00	0.00	0.00	spree	0.00	0	\N	\N	f	f	8hWA5kBCnXxS3sXkPuMa5Q1663102678374	\N	\N	1	0	0.00	0.00	\N	\N	\N
+59	R413562029	0.00	0.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:59:50.013503	2022-09-13 20:59:50.013503	USD	\N	\N	0.00	0.00	0.00	spree	0.00	0	\N	\N	f	f	eIOJZSic0r5wkSFtgEikZA1663102789969	\N	\N	1	0	0.00	0.00	\N	\N	\N
+45	R884650335	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:54:04.725441	2022-09-13 20:54:53.046874	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	-c86IosJv_oWOdDNYqWPwA1663102444692	\N	\N	1	0	0.00	0.00	\N	\N	\N
+60	R481040826	0.00	0.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:59:50.313256	2022-09-13 20:59:50.313256	USD	\N	\N	0.00	0.00	0.00	spree	0.00	0	\N	\N	f	f	WVRrNglck1NF9CIr7oiqbw1663102790270	\N	\N	1	0	0.00	0.00	\N	\N	\N
+61	R228396864	0.00	0.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:59:53.865872	2022-09-13 20:59:53.865872	USD	\N	\N	0.00	0.00	0.00	spree	0.00	0	\N	\N	f	f	ESP1i8ZuJCX2-Hpc86tlsw1663102793842	\N	\N	1	0	0.00	0.00	\N	\N	\N
+62	R105697463	0.00	0.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:59:54.243963	2022-09-13 20:59:54.243963	USD	\N	\N	0.00	0.00	0.00	spree	0.00	0	\N	\N	f	f	G2PioUiSHiJ0nlLj2xR0Uw1663102794213	\N	\N	1	0	0.00	0.00	\N	\N	\N
+44	R428557957	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:54:03.570992	2022-09-13 20:54:53.192396	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	2C16kXLPyEHygUbkJz3Ynw1663102443532	\N	\N	1	0	0.00	0.00	\N	\N	\N
+52	R306200982	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:56:02.207068	2022-09-13 20:56:51.134566	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	_oSakoLE6W3vDIPmqOkfIQ1663102562162	\N	\N	1	0	0.00	0.00	\N	\N	\N
+54	R566260232	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:57:54.219118	2022-09-13 20:58:44.231271	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	Xma4hmQTnewPUayW9KGVvg1663102674167	\N	\N	1	0	0.00	0.00	\N	\N	\N
+50	R754500801	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:56:00.812035	2022-09-13 20:56:50.742709	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	B7EBl-2KLKIB6SkQrEkWtQ1663102560718	\N	\N	1	0	0.00	0.00	\N	\N	\N
+48	R399669374	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:55:59.659483	2022-09-13 20:56:50.865579	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	mSCMrawCu6sEr6_0FCgefw1663102559627	\N	\N	1	0	0.00	0.00	\N	\N	\N
+55	R136591560	24.98	24.98	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:57:57.302156	2022-09-13 20:58:47.238481	USD	\N	\N	0.00	0.00	0.00	spree	0.00	2	\N	\N	f	f	aGVqHvNNHC3tFScoAI91uw1663102677257	\N	\N	1	0	0.00	0.00	\N	\N	\N
+58	R283485621	0.00	0.00	cart	0.00	\N	\N	\N	\N	0.00	\N	\N	\N	\N	2022-09-13 20:59:49.372146	2022-09-13 20:59:49.372146	USD	\N	\N	0.00	0.00	0.00	spree	0.00	0	\N	\N	f	f	b8s-7S3PJJthFjAATl56kg1663102789324	\N	\N	1	0	0.00	0.00	\N	\N	\N
 \.
 
 
@@ -6311,12 +6450,10 @@ COPY public.spree_prices (id, variant_id, amount, currency, deleted_at, created_
 12	12	52.99	USD	2022-09-02 16:28:43.206714	2022-07-12 18:13:21.159619	2022-09-02 16:28:43.206748	\N
 195	195	83.99	USD	2022-09-02 16:28:45.072259	2022-07-12 18:15:26.846472	2022-09-02 16:28:45.072271	\N
 229	229	50.99	USD	2022-09-02 16:28:46.915714	2022-07-12 18:15:31.912612	2022-09-02 16:28:46.915727	\N
-233	233	20.00	USD	\N	2022-09-02 16:33:37.735865	2022-09-02 16:34:17.312081	0.00
 235	235	5.00	USD	\N	2022-09-02 17:19:13.898033	2022-09-02 17:22:37.181036	0.00
 236	236	9.99	USD	\N	2022-09-02 17:31:19.73153	2022-09-02 17:34:10.222761	0.00
 237	237	3.50	USD	\N	2022-09-02 18:30:30.914999	2022-09-02 18:35:26.41429	0.00
 238	238	18.99	USD	\N	2022-09-02 18:38:46.429923	2022-09-02 18:38:58.141292	0.00
-234	234	15.00	USD	\N	2022-09-02 17:09:21.565303	2022-09-02 18:40:57.985008	0.00
 239	239	5.99	USD	\N	2022-09-02 18:41:05.391227	2022-09-02 18:43:46.889711	0.00
 240	240	12.99	USD	\N	2022-09-02 18:42:26.510932	2022-09-02 18:47:09.257375	0.00
 241	241	10.00	USD	\N	2022-09-02 18:44:36.13454	2022-09-02 18:51:13.348137	0.00
@@ -6325,6 +6462,8 @@ COPY public.spree_prices (id, variant_id, amount, currency, deleted_at, created_
 246	246	19.92	USD	\N	2022-09-02 19:01:55.300375	2022-09-02 19:11:43.128342	0.00
 245	245	19.84	USD	\N	2022-09-02 18:59:14.668431	2022-09-02 19:12:38.331011	0.00
 244	244	4.13	USD	\N	2022-09-02 18:57:21.60154	2022-09-02 19:16:00.923316	0.00
+234	234	14.99	USD	\N	2022-09-02 17:09:21.565303	2022-09-08 15:41:32.979885	0.00
+233	233	19.99	USD	\N	2022-09-02 16:33:37.735865	2022-09-08 15:42:11.75696	0.00
 \.
 
 
@@ -6485,20 +6624,20 @@ COPY public.spree_products (id, name, description, available_on, deleted_at, slu
 12	Polo T Shirt	Sed enim ut molestiae nisi impedit. Quibusdam commodi doloremque officiis tempore. Fugiat itaque suscipit eligendi rerum quas ut quaerat optio.	2022-07-12 18:13:21.006743	2022-09-02 16:28:43.369487	1662136123_polo-t-shirt	\N	\N	1	1	2022-07-12 18:13:21.109783	2022-09-02 16:28:43.369046	t	\N	\N	\N	\N
 9	Dotted Shirt	Mollitia magni atque alias eligendi qui cupiditate deleniti eos. Magnam excepturi voluptatum atque harum eaque architecto. Ducimus magnam at labore exercitationem quae. Possimus tempora animi qui atque voluptatem minus ipsum accusamus.	2022-07-12 18:13:19.992871	2022-09-02 16:26:09.007155	1662135969_dotted-shirt	\N	\N	1	1	2022-07-12 18:13:20.098254	2022-09-02 16:26:09.0067	t	\N	\N	\N	\N
 31	Denim Jacket	Omnis totam modi id quia atque quas. Quae ipsa quia nobis suscipit. Autem ut voluptatum quo vel occaecati. Laboriosam voluptatum at aut deleniti minima debitis. Beatae voluptates laborum inventore quibusdam.	2022-07-12 18:13:28.207573	2022-09-02 16:26:10.412079	1662135970_denim-jacket	\N	\N	1	1	2022-07-12 18:13:28.320011	2022-09-02 16:26:10.411643	t	\N	\N	\N	\N
-123	OG Bits	<p>It's hard to beat a classic. The original Datadog logo on a durable vinyl sticker.</p>	2022-09-01 05:00:00	\N	og-bits			\N	1	2022-09-02 18:41:05.372097	2022-09-02 18:43:46.876702	t		\N	\N	\N
-127	Stonk Bits	<p>This sticker is so hot we're legally not allowed to sell it.&nbsp;</p>	\N	\N	stonk-bits			\N	1	2022-09-02 18:52:56.259081	2022-09-02 19:07:04.199776	t		\N	\N	\N
-121	Money Bits	<p>With good breeding and a little bit of luck, a good dog can rise to the top. Show your admiration for the top 1% with this fancy vinly sticker.</p>	2022-09-01 05:00:00	\N	money-bits			\N	1	2022-09-02 18:30:30.895575	2022-09-02 19:03:22.819888	t		\N	\N	\N
-120	Learning Bits	<p>Show that you're the head of the class.</p>	2022-09-01 05:00:00	\N	learning-bits			\N	1	2022-09-02 17:31:19.71234	2022-09-02 19:03:22.819888	t		\N	\N	\N
-122	Octo Bits	<p>Last we saw Bits, he was snorkeling in the Camen Islands. Not sure who this octopus is...&nbsp;</p>	2022-09-01 05:00:00	\N	octo-bits			\N	1	2022-09-02 18:38:46.408336	2022-09-02 18:45:30.506737	t		\N	\N	\N
-129	Sunset Bits	<p>Remember the amazing Miami sunsets of the 80s? Bits sure does. Slap this everlasting vinly sticker on your jet ski and hit the waves!</p>	2022-09-01 05:00:00	\N	sunset-bits			\N	1	2022-09-02 18:59:14.653772	2022-09-02 19:10:47.208215	t		\N	\N	\N
-124	Rainbow Bits	<p>Be as proud as Bits with this colorful vinyl sticker.</p>	2022-09-01 05:00:00	\N	rainbow-bits			\N	1	2022-09-02 18:42:26.495532	2022-09-02 19:03:22.819888	t		\N	\N	\N
-125	Space Bits	<p>Everybody Laikas this vinyl sticker! (We would never send Bits into space alone without having a safe recovery plan.)&nbsp;&nbsp;</p>	2022-09-01 05:00:00	\N	space-bits			\N	1	2022-09-02 18:44:36.118532	2022-09-02 19:03:22.819888	t		\N	\N	\N
-130	Asian American Pacific Islander Heritage Month Bits	<p>Celebrate Asian American Pacific Islander Heritage Month with Bits.</p>	2022-09-01 05:00:00	\N	asian-american-pacific-islander-heritage-month-bits			\N	1	2022-09-02 19:01:55.285004	2022-09-02 19:11:43.114023	t		\N	\N	\N
-128	April 2022 Summit Denver Sticker	<p>The year was 2022 and hundreds of observability nerds converged on Denver to talk metrics, logs, and events. This is the commemorative vinly sticker.</p>	2022-09-01 05:00:00	\N	april-2022-summit-denver-sticker			\N	1	2022-09-02 18:57:21.587803	2022-09-02 19:16:00.908487	t		\N	\N	\N
-118	Bits by Dre	<p>Bits got some dope cans for his fat beats! Show the world that you like dogs that like hip hop with this tasteful vinyl sticker.</p>	2022-09-01 05:00:00	\N	bits-by-dre			\N	1	2022-09-02 17:09:21.541099	2022-09-02 19:03:22.819888	t		\N	\N	\N
-117	Cool Bits	<p>Slap this onto your favorite water bottle and be as cool as Bits.</p>	2022-09-01 05:00:00	\N	cool-bits			\N	1	2022-09-02 16:33:37.715722	2022-09-02 19:03:22.819888	t		\N	\N	\N
-119	Hockey Bits	<p>Just as iconic as Gritty.</p>	2022-09-01 05:00:00	\N	hockey-bits			\N	1	2022-09-02 17:19:13.882198	2022-09-02 19:03:22.819888	t		\N	\N	\N
-126	Student Bits	<p>Show the folks at the cafe that you're as smart (and obedient) as Bits! Lifelong vinyl sticker.</p>	2022-09-01 05:00:00	\N	student-bits			\N	1	2022-09-02 18:50:49.226403	2022-09-02 19:08:03.792742	t		\N	\N	\N
+118	Bits by Dre	<p>Bits got some dope cans for his fat beats! Show the world that you like dogs that like hip hop with this tasteful vinyl sticker.</p>	2022-09-01 05:00:00	\N	bits-by-dre			\N	1	2022-09-02 17:09:21.541099	2022-09-08 15:41:32.978583	t		\N	\N	\N
+117	Cool Bits	<p>Slap this onto your favorite water bottle and be as cool as Bits.</p>	2022-09-01 05:00:00	\N	cool-bits			\N	1	2022-09-02 16:33:37.715722	2022-09-08 15:42:11.755393	t		\N	\N	\N
+119	Hockey Bits	<p>Just as iconic as Gritty.</p>	2022-09-01 05:00:00	\N	hockey-bits			\N	1	2022-09-02 17:19:13.882198	2022-09-08 15:42:47.62901	t		\N	\N	\N
+120	Learning Bits	<p>Show that you're the head of the class.</p>	2022-09-01 05:00:00	\N	learning-bits			\N	1	2022-09-02 17:31:19.71234	2022-09-08 15:43:22.645298	t		\N	\N	\N
+121	Money Bits	<p>With good breeding and a little bit of luck, a good dog can rise to the top. Show your admiration for the top 1% with this fancy vinyl sticker.</p>	2022-09-01 05:00:00	\N	money-bits			\N	1	2022-09-02 18:30:30.895575	2022-09-08 15:45:34.868417	t		\N	\N	\N
+122	Octo Bits	<p>Last we saw Bits, he was snorkeling in the Cayman Islands. Not sure who this octopus is...&nbsp;</p>	2022-09-01 05:00:00	\N	octo-bits			\N	1	2022-09-02 18:38:46.408336	2022-09-08 15:47:28.939313	t		\N	\N	\N
+123	OG Bits	<p>It's hard to beat a classic. The original Datadog logo on a durable vinyl sticker.</p>	2022-09-01 05:00:00	\N	og-bits			\N	1	2022-09-02 18:41:05.372097	2022-09-13 20:55:14.22708	t		\N	\N	\N
+124	Rainbow Bits	<p>Be as proud as Bits with this colorful vinyl sticker.</p>	2022-09-01 05:00:00	\N	rainbow-bits			\N	1	2022-09-02 18:42:26.495532	2022-09-13 20:56:26.359845	t		\N	\N	\N
+125	Space Bits	<p>Everybody Laikas this vinyl sticker! (We would never send Bits into space alone without having a safe recovery plan.)&nbsp;&nbsp;</p>	2022-09-01 05:00:00	\N	space-bits			\N	1	2022-09-02 18:44:36.118532	2022-09-13 20:57:51.366054	t		\N	\N	\N
+127	Stonk Bits	<p>This sticker is so hot we're legally not allowed to sell it.&nbsp;</p>	\N	\N	stonk-bits			\N	1	2022-09-02 18:52:56.259081	2022-09-13 20:58:02.761831	t		\N	\N	\N
+126	Student Bits	<p>Show the folks at the cafe that you're as smart (and obedient) as Bits! Lifelong vinyl sticker.</p>	2022-09-01 05:00:00	\N	student-bits			\N	1	2022-09-02 18:50:49.226403	2022-09-13 20:58:22.820602	t		\N	\N	\N
+129	Sunset Bits	<p>Remember the amazing Miami sunsets of the 80s? Bits sure does. Slap this everlasting vinly sticker on your jet ski and hit the waves!</p>	2022-09-01 05:00:00	\N	sunset-bits			\N	1	2022-09-02 18:59:14.653772	2022-09-13 20:58:36.687058	t		\N	\N	\N
+128	April 2022 Summit Denver Sticker	<p>The year was 2022 and hundreds of observability folks converged on Denver to talk metrics, logs, and events. This is the commemorative vinyl sticker.</p>	2022-09-01 05:00:00	\N	april-2022-summit-denver-sticker			\N	1	2022-09-02 18:57:21.587803	2022-09-13 20:58:51.572416	t		\N	\N	\N
+130	AAPI Heritage Month Bits	<p>Celebrate Asian American Pacific Islander Heritage Month with Bits!</p>	2022-09-01 05:00:00	\N	aapi-heritage-month-bits			\N	1	2022-09-02 19:01:55.285004	2022-09-13 20:59:13.204277	t		\N	\N	\N
 \.
 
 
@@ -6877,6 +7016,45 @@ COPY public.spree_products_stores (id, product_id, store_id, created_at, updated
 --
 
 COPY public.spree_products_taxons (id, product_id, taxon_id, "position", created_at, updated_at) FROM stdin;
+443	128	20	1	2022-09-08 15:37:36.94075	2022-09-08 15:37:36.94075
+444	128	28	1	2022-09-08 15:37:36.960267	2022-09-08 15:37:36.960267
+445	128	29	1	2022-09-08 15:38:03.559114	2022-09-08 15:38:03.559114
+446	130	29	2	2022-09-08 15:40:49.166807	2022-09-08 15:40:49.166807
+447	130	20	2	2022-09-08 15:40:49.183751	2022-09-08 15:40:49.183751
+448	130	19	1	2022-09-08 15:40:49.197238	2022-09-08 15:40:49.197238
+449	130	28	2	2022-09-08 15:40:49.212418	2022-09-08 15:40:49.212418
+450	118	29	3	2022-09-08 15:41:32.876813	2022-09-08 15:41:32.876813
+451	118	28	3	2022-09-08 15:41:32.893066	2022-09-08 15:41:32.893066
+452	118	18	1	2022-09-08 15:41:32.907083	2022-09-08 15:41:32.907083
+453	117	29	4	2022-09-08 15:42:11.641904	2022-09-08 15:42:11.641904
+454	117	28	4	2022-09-08 15:42:11.659588	2022-09-08 15:42:11.659588
+455	119	29	5	2022-09-08 15:42:47.535023	2022-09-08 15:42:47.535023
+456	119	19	2	2022-09-08 15:42:47.550984	2022-09-08 15:42:47.550984
+457	119	28	5	2022-09-08 15:42:47.5661	2022-09-08 15:42:47.5661
+458	120	28	6	2022-09-08 15:43:22.546437	2022-09-08 15:43:22.546437
+459	120	29	6	2022-09-08 15:43:22.561934	2022-09-08 15:43:22.561934
+460	120	19	3	2022-09-08 15:43:22.576769	2022-09-08 15:43:22.576769
+461	121	29	7	2022-09-08 15:45:34.769867	2022-09-08 15:45:34.769867
+462	121	28	7	2022-09-08 15:45:34.785124	2022-09-08 15:45:34.785124
+463	123	29	8	2022-09-08 15:46:12.569638	2022-09-08 15:46:12.569638
+464	123	28	8	2022-09-08 15:46:12.585329	2022-09-08 15:46:12.585329
+465	123	19	4	2022-09-08 15:46:12.601459	2022-09-08 15:46:12.601459
+466	122	28	9	2022-09-08 15:47:28.832643	2022-09-08 15:47:28.832643
+467	122	29	9	2022-09-08 15:47:28.850399	2022-09-08 15:47:28.850399
+468	124	29	10	2022-09-08 15:48:04.694272	2022-09-08 15:48:04.694272
+469	124	28	10	2022-09-08 15:48:04.714955	2022-09-08 15:48:04.714955
+470	124	19	5	2022-09-08 15:48:04.732727	2022-09-08 15:48:04.732727
+471	125	29	11	2022-09-08 15:50:11.593253	2022-09-08 15:50:11.593253
+472	125	18	2	2022-09-08 15:50:11.618906	2022-09-08 15:50:11.618906
+473	125	28	11	2022-09-08 15:50:11.636523	2022-09-08 15:50:11.636523
+474	127	29	12	2022-09-08 15:50:36.842369	2022-09-08 15:50:36.842369
+475	127	28	12	2022-09-08 15:50:36.858573	2022-09-08 15:50:36.858573
+476	126	28	13	2022-09-08 15:51:12.200937	2022-09-08 15:51:12.200937
+477	126	29	13	2022-09-08 15:51:12.216067	2022-09-08 15:51:12.216067
+478	126	18	3	2022-09-08 15:51:12.231002	2022-09-08 15:51:12.231002
+479	129	18	4	2022-09-08 15:52:54.916087	2022-09-08 15:52:54.916087
+480	129	29	14	2022-09-08 15:52:54.933648	2022-09-08 15:52:54.933648
+481	129	28	14	2022-09-08 15:52:54.954857	2022-09-08 15:52:54.954857
 \.
 
 
@@ -8260,7 +8438,8 @@ COPY public.spree_tax_rates (id, amount, zone_id, tax_category_id, included_in_p
 --
 
 COPY public.spree_taxonomies (id, name, created_at, updated_at, "position", store_id, public_metadata, private_metadata) FROM stdin;
-1	Categories	2022-07-12 18:13:13.006568	2022-09-02 16:14:58.601081	1	1	\N	\N
+1	Categories	2022-07-12 18:13:13.006568	2022-09-13 20:59:13.239792	1	1	\N	\N
+2	Brands	2022-09-08 15:35:27.672175	2022-09-13 20:59:13.239792	2	1	\N	\N
 \.
 
 
@@ -8269,32 +8448,13 @@ COPY public.spree_taxonomies (id, name, created_at, updated_at, "position", stor
 --
 
 COPY public.spree_taxons (id, parent_id, "position", name, permalink, taxonomy_id, lft, rgt, description, created_at, updated_at, meta_title, meta_description, meta_keywords, depth, hide_from_nav, public_metadata, private_metadata) FROM stdin;
-22	1	0	Summer Sale	categories/summer-sale	1	42	43	\N	2022-07-12 18:13:16.467229	2022-07-12 18:15:52.503735	\N	\N	\N	1	f	\N	\N
-6	2	0	T-shirts	categories/men/t-shirts	1	5	6	\N	2022-07-12 18:13:14.772583	2022-07-12 18:21:47.451992	\N	\N	\N	2	f	\N	\N
-14	3	0	Jackets and Coats	categories/women/jackets-and-coats	1	23	24	\N	2022-07-12 18:13:15.638544	2022-07-12 18:15:50.033833	\N	\N	\N	2	f	\N	\N
-16	4	0	Sweatshirts	categories/sportswear/sweatshirts	1	29	30	\N	2022-07-12 18:13:15.857299	2022-07-12 18:15:52.037445	\N	\N	\N	2	f	\N	\N
-8	2	0	Jackets and Coats	categories/men/jackets-and-coats	1	9	10	\N	2022-07-12 18:13:14.992576	2022-07-12 18:15:39.819639	\N	\N	\N	2	f	\N	\N
-12	3	0	Sweaters	categories/women/sweaters	1	19	20	\N	2022-07-12 18:13:15.426223	2022-07-12 18:15:46.679964	\N	\N	\N	2	f	\N	\N
-17	4	0	Pants	categories/sportswear/pants	1	31	32	\N	2022-07-12 18:13:15.965595	2022-07-12 18:15:52.503735	\N	\N	\N	2	f	\N	\N
-13	3	0	Tops and T-shirts	categories/women/tops-and-t-shirts	1	21	22	\N	2022-07-12 18:13:15.531105	2022-07-12 18:15:48.176793	\N	\N	\N	2	f	\N	\N
-15	4	0	Tops	categories/sportswear/tops	1	27	28	\N	2022-07-12 18:13:15.744995	2022-07-12 18:15:51.273441	\N	\N	\N	2	f	\N	\N
-7	2	0	Sweaters	categories/men/sweaters	1	7	8	\N	2022-07-12 18:13:14.88154	2022-07-12 18:15:38.186655	\N	\N	\N	2	f	\N	\N
-11	3	0	Shirts and Blouses	categories/women/shirts-and-blouses	1	17	18	\N	2022-07-12 18:13:15.31452	2022-07-12 18:15:45.485191	\N	\N	\N	2	f	\N	\N
-20	1	0	Trending	categories/trending	1	38	39	\N	2022-07-12 18:13:16.262337	2022-07-12 18:15:52.348914	\N	\N	\N	1	f	\N	\N
-4	1	0	Sportswear	categories/sportswear	1	26	33	\N	2022-07-12 18:13:14.507804	2022-07-12 18:15:52.503735	\N	\N	\N	1	f	\N	\N
-23	1	0	New Collection	categories/new-collection	1	44	47	\N	2022-07-12 18:13:16.563205	2022-07-12 18:21:47.451992	\N	\N	\N	1	f	\N	\N
-24	23	0	Summer 2022	categories/new-collection/summer-2022	1	45	46	\N	2022-07-12 18:13:16.662554	2022-07-12 18:21:47.451992	\N	\N	\N	2	f	\N	\N
-21	1	0	Streetstyle	categories/streetstyle	1	40	41	\N	2022-07-12 18:13:16.366224	2022-07-12 18:21:47.451992	\N	\N	\N	1	f	\N	\N
-3	1	0	Women	categories/women	1	12	25	\N	2022-07-12 18:13:14.257896	2022-07-12 18:15:50.033833	\N	\N	\N	1	f	\N	\N
-9	3	0	Skirts	categories/women/skirts	1	13	14	\N	2022-07-12 18:13:15.099371	2022-07-12 18:15:41.418587	\N	\N	\N	2	f	\N	\N
-10	3	0	Dresses	categories/women/dresses	1	15	16	\N	2022-07-12 18:13:15.206905	2022-07-12 18:15:43.444713	\N	\N	\N	2	f	\N	\N
-18	1	0	New	categories/new	1	34	35	\N	2022-07-12 18:13:16.06433	2022-09-02 16:12:47.558836	\N	\N	\N	1	f	\N	\N
-19	1	0	Bestsellers	categories/bestsellers	1	36	37	\N	2022-07-12 18:13:16.160785	2022-09-02 16:14:58.596125	\N	\N	\N	1	f	\N	\N
-2	1	0	Men	categories/men	1	2	11	\N	2022-07-12 18:13:14.066114	2022-09-02 16:14:58.596125	\N	\N	\N	1	f	\N	\N
-5	2	0	Shirts	categories/men/shirts	1	3	4	\N	2022-07-12 18:13:14.669299	2022-09-02 16:14:58.596125	\N	\N	\N	2	f	\N	\N
-26	25	0	30% Off	categories/special-offers/30-percent-off	1	49	50	\N	2022-07-12 18:13:16.870063	2022-09-02 16:14:58.596125	\N	\N	\N	2	f	\N	\N
-25	1	0	Special Offers	categories/special-offers	1	48	51	\N	2022-07-12 18:13:16.768627	2022-09-02 16:14:58.596125	\N	\N	\N	1	f	\N	\N
-1	\N	0	Categories	categories	1	1	52	\N	2022-07-12 18:13:13.056398	2022-09-02 16:14:58.596125	\N	\N	\N	0	f	\N	\N
+18	1	0	New	categories/new	1	2	3	\N	2022-07-12 18:13:16.06433	2022-09-13 20:58:36.728265	\N	\N	\N	1	f	\N	\N
+19	1	0	Bestsellers	categories/bestsellers	1	4	5	\N	2022-07-12 18:13:16.160785	2022-09-13 20:59:13.235444	\N	\N	\N	1	f	\N	\N
+20	1	0	Events	categories/events	1	6	7		2022-07-12 18:13:16.262337	2022-09-13 20:59:13.235444				1	f	\N	\N
+29	1	0	Stickers	categories/stickers	1	8	9	\N	2022-09-08 15:37:54.624775	2022-09-13 20:59:13.235444	\N	\N	\N	1	f	\N	\N
+1	\N	0	Categories	categories	1	1	10	\N	2022-07-12 18:13:13.056398	2022-09-13 20:59:13.235444	\N	\N	\N	0	f	\N	\N
+28	27	0	Datadog	brands/datadog	2	12	13		2022-09-08 15:35:33.979137	2022-09-13 20:59:13.235444				1	f	\N	\N
+27	\N	0	Brands	brands	2	11	14	\N	2022-09-08 15:35:27.70656	2022-09-13 20:59:13.235444	\N	\N	\N	0	f	\N	\N
 \.
 
 
@@ -8311,8 +8471,8 @@ COPY public.spree_trackers (id, analytics_id, active, created_at, updated_at, en
 --
 
 COPY public.spree_users (id, encrypted_password, password_salt, email, remember_token, persistence_token, reset_password_token, perishable_token, sign_in_count, failed_attempts, last_request_at, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, login, ship_address_id, bill_address_id, authentication_token, unlock_token, locked_at, reset_password_sent_at, created_at, updated_at, public_metadata, private_metadata, spree_api_key, remember_created_at, deleted_at, confirmation_token, confirmed_at, confirmation_sent_at) FROM stdin;
-2	1cf82576bc3b69691fbb42eb91c9aef961eeb2a387aa8a095c7fc4f2899a85ccd9ce35e69c06ef5db597d08b48a4fc341183b9fc647acd1c5491247ffe9dc007	gu9U4KcwmLgNf1y3ySZ6	admin@storedog.com	\N	\N	\N	\N	2	0	\N	2022-09-02 18:25:40.435296	2022-09-02 16:11:18.18607	130.211.45.14	130.211.45.14	admin@storedog.com	\N	\N	\N	\N	\N	\N	2022-09-02 14:43:42.061842	2022-09-02 18:25:40.436286	\N	\N	\N	\N	\N	\N	\N	\N
 1	017c17daa9432dadaa5e366efec930442e224fa0bce40875d2abbb4c646ad49634b75e54e463d7d8eb7b5589f34f4bb441eb23a93c9595fea90f77ccbc0187db	Z_xHp1AnU2Pym9r9i6Eo	spree@example.com	\N	\N	\N	\N	2	0	\N	2022-09-02 18:32:11.429383	2022-07-12 18:19:30.851865	130.211.45.14	192.168.112.1	spree@example.com	\N	\N	\N	\N	\N	\N	2022-07-12 18:10:57.963932	2022-09-02 18:32:11.42984	\N	\N	f1482a3e59937d82768703f510481ce883ee7a147ecee0f7	\N	\N	\N	\N	\N
+2	1cf82576bc3b69691fbb42eb91c9aef961eeb2a387aa8a095c7fc4f2899a85ccd9ce35e69c06ef5db597d08b48a4fc341183b9fc647acd1c5491247ffe9dc007	gu9U4KcwmLgNf1y3ySZ6	admin@storedog.com	\N	\N	\N	\N	3	0	\N	2022-09-13 20:48:56.222491	2022-09-02 18:25:40.435296	130.211.45.14	130.211.45.14	admin@storedog.com	\N	\N	\N	\N	\N	\N	2022-09-02 14:43:42.061842	2022-09-13 20:48:56.223394	\N	\N	\N	\N	\N	\N	\N	\N
 \.
 
 
@@ -8553,20 +8713,20 @@ COPY public.spree_variants (id, sku, weight, height, width, depth, deleted_at, i
 169	Dresses_printedslit-sleevesdress_76.99_light_blue_mini_xs	0.00	\N	\N	\N	2022-09-02 16:28:38.713672	f	53	76.99	2	USD	t	1	2022-09-02 16:28:38.652981	\N	2022-07-12 18:15:21.921309	\N	\N
 122	Shirts_printedshortsleeveshirt_74.99_brown_xs	0.00	\N	\N	\N	2022-09-02 16:28:39.410274	f	6	74.99	2	USD	t	1	2022-09-02 16:28:39.340227	\N	2022-07-12 18:15:13.800204	\N	\N
 168	Dresses_printeddress_83.99_light_blue_mini_xs	0.00	\N	\N	\N	2022-09-02 16:28:42.561033	f	52	83.99	2	USD	t	1	2022-09-02 16:28:42.490251	\N	2022-07-12 18:15:21.714444	\N	\N
-233		0.00	\N	\N	\N	\N	t	117	\N	1	USD	t	\N	2022-09-02 17:04:42.631744	\N	2022-09-02 16:33:37.722029	\N	\N
-234		0.00	\N	\N	\N	\N	t	118	\N	1	USD	t	\N	2022-09-02 17:12:43.596177	\N	2022-09-02 17:09:21.55014	\N	\N
-235		0.00	\N	\N	\N	\N	t	119	\N	1	USD	t	\N	2022-09-02 17:30:06.222577	\N	2022-09-02 17:19:13.887876	\N	\N
-236		0.00	\N	\N	\N	\N	t	120	\N	1	USD	t	\N	2022-09-02 17:36:52.454329	\N	2022-09-02 17:31:19.718131	\N	\N
-237		0.00	\N	\N	\N	\N	t	121	\N	1	USD	t	\N	2022-09-02 18:31:39.713969	\N	2022-09-02 18:30:30.901574	\N	\N
-238		0.00	\N	\N	\N	\N	t	122	\N	1	USD	t	\N	2022-09-02 18:40:16.091291	\N	2022-09-02 18:38:46.417233	\N	\N
-239		0.00	\N	\N	\N	\N	t	123	\N	1	USD	t	\N	2022-09-02 18:41:56.095036	\N	2022-09-02 18:41:05.37736	\N	\N
-240		0.00	\N	\N	\N	\N	t	124	\N	1	USD	t	\N	2022-09-02 18:43:52.078449	\N	2022-09-02 18:42:26.500871	\N	\N
-241		0.00	\N	\N	\N	\N	t	125	\N	1	USD	t	\N	2022-09-02 18:46:24.088247	\N	2022-09-02 18:44:36.12419	\N	\N
-242		0.00	\N	\N	\N	\N	t	126	\N	1	USD	t	\N	2022-09-02 18:51:38.855567	\N	2022-09-02 18:50:49.231267	\N	\N
-243		0.00	\N	\N	\N	\N	t	127	\N	1	USD	t	\N	2022-09-02 18:54:26.711377	\N	2022-09-02 18:52:56.264637	\N	\N
-244		0.00	\N	\N	\N	\N	t	128	\N	1	USD	t	\N	2022-09-02 18:58:24.398368	\N	2022-09-02 18:57:21.592453	\N	\N
-245		0.00	\N	\N	\N	\N	t	129	\N	1	USD	t	\N	2022-09-02 19:00:46.253598	\N	2022-09-02 18:59:14.658464	\N	\N
-246		0.00	\N	\N	\N	\N	t	130	\N	1	USD	t	\N	2022-09-02 19:03:49.145208	\N	2022-09-02 19:01:55.290267	\N	\N
+234	dd_100_03	0.00	\N	\N	\N	\N	t	118	1.14	1	USD	t	\N	2022-09-08 15:41:32.974036	\N	2022-09-02 17:09:21.55014	\N	\N
+233	dd_100_04	0.00	\N	\N	\N	\N	t	117	2.75	1	USD	t	\N	2022-09-08 15:42:11.748562	\N	2022-09-02 16:33:37.722029	\N	\N
+235	dd_100_05	0.00	\N	\N	\N	\N	t	119	0.99	1	USD	t	\N	2022-09-08 15:42:47.623985	\N	2022-09-02 17:19:13.887876	\N	\N
+236	dd_100_06	0.00	\N	\N	\N	\N	t	120	1.10	1	USD	t	\N	2022-09-08 15:43:22.640705	\N	2022-09-02 17:31:19.718131	\N	\N
+237	dd_100_07	0.00	\N	\N	\N	\N	t	121	1.60	1	USD	t	\N	2022-09-08 15:45:34.863362	\N	2022-09-02 18:30:30.901574	\N	\N
+238	dd_100_09	0.00	\N	\N	\N	\N	t	122	1.99	1	USD	t	\N	2022-09-08 15:47:28.932664	\N	2022-09-02 18:38:46.417233	\N	\N
+239	dd_100_08	0.00	\N	\N	\N	\N	t	123	0.49	1	USD	t	\N	2022-09-13 20:55:14.219926	\N	2022-09-02 18:41:05.37736	\N	\N
+240	dd_100_10	0.00	\N	\N	\N	\N	t	124	0.99	1	USD	t	\N	2022-09-13 20:56:26.354157	\N	2022-09-02 18:42:26.500871	\N	\N
+241	dd_100_11	0.00	\N	\N	\N	\N	t	125	1.30	1	USD	t	\N	2022-09-13 20:57:51.359577	\N	2022-09-02 18:44:36.12419	\N	\N
+243	dd_100_12	0.00	\N	\N	\N	\N	t	127	3.10	1	USD	t	\N	2022-09-13 20:58:02.754162	\N	2022-09-02 18:52:56.264637	\N	\N
+242	dd_100_13	0.00	\N	\N	\N	\N	t	126	1.22	1	USD	t	\N	2022-09-13 20:58:22.814647	\N	2022-09-02 18:50:49.231267	\N	\N
+245	dd_100_14	0.00	\N	\N	\N	\N	t	129	0.99	1	USD	t	\N	2022-09-13 20:58:36.680604	\N	2022-09-02 18:59:14.658464	\N	\N
+244	dd_100_01	0.00	\N	\N	\N	\N	t	128	1.10	1	USD	t	\N	2022-09-13 20:58:51.567057	\N	2022-09-02 18:57:21.592453	\N	\N
+246	dd_100_02	0.00	\N	\N	\N	\N	t	130	1.36	1	USD	t	\N	2022-09-13 20:59:13.198541	\N	2022-09-02 19:01:55.290267	\N	\N
 \.
 
 
@@ -8755,28 +8915,28 @@ SELECT pg_catalog.setval('public.action_text_rich_texts_id_seq', 1, false);
 -- Name: active_storage_attachments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.active_storage_attachments_id_seq', 69, true);
+SELECT pg_catalog.setval('public.active_storage_attachments_id_seq', 106, true);
 
 
 --
 -- Name: active_storage_blobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.active_storage_blobs_id_seq', 69, true);
+SELECT pg_catalog.setval('public.active_storage_blobs_id_seq', 106, true);
 
 
 --
 -- Name: active_storage_variant_records_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.active_storage_variant_records_id_seq', 52, true);
+SELECT pg_catalog.setval('public.active_storage_variant_records_id_seq', 81, true);
 
 
 --
 -- Name: friendly_id_slugs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.friendly_id_slugs_id_seq', 156, true);
+SELECT pg_catalog.setval('public.friendly_id_slugs_id_seq', 161, true);
 
 
 --
@@ -8881,7 +9041,7 @@ SELECT pg_catalog.setval('public.spree_inventory_units_id_seq', 2, true);
 -- Name: spree_line_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.spree_line_items_id_seq', 4, true);
+SELECT pg_catalog.setval('public.spree_line_items_id_seq', 85, true);
 
 
 --
@@ -8965,7 +9125,7 @@ SELECT pg_catalog.setval('public.spree_order_promotions_id_seq', 1, false);
 -- Name: spree_orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.spree_orders_id_seq', 4, true);
+SELECT pg_catalog.setval('public.spree_orders_id_seq', 62, true);
 
 
 --
@@ -9042,7 +9202,7 @@ SELECT pg_catalog.setval('public.spree_products_stores_id_seq', 362, true);
 -- Name: spree_products_taxons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.spree_products_taxons_id_seq', 442, true);
+SELECT pg_catalog.setval('public.spree_products_taxons_id_seq', 481, true);
 
 
 --
@@ -9336,14 +9496,14 @@ SELECT pg_catalog.setval('public.spree_tax_rates_id_seq', 1, true);
 -- Name: spree_taxonomies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.spree_taxonomies_id_seq', 1, true);
+SELECT pg_catalog.setval('public.spree_taxonomies_id_seq', 2, true);
 
 
 --
 -- Name: spree_taxons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.spree_taxons_id_seq', 26, true);
+SELECT pg_catalog.setval('public.spree_taxons_id_seq', 29, true);
 
 
 --
@@ -12350,4 +12510,3 @@ ALTER TABLE ONLY public.spree_oauth_access_tokens
 -- PostgreSQL database dump complete
 --
 
-pg_dump: error: connection to database "spree_starter_test" failed: FATAL:  database "spree_starter_test" does not exist

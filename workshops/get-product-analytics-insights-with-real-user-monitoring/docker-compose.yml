@@ -8,8 +8,9 @@ services:
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS='{"my.custom.label.team":"team"}'
-      - DD_TAGS='${DD_TAGS-env:product-analytics-workshop}'
+      - DD_TAGS='${DD_TAGS-env:storedog-2-0-demo}'
       - DD_HOSTNAME=${DD_HOSTNAME-lab-host}
+      - DD_HOSTNAME
       - DD_APM_NON_LOCAL_TRAFFIC=true
     ports:
       - 127.0.0.1:8126:8126/tcp
@@ -68,14 +69,14 @@ services:
       - discounts
       - advertisements
     labels:
-      com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-frontend"}]'
+      com.datadoghq.ad.logs: '[{"source": "nodejs", "service": "store-frontend"}]'
       com.datadoghq.tags.env: 'dd101-dev'
       com.datadoghq.tags.service: 'store-frontend'
       com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'frontend'
   backend:
-    image: public.ecr.aws/x2b9z2t7/storedog/backend:1.0.2
-    # command: bash -c "rm -rf tmp/pids/server.pid && yarn install && yarn build && bundle install && bundle exec rails s -b 0.0.0.0 -p 4000"
+    image: public.ecr.aws/x2b9z2t7/storedog/backend:1.0.1
+    command: bash -c "rm -rf tmp/pids/server.pid && yarn install && yarn build && bundle install && bundle exec rails s -b 0.0.0.0 -p 4000"
     depends_on:
       - 'db'
       - 'redis'
@@ -94,6 +95,12 @@ services:
       - DISABLE_SPRING=1
       - NEXT_PUBLIC_SPREE_API_HOST
       - NEXT_PUBLIC_SPREE_CLIENT_HOST
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-backend"}]'
+      com.datadoghq.tags.env: 'storedog-2-0-demo'
+      com.datadoghq.tags.service: 'store-backend'
+      com.datadoghq.tags.version: '2.2.0'
+      my.custom.label.team: 'backend'
   worker:
     image: public.ecr.aws/x2b9z2t7/storedog/backend:1.0.1
     command: bash -c "bundle install && bundle exec sidekiq -C config/sidekiq.yml"
@@ -113,6 +120,12 @@ services:
       - DISABLE_SPRING=1
       - NEXT_PUBLIC_SPREE_API_HOST
       - NEXT_PUBLIC_SPREE_CLIENT_HOST
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-backend-worker"}]'
+      com.datadoghq.tags.env: 'storedog-2-0-demo'
+      com.datadoghq.tags.service: 'store-backend-worker'
+      com.datadoghq.tags.version: '2.2.0'
+      my.custom.label.team: 'backend'
   advertisements:
     image: 'public.ecr.aws/x2b9z2t7/storedog/ads:1.0.1'
     environment:
@@ -176,10 +189,19 @@ services:
     image: redis:6.2-alpine
     volumes:
       - '/root/redis:/data'
+    labels:
+      com.datadoghq.tags.env: 'storedog-2-0-demo'
+      com.datadoghq.tags.service: 'redis'
+      com.datadoghq.tags.version: '6.2'
+      my.custom.label.team: 'database'
+      com.datadoghq.ad.check_names: '["redisdb"]'
+      com.datadoghq.ad.init_configs: '[{}]'
+      com.datadoghq.ad.instances: '[{"host":"%%host%%", "port":6379}}]'
+      com.datadoghq.ad.logs: '[{"source": "redis", "service": "redis"}]'
   puppeteer:
     image: buildkite/puppeteer:10.0.0
     volumes:
-      - /root/puppeteer-checkout-funnel.js:/puppeteer.js
+      - /root/puppeteer.js:/puppeteer.js
       - /root/puppeteer.sh:/puppeteer.sh
     environment:
       - STOREDOG_URL

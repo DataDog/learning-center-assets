@@ -11,6 +11,7 @@
   }
 
   & .header .name span,
+  & .header .name .link,
   & .header .price,
   & .wishlistButton {
     @apply bg-secondary text-secondary;
@@ -29,7 +30,8 @@
   letter-spacing: 0.4px;
 }
 
-.header .name span {
+.header .name span,
+.header .name .link {
   @apply py-1 px-3 bg-primary text-primary font-bold
   transition-colors ease-in-out duration-500;
   font-size: inherit;
