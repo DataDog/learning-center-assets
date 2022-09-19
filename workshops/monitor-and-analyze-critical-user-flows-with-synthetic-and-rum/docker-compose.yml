@@ -40,7 +40,7 @@ services:
       com.datadoghq.ad.logs: '[{"source": "python", "service": "store-discounts"}]'
       com.datadoghq.tags.env: 'monitor-user-flows-workshop'
       com.datadoghq.tags.service: 'store-discounts'
-      com.datadoghq.tags.version: '2.2.0'
+      com.datadoghq.tags.version: '1.0.1'
       my.custom.label.team: 'discounts'
   frontend:
     image: public.ecr.aws/x2b9z2t7/storedog/frontend:1.0.1
@@ -71,7 +71,7 @@ services:
       com.datadoghq.ad.logs: '[{"source": "nodejs", "service": "store-frontend"}]'
       com.datadoghq.tags.env: 'monitor-user-flows-workshop'
       com.datadoghq.tags.service: 'store-frontend'
-      com.datadoghq.tags.version: '2.2.0'
+      com.datadoghq.tags.version: '1.0.1'
       my.custom.label.team: 'frontend'
   backend:
     image: public.ecr.aws/x2b9z2t7/storedog/backend:1.0.1
@@ -94,6 +94,12 @@ services:
       - DISABLE_SPRING=1
       - NEXT_PUBLIC_SPREE_API_HOST
       - NEXT_PUBLIC_SPREE_CLIENT_HOST
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-backend"}]'
+      com.datadoghq.tags.env: 'monitor-user-flows-workshop'
+      com.datadoghq.tags.service: 'store-backend'
+      com.datadoghq.tags.version: '1.0.1'
+      my.custom.label.team: 'backend'
   worker:
     image: public.ecr.aws/x2b9z2t7/storedog/backend:1.0.1
     command: bash -c "bundle install && bundle exec sidekiq -C config/sidekiq.yml"
@@ -113,6 +119,12 @@ services:
       - DISABLE_SPRING=1
       - NEXT_PUBLIC_SPREE_API_HOST
       - NEXT_PUBLIC_SPREE_CLIENT_HOST
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-backend-worker"}]'
+      com.datadoghq.tags.env: 'monitor-user-flows-workshop'
+      com.datadoghq.tags.service: 'store-backend-worker'
+      com.datadoghq.tags.version: '1.0.1'
+      my.custom.label.team: 'backend'
   advertisements:
     image: 'public.ecr.aws/x2b9z2t7/storedog/ads:1.0.1'
     environment:
