@@ -7,7 +7,7 @@ fi
 
 DDUSERINFO=$(curl -sX POST -H "Content-Type: application/json" -d '{"orgId": "'"$1"'"}' "https://ruspgpghi7.execute-api.us-east-2.amazonaws.com/dev/create-org-user")
 
-echo "$DDUSERINFO" | jq
+# echo "$DDUSERINFO" | jq
 
 if [ "$(echo "$DDUSERINFO"|jq -r .message)" == "Error creating user" ]; then
   echo "Error creating user"
