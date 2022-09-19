@@ -25,7 +25,7 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
       - POSTGRES_HOST=db
-      - DD_ENV=synthetic-rum-workshop
+      - DD_ENV=monitor-user-flows-workshop
       - DD_SERVICE=store-discounts
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
@@ -38,7 +38,7 @@ services:
       - db
     labels:
       com.datadoghq.ad.logs: '[{"source": "python", "service": "store-discounts"}]'
-      com.datadoghq.tags.env: 'synthetic-rum-workshop'
+      com.datadoghq.tags.env: 'monitor-user-flows-workshop'
       com.datadoghq.tags.service: 'store-discounts'
       com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'discounts'
@@ -54,7 +54,7 @@ services:
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
       - DD_TRACE_ANALYTICS_ENABLED=true
-      - DD_ENV=synthetic-rum-workshop
+      - DD_ENV=monitor-user-flows-workshop
       - DD_SERVICE=store-frontend
       - DD_SITE=datadoghq.com
       - DD_VERSION
@@ -69,7 +69,7 @@ services:
       - advertisements
     labels:
       com.datadoghq.ad.logs: '[{"source": "nodejs", "service": "store-frontend"}]'
-      com.datadoghq.tags.env: 'synthetic-rum-workshop'
+      com.datadoghq.tags.env: 'monitor-user-flows-workshop'
       com.datadoghq.tags.service: 'store-frontend'
       com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'frontend'
@@ -121,7 +121,7 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
       - POSTGRES_HOST=db
-      - DD_ENV=synthetic-rum-workshop
+      - DD_ENV=monitor-user-flows-workshop
       - DD_SERVICE=store-ads
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
@@ -136,7 +136,7 @@ services:
       - /root/lab/storedog-backend/services/ads/ads.py:/app/ads.py
     labels:
       com.datadoghq.ad.logs: '[{"source": "python", "service": "store-ads"}]'
-      com.datadoghq.tags.env: 'synthetic-rum-workshop'
+      com.datadoghq.tags.env: 'monitor-user-flows-workshop'
       com.datadoghq.tags.service: 'store-ads'
       com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'advertisements'
@@ -164,7 +164,7 @@ services:
     ports:
       - '5432:5432'
     labels:
-      com.datadoghq.tags.env: 'synthetic-rum-workshop'
+      com.datadoghq.tags.env: 'monitor-user-flows-workshop'
       com.datadoghq.tags.service: 'database'
       com.datadoghq.tags.version: '13'
       my.custom.label.team: 'database'
@@ -179,7 +179,7 @@ services:
     volumes:
       - '/root/redis:/data'
     labels:
-      com.datadoghq.tags.env: 'synthetic-rum-workshop'
+      com.datadoghq.tags.env: 'monitor-user-flows-workshop'
       com.datadoghq.tags.service: 'redis'
       com.datadoghq.tags.version: '6.2'
       my.custom.label.team: 'database'
