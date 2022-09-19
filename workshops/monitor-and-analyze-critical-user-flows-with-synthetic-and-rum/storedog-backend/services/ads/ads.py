@@ -36,10 +36,10 @@ def status():
     if flask_request.method == 'GET':
 
       # we want to simulate a flaky ads service
-      failure_rate = random(1, 100)
+      failure_rate = random.randint(1, 100)
 
       # so ~15% of the time let's not return any ads
-      if failure_rate < 15:
+      if failure_rate <= 15:
         return jsonify([])
       else:
         try:
