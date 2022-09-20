@@ -40,6 +40,8 @@ def status():
             if random.randint(1, 6) > 4:
               app.logger.error("An error occurred while measuring ocular contact")
             app.logger.info(f"Total advertisements available: {len(advertisements)}")
+            # adding a half sleep to test something
+            time.sleep(2.5)
             return jsonify([b.serialize() for b in advertisements])
 
         except:
@@ -60,7 +62,8 @@ def status():
             db.session.add(new_advertisement)
             db.session.commit()
             advertisements = Advertisement.query.all()
-
+            # adding a half sleep to test something
+            time.sleep(2.5)
             return jsonify([b.serialize() for b in advertisements])
 
         except:
