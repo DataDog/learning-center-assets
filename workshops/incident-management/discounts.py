@@ -38,8 +38,6 @@ def status():
               if discount.discount_type.influencer:
                   influencer_count += 1
           app.logger.info(f"Total of {influencer_count} influencer specific discounts as of this request")
-          # time experiment. DO NOT RELEASE TO PRODUCTION!!!!
-          time.sleep(2.5)
           return jsonify([b.serialize() for b in discounts])
 
     elif flask_request.method == 'POST':
