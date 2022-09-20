@@ -16,7 +16,6 @@ api_key = os.getenv("DD_API_KEY")
 app_key = os.getenv("DD_APP_KEY")
 dashboard_json_path = "/root/storedog-frontend-dashboard.json"
 
-
 def extend_email(email, extension):
     email_parts = email.split("@")
     return "{start}+{insert}@{end}".format(start=email_parts[0], insert=extension, end=email_parts[1])
