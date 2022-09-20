@@ -30,15 +30,16 @@ def status():
         # the below calls create an n+1, unless
         # Discount.query.options(joinedload('*')).all()
         discounts = Discount.query.all()
-          if random.randint(1, 10) > 7:
-            app.logger.error("An error occurred while calculating influencer vectors")
-          app.logger.info(f"Discounts available: {len(discounts)}")
-          influencer_count = 0
-          for discount in discounts:
-              if discount.discount_type.influencer:
-                  influencer_count += 1
-          app.logger.info(f"Total of {influencer_count} influencer specific discounts as of this request")
-          return jsonify([b.serialize() for b in discounts])
+        if random.randint(1, 10) > 7:
+        app.logger.error("An error occurred while calculating influencer vectors")
+        app.logger.info(f"Discounts available: {len(discounts)}")
+        influencer_count = 0
+        for discount in discounts:
+            if discount.discount_type.influencer:
+                influencer_count += 1
+        app.logger.info(f"Total of {influencer_count} influencer specific discounts as of this request")
+
+        return jsonify([b.serialize() for b in discounts])
 
     elif flask_request.method == 'POST':
         # create a new discount with random name and value
