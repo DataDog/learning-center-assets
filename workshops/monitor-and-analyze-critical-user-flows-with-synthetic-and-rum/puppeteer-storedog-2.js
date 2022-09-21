@@ -69,7 +69,7 @@ const selectHomePageProduct = async (page) => {
   console.log('In selectHomePageProduct on page', await page.title());
   await page.waitForTimeout(5000);
   let productAriaLabel = 'Cool Bits';
-  if (Math.floor(Math.random() * 4) === 0) {
+  if (Math.floor(Math.random() * 10) === 0) {
     const allProducts = await page.$$('.product-item');
     console.log('allProducts', allProducts);
     const randomProductIndex = Math.floor(Math.random() * allProducts.length);
@@ -292,8 +292,8 @@ const secondSession = async () => {
 (() => mainSession())();
 (() => mainSession())();
 (() => mainSession())();
-(() => secondSession())();
-(() => secondSession())();
+(() => mainSession())();
+(() => mainSession())();
 (() => secondSession())();
 (() => secondSession())();
 (() => secondSession())();
