@@ -20,6 +20,18 @@ locals {
 # ECS Module
 ################################################################################
 
+resource "random_string" "ecs-provider-suffix" {
+  length = 8
+  min_lower = 8
+}
+
+locals {
+  # Instruqt apparently has a hard time cleaning up these resources
+  # To avoid Terraform failing because of a duplicated EC2 capacity provider name
+  # We use a random suffix
+  ec2-capacity-provider-name = concat("ec2-capacity-provider-", random_string.ecs-provider-suffix.result)
+}
+
 module "ecs" {
   source = "terraform-aws-modules/ecs/aws"
 
@@ -43,7 +55,7 @@ module "ecs" {
 
   # ASG powering worker instances
   autoscaling_capacity_providers = {
-    ec2-capacity-provider = {
+    (local.ec2-capacity-provider-name) = {
       auto_scaling_group_arn         = module.autoscaling.autoscaling_group_arn
       managed_termination_protection = "DISABLED"
 
