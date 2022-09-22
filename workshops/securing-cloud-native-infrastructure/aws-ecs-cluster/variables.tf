@@ -34,3 +34,8 @@ variable "worker_node_count" {
   description = "Number of ECS EC2 worker instances to use"
   default     = 1
 }
+
+variable "ecs_capacity_provider_name" {
+  type = string
+  default = "ec2-capacity-provider"
+}
