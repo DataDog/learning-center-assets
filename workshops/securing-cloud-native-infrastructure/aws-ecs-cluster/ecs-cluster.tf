@@ -29,7 +29,7 @@ locals {
   # Instruqt apparently has a hard time cleaning up these resources
   # To avoid Terraform failing because of a duplicated EC2 capacity provider name
   # We use a random suffix
-  ec2-capacity-provider-name = concat("ec2-capacity-provider-", random_string.ecs-provider-suffix.result)
+  ec2-capacity-provider-name = "ec2-capacity-provider-${random_string.ecs-provider-suffix.result}"
 }
 
 module "ecs" {
