@@ -37,5 +37,4 @@ variable "worker_node_count" {
 
 variable "ecs_capacity_provider_name" {
   type = string
-  default = "ec2-capacity-provider"
 }
