@@ -11,7 +11,7 @@ secrets:
   ## NOTE: Don't commit unencrypted secrets to git!
   generic:
     datadog_api_key: ""
-    #datadog_configuration_key: ""
+    datadog_configuration_key: ""
 
 # env -- Set environment variables in Vector containers
 ## The examples below leverage examples from secrets.generic and assume no name overrides with a Release name of "vector"
@@ -21,11 +21,11 @@ env:
       secretKeyRef:
         name: vector
         key: datadog_api_key
-  # - name: DATADOG_OP_CONFIG_KEY
-  #   valueFrom:
-  #     secretKeyRef:
-  #       name: vector
-  #       key: datadog_configuration_key
+  - name: DATADOG_OP_CONFIG_KEY
+    valueFrom:
+      secretKeyRef:
+        name: vector
+        key: datadog_configuration_key
   - name: VECTOR_LOG_FORMAT
     value: json
 
@@ -34,11 +34,10 @@ env:
 ## Ref: https://vector.dev/docs/reference/configuration/
 customConfig:
   data_dir: /vector-data-dir
-  # TODO: enterprise config block
-#   enterprise:
-#     api_key: "${DATADOG_API_KEY}"
-#     configuration_key: "${DATADOG_OP_CONFIG_KEY}"
-#     site: "datadoghq.com"
+  enterprise:
+    api_key: "${DATADOG_API_KEY}"
+    configuration_key: "${DATADOG_OP_CONFIG_KEY}"
+    site: "datadoghq.com"
   api:
     enabled: true
     address: 0.0.0.0:8686
