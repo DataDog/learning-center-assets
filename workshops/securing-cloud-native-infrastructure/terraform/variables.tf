@@ -8,3 +8,7 @@ variable "app_task_definition_file" {
   type        = string
   description = "Path to the application ECS task definition file"
 }
+
+variable "ecs_capacity_provider_name" {
+  type = string
+}

@@ -14,4 +14,5 @@ module "ecs" {
   app_name                 = "domain-tester-service"
   app_task_definition_file = var.app_task_definition_file
   ddApiKey                 = var.ddApiKey
+  ecs_capacity_provider_name = var.ecs_capacity_provider_name
 }
