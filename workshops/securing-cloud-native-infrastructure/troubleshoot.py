@@ -65,11 +65,11 @@ def validateCWSSignals():
     info('Validating CWS signals...')
     signals = listSignals('source:runtime-security-agent')
     expectedRules = {
-        'DNS Lookup Made for IP Check Service',
-        'Process arguments match a cryptocurrency miner',
-        'DNS Lookup Made for Cryptocurrency Mining Pool',
-        'Package installation in container',
-        'Java process spawned shell/utility'
+        'DNS lookup for IP lookup service',
+        'Process arguments match cryptocurrency miner',
+        'DNS lookup for cryptocurrency mining pool',
+        'Package installed in container',
+        'Java process spawned shell'
     }
 
     for signal in signals:
