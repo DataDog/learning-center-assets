@@ -187,7 +187,22 @@ def validateProcessMonitoring():
     else:
         fail('Process monitoring is not reporting any processes')
 
-
+def validateWebapp():
+    url = os.getenv('APP_URL')
+    if url is None:
+        fail('No APP_URL available in your environment')
+        return
+   
+    response = requests.get(url)
+    if response.status_code != 200:
+        fail(f'Application ALB responded with status {response.status_code}')
+        
+    response = requests.get('http://127.0.0.1:8000')
+    if response.status_code != 200:
+        fail(f'Application reverse proxy responded with status {response.status_code}')
+        
+    success('Web application properly responding')
+        
 print(colored("Validating integrations", attrs=['bold']))
 validateHosts()
 validateProcessMonitoring()
@@ -200,3 +215,6 @@ print(colored("\nValidating signals", attrs=['bold']))
 validateCWSSignals()
 validateCloudSIEMSignals()
 validateCSPMFindings()
+
+print(colored("\nValidating web application", attrs=['bold']))
+validateWebapp()
