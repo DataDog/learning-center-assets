@@ -118,6 +118,13 @@ Resources:
       DBSubnetGroupName: 
         Ref: DBSubnetGroup
       AllocatedStorage: 20
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+        - Key: env
+          Value: intro-aws-1
+        - Key: service
+          Value: database
   AdvertisementsService:
     DependsOn:
       - DBInstance
@@ -128,7 +135,7 @@ Resources:
           - Arn
       DeploymentConfiguration:
         MaximumPercent: 200
-        MinimumHealthyPercent: 100
+        MinimumHealthyPercent: 50
       DeploymentController:
         Type: ECS
       DesiredCount: 1
@@ -160,6 +167,8 @@ Resources:
           Value: "Intro to AWS"
         - Key: service
           Value: advertisements
+        - Key: env
+          Value: intro-aws-1
       TaskDefinition:
         Ref: AdvertisementsTaskDefinition
     Type: AWS::ECS::Service
@@ -238,12 +247,21 @@ Resources:
               Protocol: tcp
       Cpu: "256"
       ExecutionRoleArn:
-        Ref: AdvertisementsTaskExecutionRole
+        Fn::GetAtt:
+          - AdvertisementsTaskExecutionRole
+          - Arn
       Family: lab-advertisements
       Memory: "512"
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+        - Key: env
+          Value: intro-aws-1
+        - Key: service
+          Value: advertisements
   AdvertisementsTaskExecutionRole:
     Properties:
       AssumeRolePolicyDocument:
@@ -337,8 +355,6 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
       Path: /
   DiscountsService:
-    DependsOn:
-      - DBInstance
     Properties:
       Handler: lambda_function.lambda_handler
       Runtime: python3.8
@@ -366,6 +382,8 @@ Resources:
       Tags:
         - Key: project
           Value: "Intro to AWS"
+        - Key: env
+          Value: aws-intro-1 
         - Key: service
           Value: discounts
     Type: AWS::Lambda::Function
@@ -396,7 +414,7 @@ Resources:
           - Arn
       DeploymentConfiguration:
         MaximumPercent: 200
-        MinimumHealthyPercent: 100
+        MinimumHealthyPercent: 50
       DeploymentController:
         Type: ECS
       DesiredCount: 1
@@ -506,12 +524,21 @@ Resources:
               Protocol: tcp
       Cpu: "256"
       ExecutionRoleArn:
-        Ref: FrontendTaskExecutionRole
+        Fn::GetAtt:
+          - FrontendTaskExecutionRole
+          - Arn
       Family: lab-frontend
       Memory: "512"
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+        - Key: env
+          Value: intro-aws-1
+        - Key: service
+          Value: frontend
   FrontendTaskExecutionRole:
     Properties:
       AssumeRolePolicyDocument:
@@ -529,8 +556,6 @@ Resources:
       Tags:
         - Key: project
           Value: "Intro to AWS"
-        - Key: service
-          Value: frontend
     Type: AWS::IAM::Role
   LoadBalancer:
     Properties:
