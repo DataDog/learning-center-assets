@@ -29,7 +29,7 @@ services:
       - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_SERVICE=discounts-service
       - DD_ENV=dd101-dev
-    image: 'ddtraining/discounts:2.1.4'
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/discounts-fixed:2.2.0'
     ports:
       - '5001:5001'
     depends_on:
@@ -52,7 +52,7 @@ services:
       - DD_SERVICE=store-frontend
       - DD_VERSION=2.1.2
       - DD_ENV=dd101-dev
-    image: 'ddtraining/storefront-fixed:2.1.2'
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.0'
     command: sh docker-entrypoint.sh
     ports:
       - '3000:3000'
@@ -78,7 +78,7 @@ services:
       - DD_SERVICE=advertisements-service
       - DD_VERSION=2.1.2
       - DD_ENV=dd101-dev
-    image: 'ddtraining/advertisements-fixed:2.1.4'
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0'
     ports:
       - '5002:5002'
     depends_on:
