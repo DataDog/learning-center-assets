@@ -1,6 +1,4 @@
 // This script performs a login to Datadog, then browses to the /logs page
-// This is currently needed to enable CWS as there is no programmatic way to reproduce
-// the calls the browser is doing to /api/v1/logs/start_using_logs
 
 const puppeteer = require('puppeteer');
 
@@ -13,7 +11,6 @@ const puppeteer = require('puppeteer');
   await page.keyboard.press('Enter');
   await page.waitForTimeout(5000);
   await page.goto('https://app.datadoghq.com/logs')
-  await page.waitForTimeout(20000);
-  await page.screenshot({ path: '/tmp/logs-screenshot.png' });
+  await page.waitForTimeout(5000);
   await browser.close();
 })();
