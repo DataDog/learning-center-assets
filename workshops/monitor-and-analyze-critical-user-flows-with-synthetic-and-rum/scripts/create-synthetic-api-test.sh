@@ -13,7 +13,7 @@ function create_synthetic_api_test () {
     url=$(construct_api_url "$1")
 
     # make request to URL provided as $1
-    curl -s -X POST "$url" \
+    curl --silent --output /dev/null -X POST "$url" \
       -H "Content-Type: application/json" \
       -H "DD-API-KEY: ${DD_API_KEY}" \
       -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \

@@ -18,7 +18,7 @@ function synthetic_variables () {
       url=$(construct_api_url "$1")
 
       # make request to URL provided as $1
-      curl -s "$url" \
+      curl --silent --output /dev/null "$url" \
         -H "Content-Type: application/json" \
         -H "DD-API-KEY: ${DD_API_KEY}" \
         -H "DD-APPLICATION-KEY: ${DD_APP_KEY}"
@@ -30,7 +30,7 @@ function synthetic_variables () {
       url=$(construct_api_url "$1")
 
       # make request to URL provided as $1
-      curl -s -X POST "$url" \
+      curl --silent --output /dev/null -X POST "$url" \
         -H "Content-Type: application/json" \
         -H "DD-API-KEY: ${DD_API_KEY}" \
         -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
@@ -43,7 +43,7 @@ function synthetic_variables () {
       url=$(construct_api_url "$1")
 
       # make request to URL provided as $1
-      curl -s -X PUT "$url" \
+      curl --silent --output /dev/null -X PUT "$url" \
         -H "Content-Type: application/json" \
         -H "DD-API-KEY: ${DD_API_KEY}" \
         -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
