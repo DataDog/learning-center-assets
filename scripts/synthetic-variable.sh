@@ -16,7 +16,7 @@ function synthetic_variable () {
     url=$(construct_api_url "$1")
 
     # make request to URL provided as $1
-    curl "$url" \
+    curl -s "$url" \
       -H "Content-Type: application/json" \
       -H "DD-API-KEY: ${DD_API_KEY}" \
       -H "DD-APPLICATION-KEY: ${DD_APP_KEY}"
@@ -28,7 +28,7 @@ function synthetic_variable () {
     url=$(construct_api_url "$1")
 
     # make request to URL provided as $1
-    curl -X POST "$url" \
+    curl -s -X POST "$url" \
       -H "Content-Type: application/json" \
       -H "DD-API-KEY: ${DD_API_KEY}" \
       -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
@@ -41,7 +41,7 @@ function synthetic_variable () {
     url=$(construct_api_url "$1")
 
     # make request to URL provided as $1
-    curl -X PUT "$url" \
+    curl -s -X PUT "$url" \
       -H "Content-Type: application/json" \
       -H "DD-API-KEY: ${DD_API_KEY}" \
       -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
@@ -108,6 +108,18 @@ EOF
   function create_or_update_synthetic_variable () {
     local variable_id
 
+    if [ -z "$1" ]; then
+      echo "Please provide a variable name."
+
+      return 1
+    fi
+
+    if [ -z "$2" ]; then
+      echo "Please provide a value for your variable."
+
+      return 1
+    fi
+
     variable_id=$(check_for_variable_id "$1")
 
     if [ "$variable_id" == 0 ]; then
@@ -130,37 +142,19 @@ EOF
     echo "$variable_id"
   }
 
-  if [ -z "$DD_API_KEY" ]; then
-    echo "DD_API_KEY environment variable not found."
-
-    exit 0
-  fi
-
-  if [ -z "$DD_APP_KEY" ]; then
-    echo "DD_APP_KEY environment variable not found."
-
-    exit 0
-  fi
-
-  if [ $# -eq 0 ]; then
-    printf "Please provide a variable name and value (description is optional):\n\ncreate_synthetic_variable VARIABLE_NAME \"Variable Value\""
-
-    exit 0
-  fi
-
-  if [ -z "$1" ]; then
-    echo "Please provide a variable name."
-
-    exit 0
-  fi
-
-  if [ -z "$2" ]; then
-    echo "Please provide a value for your variable."
-
-    exit 0
-  fi
-
   create_or_update_synthetic_variable "$@"
 }
+
+if [ -z "$DD_API_KEY" ]; then
+  echo "DD_API_KEY environment variable not found."
+
+  return 1
+fi
+
+if [ -z "$DD_APP_KEY" ]; then
+  echo "DD_APP_KEY environment variable not found."
+
+  return 1
+fi
 
 synthetic_variable "$@"
