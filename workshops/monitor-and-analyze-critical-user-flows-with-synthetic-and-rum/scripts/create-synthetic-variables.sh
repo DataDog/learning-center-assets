@@ -18,7 +18,7 @@ function synthetic_variables () {
       url=$(construct_api_url "$1")
 
       # make request to URL provided as $1
-      curl --silent --output /dev/null "$url" \
+      curl --silent "$url" \
         -H "Content-Type: application/json" \
         -H "DD-API-KEY: ${DD_API_KEY}" \
         -H "DD-APPLICATION-KEY: ${DD_APP_KEY}"
@@ -30,7 +30,7 @@ function synthetic_variables () {
       url=$(construct_api_url "$1")
 
       # make request to URL provided as $1
-      curl --silent --output /dev/null -X POST "$url" \
+      curl --silent -X POST "$url" \
         -H "Content-Type: application/json" \
         -H "DD-API-KEY: ${DD_API_KEY}" \
         -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
@@ -43,7 +43,7 @@ function synthetic_variables () {
       url=$(construct_api_url "$1")
 
       # make request to URL provided as $1
-      curl --silent --output /dev/null -X PUT "$url" \
+      curl --silent -X PUT "$url" \
         -H "Content-Type: application/json" \
         -H "DD-API-KEY: ${DD_API_KEY}" \
         -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
@@ -161,7 +161,8 @@ EOF
 
   synthetic_variable "STOREDOG_URL" "$STOREDOG_FE_URL" "Storedog URL for Monitoring User Flows Dash Workshop"
   synthetic_variable "STOREDOG_API_URL" "$STOREDOG_BE_URL" "Storedog API URL for Monitoring User Flows Dash Workshop"
-  synthetic_variable "STOREDOG_ADS_URL" "$ADS_URL" "Storedog Ads Service URL for Monitoring User Flows Dash Workshop"
+  # We'll have the workshop attendee make this one manually so they know how it works
+  # synthetic_variable "STOREDOG_ADS_URL" "$ADS_URL" "Storedog Ads Service URL for Monitoring User Flows Dash Workshop"
 }
 
 synthetic_variables
