@@ -1,15 +1,15 @@
 version: '3'
 services:
-  agent:
+  datadog:
     image: 'datadog/agent:7.31.1'
     environment:
       - DD_API_KEY
       - DD_LOGS_ENABLED=true
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
-      - DD_TAGS='env:apm-workshop'
+      - DD_TAGS='env:dd201'
       - DD_APM_NON_LOCAL_TRAFFIC=true
-      - DD_HOSTNAME=apm-workshop-host
+      - DD_HOSTNAME=dd201-host
     ports:
       - 127.0.0.1:8126:8126/tcp
     volumes:
@@ -24,49 +24,45 @@ services:
       - POSTGRES_USER
       - POSTGRES_HOST=db
       - DD_SERVICE=discounts-service
-      - DD_ENV=apm-workshop
-      - DD_VERSION=2.0
+      - DD_ENV=dd201
       - DD_LOGS_INJECTION=true
       - DD_TRACE_SAMPLE_RATE=1
       - DD_PROFILING_ENABLED=true
-      - DD_AGENT_HOST=agent
-    image: 'ddtraining/discounts:2.0.0'
-    command:
-      [
-        sh,
-        -c,
-        'ddtrace-run flask run --port=5001 --host=0.0.0.0'
-      ]
+      - DD_AGENT_HOST=datadog
+    image: 'ddtraining/discounts-fixed:2.1.2'
     ports:
       - '5001:5001'
-    volumes:
-      - /root/lab/discounts.py:/app/discounts.py
     depends_on:
-      - agent
+      - datadog
       - db
     labels:
+      com.datadoghq.tags.env: 'dd201'
+      com.datadoghq.tags.service: 'discounts-service'
+      com.datadoghq.tags.version: '2.1.2'
       my.custom.label.team: 'discounts'
       com.datadoghq.ad.logs: '[{"source": "python", "service": "discounts-service"}]'
   frontend:
     environment:
       - DD_SERVICE=store-frontend
-      - DD_ENV=apm-workshop
-      - DD_VERSION=2.0
+      - DD_ENV=dd201
       - DD_LOGS_INJECTION=true
       - DD_TRACE_SAMPLE_RATE=1
       - DD_PROFILING_ENABLED=true
-      - DD_AGENT_HOST=agent
-      - DD_CLIENT_TOKEN
+      - DD_AGENT_HOST=datadog
       - DD_APPLICATION_ID
-    image: 'ddtraining/storefront:2.0.0'
-    command: sh docker-entrypoint.sh
+      - DD_CLIENT_TOKEN
+      - DD_SITE=datadoghq.com
+    image: 'ddtraining/storefront-fixed:2.1.2'
     ports:
       - '3000:3000'
     depends_on:
-      - agent
+      - datadog
       - discounts
       - advertisements
     labels:
+      com.datadoghq.tags.env: 'dd201'
+      com.datadoghq.tags.service: 'store-frontend'
+      com.datadoghq.tags.version: '2.1.2'
       my.custom.label.team: 'frontend'
       com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-frontend"}]'
   advertisements:
@@ -77,27 +73,21 @@ services:
       - POSTGRES_USER
       - POSTGRES_HOST=db
       - DD_SERVICE=advertisements-service
-      - DD_ENV=apm-workshop
-      - DD_VERSION=2.0
+      - DD_ENV=dd201
       - DD_LOGS_INJECTION=true
       - DD_TRACE_SAMPLE_RATE=1
       - DD_PROFILING_ENABLED=true
-      - DD_AGENT_HOST=agent
-    image: 'ddtraining/advertisements:2.0.0'
-    command:
-      [
-        sh,
-        -c,
-        'ddtrace-run flask run --port=5002 --host=0.0.0.0'
-      ]
+      - DD_AGENT_HOST=datadog
+    image: 'ddtraining/advertisements-fixed:2.1.2'
     ports:
       - '5002:5002'
-    volumes:
-      - /root/lab/ads.py:/app/ads.py
     depends_on:
-      - agent
+      - datadog
       - db
     labels:
+      com.datadoghq.tags.env: 'dd201'
+      com.datadoghq.tags.service: 'advertisements-service'
+      com.datadoghq.tags.version: '2.1.2'
       my.custom.label.team: 'advertisements'
       com.datadoghq.ad.logs: '[{"source": "python", "service": "advertisements-service"}]'
   db:
@@ -109,6 +99,9 @@ services:
     ports:
       - '5432:5432'
     labels:
+      com.datadoghq.tags.env: 'dd201'
+      com.datadoghq.tags.service: 'database'
+      com.datadoghq.tags.version: '11'
       my.custom.label.team: 'database'
       com.datadoghq.ad.check_names: '["postgres"]'
       com.datadoghq.ad.init_configs: '[{}]'
