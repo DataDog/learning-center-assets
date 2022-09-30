@@ -47,27 +47,17 @@ const CartWatcher = () => {
       return;
     }
 
-    if (window) {
-      window.onbeforeunload = function () {
-        console.log('exiting...');
-        if (cartData.totalPrice > 0) {
-          datadogRum.addAction('User left without checking out', {
-            createdAt: cartData.createdAt,
-            discounts: cartData.discounts,
-            id: cartData.id,
-            lineItems: cartData.lineItems,
-            subtotalPrice: cartData.subtotalPrice,
-            totalPrice: cartData.totalPrice,
-          });
-        }
-      };
-    }
+    datadogRum.addRumGlobalContext('cart_status', {
+      cartTotal: cartData.totalPrice,
+      lineItems: cartData.lineItems,
+    });
 
-    // return function cleanup() {
-    //   if (window) {
-    //     window.onbeforeunload = null;
-    //   }
-    // };
+    datadogRum.addAction('Cart Updated', {
+      cartTotal: cartData.totalPrice,
+      discounts: cartData.discounts,
+      id: cartData.id,
+      lineItems: cartData.lineItems,
+    });
   }, [cartData]);
 
   return null;

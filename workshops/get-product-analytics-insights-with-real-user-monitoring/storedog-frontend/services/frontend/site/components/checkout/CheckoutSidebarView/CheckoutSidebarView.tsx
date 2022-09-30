@@ -68,15 +68,6 @@ const CheckoutSidebarView: FC = () => {
       });
 
       for (const product of cartData.lineItems) {
-        datadogRum.addAction('Product Purchased', {
-          id: product.productId,
-          path: product.path,
-          name: product.variant.name,
-          price: product.variant.price,
-          inStock: product.variant.isInStock,
-          sku: product.variant.sku,
-        });
-
         await removeItem(product);
       }
 

@@ -46,7 +46,7 @@ services:
       my.custom.label.team: 'discounts'
   frontend:
     image: public.ecr.aws/x2b9z2t7/storedog/frontend:1.0.1
-    command: yarn dev
+    command: bash -c "yarn upgrade @datadog/browser-rum && yarn dev"
     volumes:
       - /root/lab/storedog-frontend/services/frontend/site:/storedog-app/site
       - /root/lab/.env:/storedog-app/site/.env.local
