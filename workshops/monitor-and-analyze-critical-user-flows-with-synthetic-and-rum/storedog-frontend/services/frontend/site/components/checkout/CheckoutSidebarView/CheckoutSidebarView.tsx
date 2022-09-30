@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { FC, useState } from 'react';
+import cn from 'clsx';
+
 import CartItem from '@components/cart/CartItem';
 import { Button, Text } from '@components/ui';
 import { useUI } from '@components/ui/context';
@@ -11,6 +13,7 @@ import ShippingWidget from '../ShippingWidget';
 import PaymentWidget from '../PaymentWidget';
 import s from './CheckoutSidebarView.module.css';
 import { useCheckoutContext } from '../context';
+import useRemoveItem from '@framework/cart/use-remove-item';
 import { datadogRum } from '@datadog/browser-rum';
 
 const onMockCheckout = async () => {
@@ -28,9 +31,11 @@ const onMockCheckout = async () => {
 
 const CheckoutSidebarView: FC = () => {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [discountInput, setDiscountInput] = useState('');
   const { setSidebarView, closeSidebar } = useUI();
   const { data: cartData, mutate: refreshCart } = useCart();
   const { data: checkoutData, submit: onCheckout } = useCheckout();
+  const removeItem = useRemoveItem();
   const { clearCheckoutFields } = useCheckoutContext();
 
   const { price: subTotal } = usePrice(
@@ -54,14 +59,26 @@ const CheckoutSidebarView: FC = () => {
       await onMockCheckout();
       console.log(cartData);
       // Custom RUM action
-      datadogRum.addAction('checkout', {
+      datadogRum.addAction('Successful Checkout', {
+        cartTotal: cartData.totalPrice,
         createdAt: cartData.createdAt,
         discounts: cartData.discounts,
         id: cartData.id,
         lineItems: cartData.lineItems,
-        subtotalPrice: cartData.subtotalPrice,
-        totalPrice: cartData.totalPrice,
       });
+
+      for (const product of cartData.lineItems) {
+        datadogRum.addAction('Product Purchased', {
+          id: product.productId,
+          path: product.path,
+          name: product.variant.name,
+          price: product.variant.price,
+          inStock: product.variant.isInStock,
+          sku: product.variant.sku,
+        });
+
+        await removeItem(product);
+      }
 
       clearCheckoutFields();
       setLoadingSubmit(false);
@@ -70,6 +87,34 @@ const CheckoutSidebarView: FC = () => {
     } catch (e) {
       console.log(e);
       setLoadingSubmit(false);
+    }
+  }
+
+  async function handleDiscount(event: React.ChangeEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!discountInput) {
+      console.error('No discount input!');
+      return;
+    }
+
+    try {
+      const discountPath = `${process.env.NEXT_PUBLIC_DISCOUNTS_ROUTE}:${process.env.NEXT_PUBLIC_DISCOUNTS_PORT}`;
+      const discountCode = discountInput.toUpperCase();
+      // call discounts service
+      const res = await fetch(
+        `${discountPath}/discount-code?discount_code=${discountCode}`
+      );
+      const discount = await res.json();
+
+      if (discount?.error) {
+        throw 'No discount found!';
+      }
+
+      console.log('discount accepted', discount);
+      setDiscountInput('');
+    } catch (err) {
+      console.error(err);
     }
   }
 
@@ -104,6 +149,32 @@ const CheckoutSidebarView: FC = () => {
             />
           ))}
         </ul>
+
+        <form
+          className='h-full mt-auto'
+          onSubmit={handleDiscount}
+          id='discount-form'
+        >
+          <div className={cn(s.fieldset, 'col-span-6')}>
+            <label className={s.label}>Discount Code</label>
+            <input
+              name='discount-code'
+              className={s.input}
+              value={discountInput}
+              onChange={(e) => setDiscountInput(e.target.value)}
+            />
+          </div>
+          <div className='w-full'>
+            <Button
+              type='submit'
+              width='100%'
+              variant='ghost'
+              className='!py-2 !border-1'
+            >
+              Apply Discount
+            </Button>
+          </div>
+        </form>
       </div>
 
       <form

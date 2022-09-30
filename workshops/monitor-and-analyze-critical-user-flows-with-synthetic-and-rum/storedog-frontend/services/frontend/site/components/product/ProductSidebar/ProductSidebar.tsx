@@ -3,6 +3,7 @@ import { useAddItem } from '@framework/cart';
 import { datadogRum } from '@datadog/browser-rum';
 import { FC, useEffect, useState } from 'react';
 import { ProductOptions } from '@components/product';
+import useCart from '@framework/cart/use-cart';
 import type { Product } from '@commerce/types/product';
 import { Button, Text, Rating, Collapse, useUI } from '@components/ui';
 import {
@@ -18,6 +19,7 @@ interface ProductSidebarProps {
 
 const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
   const addItem = useAddItem();
+  const { data: cartData } = useCart();
   const { openSidebar, setSidebarView } = useUI();
   const [loading, setLoading] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>({});
@@ -35,14 +37,17 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
         variantId: String(variant ? variant.id : product.variants[0]?.id),
       });
       console.log('product', product);
-      // Custom RUM action
-      datadogRum.addAction('product-added-to-cart', {
-        name: product.name,
-        sku: product.sku,
-        id: product.id,
-        price: product.price.value,
-        slug: product.slug,
+      datadogRum.addAction('Product Added to Cart', {
+        cartTotal: cartData.totalPrice,
+        product: {
+          name: product.name,
+          sku: product.sku,
+          id: product.id,
+          price: product.price.value,
+          slug: product.slug,
+        },
       });
+
       setSidebarView('CART_VIEW');
       openSidebar();
       setLoading(false);
