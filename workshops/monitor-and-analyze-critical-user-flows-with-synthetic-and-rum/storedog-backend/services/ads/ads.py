@@ -38,9 +38,13 @@ def status():
       # we want to simulate a flaky ads service
       failure_rate = random.randint(1, 100)
 
-      # so ~15% of the time let's not return any ads
+      # so ~15% of the time let's trigger a 500 error and not return any results
       if failure_rate <= 15:
-        return jsonify([])
+        app.logger.error("An error occurred while getting ad.")
+        err = jsonify({'error': 'Internal Server Error'})
+        err.status_code = 500
+
+        return err
       else:
         try:
             advertisements = Advertisement.query.all()
@@ -58,7 +62,7 @@ def status():
         try:
             # create a new advertisement with random name and value
             advertisements_count = len(Advertisement.query.all())
-            new_advertisement = Advertisement('Advertisement ' + str(discounts_count + 1),
+            new_advertisement = Advertisement('Advertisement ' + str(advertisements_count + 1),
                                     '/',
                                     random.randint(10,500))
             app.logger.info(f"Adding advertisement {new_advertisement}")
