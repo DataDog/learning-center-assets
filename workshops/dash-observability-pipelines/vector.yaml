@@ -57,7 +57,7 @@ customConfig:
         .ddtags = parse_key_value!(.ddtags, key_value_delimiter: ":", field_delimiter: ",")
 
         # Add some tags so that we can positively identify that data has passed through OP.
-        .ddtags.sender = "op"
+        .ddtags.sender = "observability_pipelines"
         .ddtags.op_aggregator = get_hostname!()
 
         # Re-encode Datadog tags in the format the intakes expect.
@@ -67,7 +67,10 @@ customConfig:
       inputs:
         - tag_logs
       source: |-
-        # Datadog Agents pass a "status" field that is stripped when ingested
+        # This is a bandage for a strange situation that OP runs into with its dedicated ingest
+        # endpoint, where the status field overrides all other parsed data from the log line
+        # itself. This leads to all logs being categorized as errors. Until we figure out a way
+        # forward with that internally, we recommend using this simple fix instead.
         del(.status)
 
     tag_metrics:
@@ -76,7 +79,7 @@ customConfig:
         - datadog_agent.metrics
       source: |-
         # Add some tags so that we can positively identify that data has passed through OP.
-        .tags.sender = "op"
+        .tags.sender = "observability_pipelines"
         .tags.op_aggregator = get_hostname!()
   sinks:
     datadog_logs:
