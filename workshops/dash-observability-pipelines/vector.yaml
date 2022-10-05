@@ -56,10 +56,10 @@ customConfig:
         # We need the contents of the `message` in order to actually work with
         # the log line, so let's parse that out first.
         msg, err = parse_json(.message)
-        if(err == nil) {
+        if err == null {
           . |= object!(msg)
+          del(.message)
         }
-        del(.message)
     tag_logs:
       type: remap
       inputs:
