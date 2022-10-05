@@ -41,6 +41,7 @@ services:
       - DD_ENV=dd101-sre
       - DD_LOGS_INJECTION=true
       - DD_TRACE_SAMPLE_RATE=1
+      - DD_SERVICE_MAPPING=postgres:database
       - DD_PROFILING_ENABLED=true
       - DD_AGENT_HOST=datadog 
     image: 'public.ecr.aws/x2b9z2t7/ddtraining/discounts-fixed:2.2.0'
@@ -95,6 +96,7 @@ services:
       - DD_ENV=dd101-sre
       - DD_LOGS_INJECTION=true
       - DD_TRACE_SAMPLE_RATE=1
+      - DD_SERVICE_MAPPING=postgres:database
       - DD_PROFILING_ENABLED=true
       - DD_AGENT_HOST=datadog 
     image: 'public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0'
