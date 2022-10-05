@@ -48,10 +48,22 @@ customConfig:
       type: datadog_agent
       multiple_outputs: true
   transforms:
-    tag_logs:
+    parse_logs:
       type: remap
       inputs:
         - datadog_agent.logs
+      source: |-
+        # We need the contents of the `message` in order to actually work with
+        # the log line, so let's parse that out first.
+        msg, err = parse_json(.message)
+        if(err == nil) {
+          . |= object!(msg)
+        }
+        del(.message)
+    tag_logs:
+      type: remap
+      inputs:
+        - parse_logs
       source: |-
         # Parse the received `.ddtags` field so we can more easily access the contained tags.
         .ddtags = parse_key_value!(.ddtags, key_value_delimiter: ":", field_delimiter: ",")
