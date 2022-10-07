@@ -84,10 +84,10 @@ def create_monitor(monitor_name, dashboard_url):
                 no_data_timeframe=None,
                 include_tags=True,
                 thresholds=MonitorThresholds(
-                    critical=1.5
+                    critical=1.0
                 )
             ),
-            query="avg(last_1m):avg:trace.rack.request{env:im-workshop,resource_name:spree::homecontroller_index,service:store-frontend} > 1.5",
+            query="avg(last_1m):avg:trace.rack.request{env:im-workshop,resource_name:spree::homecontroller_index,service:store-frontend} > 1",
             tags=["service:store-frontend", "env:im-workshop", "resource_name:spree::homecontroller_index"],
             type=MonitorType("metric alert")
         )
