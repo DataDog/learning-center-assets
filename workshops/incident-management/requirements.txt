@@ -1,0 +1,2 @@
+datadog-api-client==1.3.0
+rich==10.7.0
