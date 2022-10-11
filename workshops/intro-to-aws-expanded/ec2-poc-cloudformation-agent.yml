@@ -34,6 +34,9 @@ Parameters:
   AwsSecretAccessKey:
     Type: String
 
+  DatadogApiKey:
+    Type: String
+
 Resources:
   SSMIAMRole:
     Type: AWS::IAM::Role
@@ -75,6 +78,24 @@ Resources:
                 path=Resources.WebServerInstance.Metadata.AWS::CloudFormation::Init
                 action=/opt/aws/bin/cfn-init --stack ${AWS::StackName} --resource WebServerInstance --region ${AWS::Region}
                 runas=root
+            /root/datadog-agent-append.yaml:
+              content: |
+                hostname: saa-server
+                logs_enabled: true
+                process_config:
+                  process_collection:
+                    enabled: true
+                tags:
+                  - env:intro-aws-2
+            /root/datadog-agent-saa-conf.yaml:
+              content: |
+                logs:
+                  - type: file
+                    path: "/opt/saa/saa.log"
+                    service: "sentiment-analysis-api"
+                    source: "nodejs"
+                    tags:
+                      - env:intro-aws-2
           services:
             sysvinit:
               cfn-hup:
@@ -114,6 +135,14 @@ Resources:
             export AWS_ACCESS_KEY_ID=${AwsAccessKeyId}
             export AWS_SECRET_ACCESS_KEY=${AwsSecretAccessKey}
             pm2 start npm --name "ssa-server" -- start
+            # Datadog Agent : install
+            DD_AGENT_MAJOR_VERSION=7 DD_API_KEY=${DatadogApiKey} DD_SITE="datadoghq.com" bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script.sh)"
+            # Datadog Agent : configure
+            cat /root/datadog-agent-append.yaml >> /etc/datadog-agent/datadog.yaml
+            mkdir -p /etc/datadog-agent/conf.d/saa.d
+            cp /root/datadog-agent-saa-conf.yaml /etc/datadog-agent/conf.d/saa.d/conf.yaml
+            # Datadog Agent : restart
+            systemctl restart datadog-agent
     CreationPolicy:
       ResourceSignal:
         Count: 1
