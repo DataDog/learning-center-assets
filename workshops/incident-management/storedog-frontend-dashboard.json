@@ -1,0 +1,334 @@
+{
+	"title": "Storedog Frontend Dashboard",
+	"description": "Key metrics for Storedog's frontend service.",
+	"widgets": [
+		{
+			"definition": {
+				"title": "Latency",
+				"type": "group",
+				"background_color": "orange",
+				"show_title": true,
+				"layout_type": "ordered",
+				"widgets": [
+					{
+						"definition": {
+							"title": "Latency on Homepage",
+							"title_size": "16",
+							"title_align": "left",
+							"show_legend": false,
+							"legend_layout": "auto",
+							"legend_columns": [
+								"avg",
+								"min",
+								"max",
+								"value",
+								"sum"
+							],
+							"time": {},
+							"type": "timeseries",
+							"requests": [
+								{
+									"formulas": [
+										{
+											"alias": "",
+											"formula": "query1"
+										}
+									],
+									"queries": [
+										{
+											"data_source": "metrics",
+											"name": "query1",
+											"query": "avg:trace.rack.request{env:im-workshop,service:store-frontend,resource_name:spree::homecontroller_index}"
+										}
+									],
+									"response_format": "timeseries",
+									"style": {
+										"palette": "dog_classic",
+										"line_type": "solid",
+										"line_width": "normal"
+									},
+									"display_type": "line"
+								}
+							],
+							"yaxis": {
+								"scale": "linear",
+								"include_zero": true,
+								"label": "",
+								"min": "auto",
+								"max": "auto"
+							},
+							"markers": []
+						},
+						"layout": {
+							"x": 0,
+							"y": 0,
+							"width": 6,
+							"height": 3
+						}
+					},
+					{
+						"definition": {
+							"title": "Latency on store-frontend",
+							"title_size": "16",
+							"title_align": "left",
+							"show_legend": false,
+							"time": {},
+							"type": "distribution",
+							"xaxis": {
+								"max": "p95",
+								"min": "auto"
+							},
+							"yaxis": {
+								"max": "auto",
+								"scale": "linear",
+								"min": "auto"
+							},
+							"markers": [
+								{
+									"value": "50",
+									"display_type": "x_axis_percentile"
+								},
+								{
+									"value": "75",
+									"display_type": "x_axis_percentile"
+								},
+								{
+									"value": "90",
+									"display_type": "x_axis_percentile"
+								},
+								{
+									"value": "95",
+									"display_type": "x_axis_percentile"
+								},
+								{
+									"value": "99",
+									"display_type": "x_axis_percentile"
+								}
+							],
+							"requests": [
+								{
+									"apm_stats_query": {
+										"primary_tag": "",
+										"row_type": "service",
+										"name": "rack.request",
+										"service": "store-frontend",
+										"env": "im-workshop"
+									}
+								}
+							]
+						},
+						"layout": {
+							"x": 6,
+							"y": 0,
+							"width": 6,
+							"height": 3
+						}
+					}
+				]
+			},
+			"layout": {
+				"x": 0,
+				"y": 0,
+				"width": 12,
+				"height": 4
+			}
+		},
+		{
+			"definition": {
+				"title": "Errors",
+				"type": "group",
+				"background_color": "pink",
+				"show_title": true,
+				"layout_type": "ordered",
+				"widgets": [
+					{
+						"definition": {
+							"title": "Errors on store-frontend",
+							"title_size": "16",
+							"title_align": "left",
+							"show_legend": false,
+							"legend_layout": "auto",
+							"legend_columns": [
+								"avg",
+								"min",
+								"max",
+								"value",
+								"sum"
+							],
+							"time": {},
+							"type": "timeseries",
+							"requests": [
+								{
+									"queries": [
+										{
+											"data_source": "metrics",
+											"name": "query1",
+											"query": "sum:trace.rack.request.errors{env:im-workshop,service:store-frontend} by {http.status_code}.as_count()"
+										}
+									],
+									"response_format": "timeseries",
+									"style": {
+										"palette": "warm"
+									},
+									"display_type": "bars"
+								}
+							],
+							"yaxis": {
+								"scale": "linear",
+								"include_zero": true,
+								"label": "",
+								"min": "auto",
+								"max": "auto"
+							},
+							"markers": []
+						},
+						"layout": {
+							"x": 0,
+							"y": 0,
+							"width": 6,
+							"height": 3
+						}
+					},
+					{
+						"definition": {
+							"title": "Requests and Errors on store-frontend",
+							"title_size": "16",
+							"title_align": "left",
+							"show_legend": false,
+							"legend_layout": "auto",
+							"legend_columns": [
+								"avg",
+								"min",
+								"max",
+								"value",
+								"sum"
+							],
+							"time": {},
+							"type": "timeseries",
+							"requests": [
+								{
+									"queries": [
+										{
+											"data_source": "metrics",
+											"name": "query1",
+											"query": "sum:trace.rack.request.hits{env:im-workshop,service:store-frontend}.as_count()"
+										}
+									],
+									"response_format": "timeseries",
+									"display_type": "bars"
+								},
+								{
+									"queries": [
+										{
+											"data_source": "metrics",
+											"name": "query1",
+											"query": "sum:trace.rack.request.errors{env:im-workshop,service:store-frontend}.as_count()"
+										}
+									],
+									"response_format": "timeseries",
+									"style": {
+										"palette": "warm"
+									},
+									"display_type": "bars"
+								}
+							],
+							"yaxis": {
+								"scale": "linear",
+								"include_zero": true,
+								"label": "",
+								"min": "auto",
+								"max": "auto"
+							},
+							"markers": []
+						},
+						"layout": {
+							"x": 6,
+							"y": 0,
+							"width": 6,
+							"height": 3
+						}
+					}
+				]
+			},
+			"layout": {
+				"x": 0,
+				"y": 4,
+				"width": 12,
+				"height": 4
+			}
+		},
+		{
+			"definition": {
+				"title": "All Services",
+				"type": "group",
+				"background_color": "green",
+				"show_title": true,
+				"layout_type": "ordered",
+				"widgets": [
+					{
+						"definition": {
+							"title": "% of Time Spent by All Services on store-frontend",
+							"title_size": "16",
+							"title_align": "left",
+							"show_legend": false,
+							"legend_layout": "auto",
+							"legend_columns": [
+								"avg",
+								"min",
+								"max",
+								"value",
+								"sum"
+							],
+							"time": {},
+							"type": "timeseries",
+							"requests": [
+								{
+									"formulas": [
+										{
+											"formula": "query1 * 100 / query2"
+										}
+									],
+									"queries": [
+										{
+											"data_source": "metrics",
+											"name": "query1",
+											"query": "sum:trace.rack.request.exec_time.by_service{env:im-workshop,service:store-frontend} by {sublayer_service}.rollup(sum).fill(zero)"
+										},
+										{
+											"data_source": "metrics",
+											"name": "query2",
+											"query": "sum:trace.rack.request.exec_time.by_service{env:im-workshop,service:store-frontend}.rollup(sum).fill(zero)"
+										}
+									],
+									"response_format": "timeseries",
+									"display_type": "area"
+								}
+							],
+							"yaxis": {
+								"max": "100"
+							},
+							"markers": []
+						},
+						"layout": {
+							"x": 0,
+							"y": 0,
+							"width": 12,
+							"height": 3
+						}
+					}
+				]
+			},
+			"layout": {
+				"x": 0,
+				"y": 8,
+				"width": 12,
+				"height": 4
+			}
+		}
+	],
+	"template_variables": [],
+	"layout_type": "ordered",
+	"is_read_only": false,
+	"notify_list": [],
+	"reflow_type": "fixed"
+}
