@@ -1,8 +1,11 @@
 AWSTemplateFormatVersion: 2010-09-09
 Parameters:
-  DdApiKey:
+  AwsAccessKeyId:
     Type: String
-    Description: Datadog API key for the Datadog Agent
+  AwsSecretAccessKey:
+    Type: String
+  DatadogApiKey:
+    Type: String
 Resources:
   LabInternetGateway:
     Type: "AWS::EC2::InternetGateway"
@@ -122,6 +125,13 @@ Resources:
       DBSubnetGroupName: 
         Ref: DBSubnetGroup
       AllocatedStorage: 20
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+        - Key: env
+          Value: intro-aws-1
+        - Key: service
+          Value: database
   AdvertisementsService:
     DependsOn:
       - DBInstance
@@ -132,7 +142,7 @@ Resources:
           - Arn
       DeploymentConfiguration:
         MaximumPercent: 200
-        MinimumHealthyPercent: 100
+        MinimumHealthyPercent: 50
       DeploymentController:
         Type: ECS
       DesiredCount: 1
@@ -164,6 +174,8 @@ Resources:
           Value: "Intro to AWS"
         - Key: service
           Value: advertisements
+        - Key: env
+          Value: intro-aws-1
       TaskDefinition:
         Ref: AdvertisementsTaskDefinition
     Type: AWS::ECS::Service
@@ -245,17 +257,32 @@ Resources:
           Environment:
             - Name: DD_API_KEY
               Value:
-                Ref: DdApiKey
+                Ref: DatadogApiKey
             - Name: ECS_FARGATE
               Value: True
+            - Name: DD_LOGS_ENABLED
+              Value: True
+            - Name: DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL
+              Value: True
+            - Name: DD_PROCESS_AGENT_ENABLED
+              Value: True 
       Cpu: "256"
       ExecutionRoleArn:
-        Ref: AdvertisementsTaskExecutionRole
+        Fn::GetAtt:
+          - AdvertisementsTaskExecutionRole
+          - Arn
       Family: lab-advertisements
       Memory: "512"
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+        - Key: env
+          Value: intro-aws-1
+        - Key: service
+          Value: advertisements
   AdvertisementsTaskExecutionRole:
     Properties:
       AssumeRolePolicyDocument:
@@ -349,8 +376,6 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
       Path: /
   DiscountsService:
-    DependsOn:
-      - DBInstance
     Properties:
       Handler: lambda_function.lambda_handler
       Runtime: python3.8
@@ -378,8 +403,12 @@ Resources:
       Tags:
         - Key: project
           Value: "Intro to AWS"
+        - Key: env
+          Value: aws-intro-1 
         - Key: service
           Value: discounts
+        - Key: version
+          Value: 1.0.0
     Type: AWS::Lambda::Function
   DiscountsServiceURLInvokePermission:
     Type: AWS::Lambda::Permission
@@ -401,8 +430,6 @@ Resources:
       TargetFunctionArn:
         Ref: DiscountsService
   FrontendService:
-    DependsOn:
-      - DBInstance
     Properties:
       Cluster:
         Fn::GetAtt:
@@ -410,7 +437,7 @@ Resources:
           - Arn
       DeploymentConfiguration:
         MaximumPercent: 200
-        MinimumHealthyPercent: 100
+        MinimumHealthyPercent: 50
       DeploymentController:
         Type: ECS
       DesiredCount: 1
@@ -523,17 +550,32 @@ Resources:
           Environment:
             - Name: DD_API_KEY
               Value:
-                Ref: DdApiKey
+                Ref: DatadogApiKey
             - Name: ECS_FARGATE
               Value: True
+            - Name: DD_LOGS_ENABLED
+              Value: True
+            - Name: DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL
+              Value: True
+            - Name: DD_PROCESS_AGENT_ENABLED
+              Value: True 
       Cpu: "256"
       ExecutionRoleArn:
-        Ref: FrontendTaskExecutionRole
+        Fn::GetAtt:
+          - FrontendTaskExecutionRole
+          - Arn
       Family: lab-frontend
       Memory: "512"
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
+      Tags:
+        - Key: project
+          Value: "Intro to AWS"
+        - Key: env
+          Value: intro-aws-1
+        - Key: service
+          Value: frontend
   FrontendTaskExecutionRole:
     Properties:
       AssumeRolePolicyDocument:
@@ -551,8 +593,6 @@ Resources:
       Tags:
         - Key: project
           Value: "Intro to AWS"
-        - Key: service
-          Value: frontend
     Type: AWS::IAM::Role
   LoadBalancer:
     Properties:
@@ -573,3 +613,147 @@ Resources:
     Properties:
       LogGroupName: awslab
     Type: AWS::Logs::LogGroup
+  SSMIAMRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - ec2.amazonaws.com
+              Action:
+                - sts:AssumeRole
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+  WebServerInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - !Ref SSMIAMRole
+  WebServerSecurityGroup:
+   Type: AWS::EC2::SecurityGroup
+   Properties:
+     GroupDescription: 'Enable HTTP access via port 80'
+     SecurityGroupIngress:
+       - IpProtocol: tcp
+         FromPort: 80
+         ToPort: 80
+         CidrIp: 0.0.0.0/0
+     VpcId: !Ref LabVPC
+  WebServerInstance:
+    Type: AWS::EC2::Instance
+    Metadata:
+      AWS::CloudFormation::Init:
+        config:
+          files:
+            /etc/cfn/cfn-hup.conf:
+              content: !Sub |
+                [main]
+                stack=${AWS::StackId}
+                region=${AWS::Region}
+                interval=1
+            /etc/cfn/hooks.d/cfn-auto-reloader.conf: 
+              content: !Sub |
+                [cfn-auto-reloader-hook]
+                triggers=post.update
+                path=Resources.WebServerInstance.Metadata.AWS::CloudFormation::Init
+                action=/opt/aws/bin/cfn-init --stack ${AWS::StackName} --resource WebServerInstance --region ${AWS::Region}
+                runas=root
+            /root/datadog-agent-append.yaml:
+              content: |
+                hostname: saa-server
+                logs_enabled: true
+                process_config:
+                  process_collection:
+                    enabled: true
+                tags:
+                  - env:intro-aws-2
+            /root/datadog-agent-saa-conf.yaml:
+              content: |
+                logs:
+                  - type: file
+                    path: "/opt/saa/saa.log"
+                    service: "sentiment-analysis-api"
+                    source: "nodejs"
+                    tags:
+                      - env:intro-aws-2
+          services:
+            sysvinit:
+              cfn-hup:
+                enabled: true
+                ensureRunning: true
+                files:
+                  - /etc/cfn/cfn-hup.conf
+                  - /etc/cfn/hooks.d/cfn-auto-reloader.conf
+    Properties:
+      AvailabilityZone: us-west-2b
+      SubnetId: !Ref LabSubnet2
+      ImageId: ami-08e2d37b6a0129927
+      InstanceType: t2.small
+      SecurityGroupIds:
+        - !Ref WebServerSecurityGroup
+      IamInstanceProfile: !Ref WebServerInstanceProfile  
+      Tags:
+        - Key: Name
+          Value: 'sa-api'
+      UserData:
+        Fn::Base64:
+          !Sub |
+            #!/bin/bash -xe
+            # Update aws-cfn-bootstrap to the latest
+            yum install -y aws-cfn-bootstrap
+            # Call cfn-init script to install files and packages
+            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource WebServerInstance --region ${AWS::Region}
+            /opt/aws/bin/cfn-signal --exit-code $? --stack ${AWS::StackName} --resource WebServerInstance --region ${AWS::Region}
+            # Install node LTS
+            curl -sL https://rpm.nodesource.com/setup_16.x | bash -
+            yum install -y nodejs
+            curl -L -o /tmp/saa.tgz https://github.com/stevedatadog/sentiment-analysis-api/tarball/v1.0.0
+            mkdir -p /opt/saa && cd $_
+            tar --strip-components=1 -xzvf /tmp/saa.tgz
+            npm install
+            npm install -g pm2
+            export SAA_LISTEN_PORT=80
+            export AWS_ACCESS_KEY_ID=${AwsAccessKeyId}
+            export AWS_SECRET_ACCESS_KEY=${AwsSecretAccessKey}
+            pm2 start npm --name "ssa-server" -- start
+            # Datadog Agent : install
+            DD_AGENT_MAJOR_VERSION=7 DD_API_KEY=${DatadogApiKey} DD_SITE="datadoghq.com" bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script.sh)"
+            # Datadog Agent : configure
+            cat /root/datadog-agent-append.yaml >> /etc/datadog-agent/datadog.yaml
+            mkdir -p /etc/datadog-agent/conf.d/saa.d
+            cp /root/datadog-agent-saa-conf.yaml /etc/datadog-agent/conf.d/saa.d/conf.yaml
+            # Datadog Agent : restart
+            systemctl restart datadog-agent
+    CreationPolicy:
+      ResourceSignal:
+        Count: 1
+        Timeout: PT10M
+  
+  WebServerEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      InstanceId: !Ref WebServerInstance
+  
+
+  SaApiTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: storedog-sentiment-v2
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5 
+
+Outputs:
+   WebsiteURL:
+     Value: !Sub http://${WebServerEIP}
+     Description: Application URL

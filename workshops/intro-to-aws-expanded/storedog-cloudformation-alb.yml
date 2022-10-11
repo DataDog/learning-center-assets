@@ -200,12 +200,12 @@ Resources:
       LoadBalancerArn:
         Ref: LoadBalancer
       Port: 5002
-      Protocol: TCP
+      Protocol: HTTP
     Type: AWS::ElasticLoadBalancingV2::Listener
   AdvertisementsTCP5002TargetGroup:
     Properties:
       Port: 5002
-      Protocol: TCP
+      Protocol: HTTP
       Tags:
         - Key: project
           Value: "Intro to AWS"
@@ -391,8 +391,6 @@ Resources:
           Value: aws-intro-1 
         - Key: service
           Value: discounts
-        - Key: version
-          Value: 1.0.0
     Type: AWS::Lambda::Function
   DiscountsServiceURLInvokePermission:
     Type: AWS::Lambda::Permission
@@ -479,12 +477,12 @@ Resources:
       LoadBalancerArn:
         Ref: LoadBalancer
       Port: 3000
-      Protocol: TCP
+      Protocol: HTTP
     Type: AWS::ElasticLoadBalancingV2::Listener
   FrontendTCP3000TargetGroup:
     Properties:
       Port: 3000
-      Protocol: TCP
+      Protocol: HTTP
       Tags:
         - Key: project
           Value: "Intro to AWS"
@@ -566,9 +564,6 @@ Resources:
     Type: AWS::IAM::Role
   LoadBalancer:
     Properties:
-      LoadBalancerAttributes:
-        - Key: load_balancing.cross_zone.enabled
-          Value: True
       Scheme: internet-facing
       Subnets:
         - Ref: LabSubnet1
@@ -577,7 +572,6 @@ Resources:
       Tags:
         - Key: project
           Value: "Intro to AWS"
-      Type: network
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
   LogGroup:
     Properties:
