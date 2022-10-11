@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+
+  app:
+    build: .
+    depends_on:
+      - datadog-agent
+    ports:
+      - "4000:80"
+    labels:
+      my.custom.label.team: 'app'
+
+  datadog-agent:
+    image: datadog/agent
+    environment:
+      - DD_APM_ENABLED=true
+      - DD_APM_NON_LOCAL_TRAFFIC=true
+      - DD_LOGS_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+    env_file:
+      - ../env
+    ports:
+      - "8126:8126"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro

@@ -1,0 +1,54 @@
+version: "3.7"
+
+services:
+  web:
+    build: .
+    environment:
+      - NODE_ENV
+      - MONGODB_URI=mongodb://mongo:27017/nodegoat
+      - DD_AGENT_HOST=datadog-agent
+      - DD_TRACE_AGENT_PORT=8126
+      - DD_ENV=dev
+      - DD_APPSEC_ENABLED=true
+    env_file:
+      - ../env
+    depends_on:
+      - mongo
+      - datadog-agent
+    command: sh -c "until nc -z -w 2 mongo 27017 && echo 'mongo is ready for connections' && node artifacts/db-reset.js && npm start; do sleep 2; done"
+    ports:
+      - "4000:4000"
+  datadog-agent:
+    image: datadog/agent
+    environment:
+    - DD_APM_ENABLED=true
+    - DD_APM_NON_LOCAL_TRAFFIC=true
+    - DD_LOGS_ENABLED=true
+    - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+    - DD_SYSTEM_PROBE_ENABLED=true
+    - DD_RUNTIME_SECURITY_CONFIG_ENABLED=true
+    env_file:
+    - ../env
+    ports:
+    - "8126:8126"
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /proc/:/host/proc/:ro
+    - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+    - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - /:/host/root:ro
+    - /etc/os-release:/host/etc/os-release
+    - /sys/kernel/debug:/sys/kernel/debug
+    cap_add:
+    - SYS_ADMIN
+    - SYS_RESOURCE
+    - SYS_PTRACE
+    - NET_ADMIN
+    - IPC_LOCK
+  mongo:
+    image: mongo:4.4.16
+    user: mongodb
+    expose:
+      - 27017
