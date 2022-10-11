@@ -1,7 +1,6 @@
-data_dir: /vector-data-dir
 enterprise:
-  api_key: "${DATADOG_API_KEY}"
-  configuration_key: "${DATADOG_OP_CONFIG_KEY}"
+  api_key: "${DD_API_KEY}"
+  configuration_key: "${OP_CONFIGURATION_KEY}"
   site: "datadoghq.com"
 api:
   enabled: true
@@ -41,10 +40,10 @@ sinks:
     type: datadog_logs
     inputs:
       - tag_logs
-    default_api_key: ${DATADOG_API_KEY}
+    default_api_key: ${DD_API_KEY}
     compression: gzip
   datadog_metrics:
     type: datadog_metrics
     inputs:
       - tag_metrics
-    default_api_key: ${DATADOG_API_KEY}
+    default_api_key: ${DD_API_KEY}
