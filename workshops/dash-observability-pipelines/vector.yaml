@@ -1,121 +1,50 @@
-## See Vector helm documentation to learn more:
-## https://vector.dev/docs/setup/installation/package-managers/helm/
+data_dir: /vector-data-dir
+enterprise:
+  api_key: "${DATADOG_API_KEY}"
+  configuration_key: "${DATADOG_OP_CONFIG_KEY}"
+  site: "datadoghq.com"
+api:
+  enabled: true
+  address: 0.0.0.0:8686
+  playground: false
+sources:
+  datadog_agent:
+    address: 0.0.0.0:8282
+    type: datadog_agent
+    multiple_outputs: true
+transforms:
+  tag_logs:
+    type: remap
+    inputs:
+      - datadog_agent.logs
+    source: |-
+      # Parse the received `.ddtags` field so we can more easily access the contained tags.
+      .ddtags = parse_key_value!(.ddtags, key_value_delimiter: ":", field_delimiter: ",")
 
-# nameOverride -- Override name of app
-fullnameOverride: vector
+      # Add some tags so that we can positively identify that data has passed through OP.
+      .ddtags.sender = "observability_pipelines"
+      .ddtags.op_aggregator = get_hostname!()
 
-## Create a Secret resource for Vector to use
-secrets:
-  # secrets.generic -- Each Key/Value will be added to the Secret's data key, each value should be raw and NOT base64 encoded
-  ## Any secrets can be provided here, it's commonly used for credentials and other access related values.
-  ## NOTE: Don't commit unencrypted secrets to git!
-  generic:
-    datadog_api_key: ""
-    datadog_configuration_key: ""
+      # Re-encode Datadog tags in the format the intakes expect.
+      .ddtags = encode_key_value(.ddtags, key_value_delimiter: ":", field_delimiter: ",")
 
-# env -- Set environment variables in Vector containers
-## The examples below leverage examples from secrets.generic and assume no name overrides with a Release name of "vector"
-env:
-  - name: DATADOG_API_KEY
-    valueFrom:
-      secretKeyRef:
-        name: vector
-        key: datadog_api_key
-  - name: DATADOG_OP_CONFIG_KEY
-    valueFrom:
-      secretKeyRef:
-        name: vector
-        key: datadog_configuration_key
-  - name: VECTOR_LOG_FORMAT
-    value: json
-
-# customConfig -- Override Vector's default configs, if used **all** options need to be specified
-## This section supports using helm templates to populate dynamic values
-## Ref: https://vector.dev/docs/reference/configuration/
-customConfig:
-  data_dir: /vector-data-dir
-  enterprise:
-    api_key: "${DATADOG_API_KEY}"
-    configuration_key: "${DATADOG_OP_CONFIG_KEY}"
-    site: "datadoghq.com"
-  api:
-    enabled: true
-    address: 0.0.0.0:8686
-    playground: false
-  sources:
-    datadog_agent:
-      address: 0.0.0.0:8282
-      type: datadog_agent
-      multiple_outputs: true
-  transforms:
-    parse_logs:
-      type: remap
-      inputs:
-        - datadog_agent.logs
-      source: |-
-        # We need the contents of the `message` in order to actually work with
-        # the log line, so let's parse that out first.
-        msg, err = parse_json(.message)
-        if err == null {
-          . |= object!(msg)
-          del(.message)
-        }
-    tag_logs:
-      type: remap
-      inputs:
-        - parse_logs
-      source: |-
-        # Parse the received `.ddtags` field so we can more easily access the contained tags.
-        .ddtags = parse_key_value!(.ddtags, key_value_delimiter: ":", field_delimiter: ",")
-
-        # Add some tags so that we can positively identify that data has passed through OP.
-        .ddtags.sender = "observability_pipelines"
-        .ddtags.op_aggregator = get_hostname!()
-
-        # Re-encode Datadog tags in the format the intakes expect.
-        .ddtags = encode_key_value(.ddtags, key_value_delimiter: ":", field_delimiter: ",")
-    remove_status:
-      type: remap
-      inputs:
-        - tag_logs
-      source: |-
-        # This is a bandage for a strange situation that OP runs into with its dedicated ingest
-        # endpoint, where the status field overrides all other parsed data from the log line
-        # itself. This leads to all logs being categorized as errors. Until we figure out a way
-        # forward with that internally, we recommend using this simple fix instead.
-        del(.status)
-
-    tag_metrics:
-      type: remap
-      inputs:
-        - datadog_agent.metrics
-      source: |-
-        # Add some tags so that we can positively identify that data has passed through OP.
-        .tags.sender = "observability_pipelines"
-        .tags.op_aggregator = get_hostname!()
-  sinks:
-    datadog_logs:
-      type: datadog_logs
-      inputs:
-        - remove_status
-      default_api_key: ${DATADOG_API_KEY}
-      compression: gzip
-    datadog_metrics:
-      type: datadog_metrics
-      inputs:
-        - tag_metrics
-      default_api_key: ${DATADOG_API_KEY}
-
-# livenessProbe -- Override default liveness probe settings, if customConfig is used requires customConfig.api.enabled true
-## Requires Vector's API to be enabled
-livenessProbe:
-  httpGet:
-    path: /health
-    port: api
-
-# readinessProbe -- Override default readiness probe settings, if customConfig is used requires customConfig.api.enabled true
-## Requires Vector's API to be enabled
-readinessProbe:
-  httpGet:
-    path: /health
-    port: api
+  tag_metrics:
+    type: remap
+    inputs:
+      - datadog_agent.metrics
+    source: |-
+      # Add some tags so that we can positively identify that data has passed through OP.
+      .tags.sender = "observability_pipelines"
+      .tags.op_aggregator = get_hostname!()
+sinks:
+  datadog_logs:
+    type: datadog_logs
+    inputs:
+      - tag_logs
+    default_api_key: ${DATADOG_API_KEY}
+    compression: gzip
+  datadog_metrics:
+    type: datadog_metrics
+    inputs:
+      - tag_metrics
+    default_api_key: ${DATADOG_API_KEY}
