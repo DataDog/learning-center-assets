@@ -6,44 +6,22 @@ api:
   enabled: true
   address: 0.0.0.0:8686
   playground: false
+
 sources:
   datadog_agent:
     address: 0.0.0.0:8282
     type: datadog_agent
     multiple_outputs: true
-transforms:
-  tag_logs:
-    type: remap
-    inputs:
-      - datadog_agent.logs
-    source: |-
-      # Parse the received `.ddtags` field so we can more easily access the contained tags.
-      .ddtags = parse_key_value!(.ddtags, key_value_delimiter: ":", field_delimiter: ",")
 
-      # Add some tags so that we can positively identify that data has passed through OP.
-      .ddtags.sender = "observability_pipelines"
-      .ddtags.op_aggregator = get_hostname!()
-
-      # Re-encode Datadog tags in the format the intakes expect.
-      .ddtags = encode_key_value(.ddtags, key_value_delimiter: ":", field_delimiter: ",")
-
-  tag_metrics:
-    type: remap
-    inputs:
-      - datadog_agent.metrics
-    source: |-
-      # Add some tags so that we can positively identify that data has passed through OP.
-      .tags.sender = "observability_pipelines"
-      .tags.op_aggregator = get_hostname!()
 sinks:
   datadog_logs:
     type: datadog_logs
     inputs:
-      - tag_logs
+      - datadog_agent.logs
     default_api_key: ${DD_API_KEY}
     compression: gzip
   datadog_metrics:
     type: datadog_metrics
     inputs:
-      - tag_metrics
+      - datadog_agent.metrics
     default_api_key: ${DD_API_KEY}

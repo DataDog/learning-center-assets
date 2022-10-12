@@ -1,8 +1,8 @@
 [Unit]
-Description=example systemd service unit file.
+Description=Generates synthetic traffic like AWS' VPC flow logs.
 
 [Service]
-ExecStart=/bin/bash /usr/sbin/example.sh
+ExecStart=/root/lab/bin/vpc-gen
 
 [Install]
 WantedBy=multi-user.target
