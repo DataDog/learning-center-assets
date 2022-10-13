@@ -1,9 +1,4 @@
 AWSTemplateFormatVersion: 2010-09-09
-Parameters:
-  AwsAccessKeyId:
-    Type: String
-  AwsSecretAccessKey:
-    Type: String
 Resources:
   LabInternetGateway:
     Type: "AWS::EC2::InternetGateway"
@@ -132,6 +127,7 @@ Resources:
           Value: database
   AdvertisementsService:
     DependsOn:
+      - AdvertisementsTCP5002Listener
       - DBInstance
     Properties:
       Cluster:
@@ -301,26 +297,6 @@ Resources:
         - Key: project
           Value: "Intro to AWS"
     Type: AWS::ECS::Cluster
-  Default3000Ingress:
-    Properties:
-      CidrIp: 0.0.0.0/0
-      Description: frontend:3000/tcp on default network
-      FromPort: 3000
-      GroupId:
-        Ref: DefaultNetwork
-      IpProtocol: TCP
-      ToPort: 3000
-    Type: AWS::EC2::SecurityGroupIngress
-  Default5002Ingress:
-    Properties:
-      CidrIp: 0.0.0.0/0
-      Description: advertisements:5002/tcp on default network
-      FromPort: 5002
-      GroupId:
-        Ref: DefaultNetwork
-      IpProtocol: TCP
-      ToPort: 5002
-    Type: AWS::EC2::SecurityGroupIngress
   DefaultNetwork:
     Properties:
       GroupDescription: lab Security Group for default network
@@ -332,15 +308,6 @@ Resources:
       VpcId:
         Ref: LabVPC
     Type: AWS::EC2::SecurityGroup
-  DefaultNetworkIngress:
-    Properties:
-      Description: Allow communication within network default
-      GroupId:
-        Ref: DefaultNetwork
-      IpProtocol: "-1"
-      SourceSecurityGroupId:
-        Ref: DefaultNetwork
-    Type: AWS::EC2::SecurityGroupIngress
   LambdaRole:
     Type: AWS::IAM::Role
     Properties:
@@ -391,6 +358,8 @@ Resources:
           Value: aws-intro-1 
         - Key: service
           Value: discounts
+        - Key: version
+          Value: 1.0.0
     Type: AWS::Lambda::Function
   DiscountsServiceURLInvokePermission:
     Type: AWS::Lambda::Permission
@@ -412,6 +381,7 @@ Resources:
       TargetFunctionArn:
         Ref: DiscountsService
   FrontendService:
+    DependsOn: FrontendTCP3000Listener
     Properties:
       Cluster:
         Fn::GetAtt:
@@ -562,9 +532,26 @@ Resources:
         - Key: project
           Value: "Intro to AWS"
     Type: AWS::IAM::Role
+  LoadBalancerSG:
+   Type: AWS::EC2::SecurityGroup
+   Properties:
+     GroupDescription: 'Enable HTTP access via ports 3000 and 5002'
+     SecurityGroupIngress:
+       - IpProtocol: tcp
+         FromPort: 3000
+         ToPort: 3000
+         CidrIp: 0.0.0.0/0
+       - IpProtocol: tcp
+         FromPort: 5002
+         ToPort: 5002
+         CidrIp: 0.0.0.0/0  
+     VpcId: !Ref LabVPC
   LoadBalancer:
     Properties:
       Scheme: internet-facing
+      LoadBalancerAttributes:
+        - access_logs.s3.enabled: true
+          access_logs.s3.bucket: !Ref ECSLogsBucket
       Subnets:
         - Ref: LabSubnet1
         - Ref: LabSubnet2
@@ -572,12 +559,14 @@ Resources:
       Tags:
         - Key: project
           Value: "Intro to AWS"
+      SecurityGroups: 
+        - !GetAtt LoadBalancerSG.GroupId
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
   LogGroup:
     Properties:
       LogGroupName: awslab
     Type: AWS::Logs::LogGroup
-  SSMIAMRole:
+  WebServerInstanceProfileRole:
       Type: AWS::IAM::Role
       Properties:
         AssumeRolePolicyDocument:
@@ -590,12 +579,23 @@ Resources:
                 - sts:AssumeRole
         ManagedPolicyArns:
           - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        Policies:
+          - PolicyName: root
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action: 'dynamodb:*'
+                  Resource: 
+                    Fn::GetAtt:
+                      - SaApiTable
+                      - Arn
   WebServerInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Path: /
       Roles:
-        - !Ref SSMIAMRole
+        - !Ref WebServerInstanceProfileRole
   WebServerSecurityGroup:
    Type: AWS::EC2::SecurityGroup
    Properties:
@@ -656,14 +656,12 @@ Resources:
             # Install node LTS
             curl -sL https://rpm.nodesource.com/setup_16.x | bash -
             yum install -y nodejs
-            curl -L -o /tmp/saa.tgz https://github.com/stevedatadog/sentiment-analysis-api/tarball/v1.0.0
+            curl -L -o /tmp/saa.tgz https://github.com/stevedatadog/sentiment-analysis-api/tarball/v1.0.0-no-creds
             mkdir -p /opt/saa && cd $_
             tar --strip-components=1 -xzvf /tmp/saa.tgz
             npm install
             npm install -g pm2
             export SAA_LISTEN_PORT=80
-            export AWS_ACCESS_KEY_ID=${AwsAccessKeyId}
-            export AWS_SECRET_ACCESS_KEY=${AwsSecretAccessKey}
             pm2 start npm --name "ssa-server" -- start
     CreationPolicy:
       ResourceSignal:
@@ -689,6 +687,12 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5 
+
+  ECSLogsBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: aws-intro
+      AccessControl: LogDeliveryWrite
 
 Outputs:
    WebsiteURL:
