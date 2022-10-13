@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ -z "AWS_ACCESS_KEY_ID" ] 
+then
+  printf "Sorry, something went wrong retrieving your AWS credentials!\n\n"
+  printf "To fix this, please take the following steps to reset the lab environment. Read all of the instructions carefully before proceeding, as they'll disappear after clicking the 'Check' button:\n\n"
+  printf "1. Run \"finish\" in the terminal.\n"
+  printf "2. Click the 'Check' button in the lower-right corner of the lab to complete the lab.\n"
+  printf "3. Next, click the 'Restart' button.\n"
+  printf "4. When on the page with the 'Launch' button, refresh the browser tab.\n"
+  printf "5. Follow prompts in the lab to restart.\n\n"
+  printf "======\n\n"
+  printf "If this doesn't work, please contact the Datadog Training Team either by emailing us at learn@datadoghq.com or messaging us in the #learning-center Slack channel at https://chat.datadoghq.com \n\n"
+
+else
+  MAGIC_LOGIN_URL=$(AWS_VAULT_FILE_PASSPHRASE= aws-vault login default --backend=file --stdout --duration=12h)
+  LOGIN_URL=https://$AWS_ACCOUNT_ID.signin.aws.amazon.com/console
+  printf "Your AWS Console credentials for logging in are as follows:\n"
+  printf "URL: \t\t\033[32m$LOGIN_URL\033[0m\n"
+  printf "Username: \t\033[32m$INSTRUQT_AWS_ACCOUNT_AWSACCOUNT_USERNAME\033[0m\n"
+  printf "Password: \t\033[32m$INSTRUQT_AWS_ACCOUNT_AWSACCOUNT_PASSWORD\033[0m\n"
+  echo -e "Magic login URL:\t$MAGIC_LOGIN_URL\n" # We can't use printf as the sign-in URL has some special chars
+  printf "======\n\n"
+fi
