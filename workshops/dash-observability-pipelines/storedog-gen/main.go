@@ -35,7 +35,7 @@ func generateApacheLogLine(status int) string {
 		i.Ipv4(),
 		i.User(),
 		t.Format(ApacheTime),
-		i.HTTPMethod(),
+		"GET",
 		url,
 		"HTTP/1.1",
 		status,
