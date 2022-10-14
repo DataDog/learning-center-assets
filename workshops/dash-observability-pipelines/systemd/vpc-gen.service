@@ -1,0 +1,8 @@
+[Unit]
+Description=Generates synthetic traffic like AWS' VPC flow logs.
+
+[Service]
+ExecStart=/root/lab/bin/vpc-gen
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,6 @@
+logs:
+  - type: journald
+    path: /var/log/journal
+    include_units:
+      - storedog-gen.service
+      - vpc-gen.service
