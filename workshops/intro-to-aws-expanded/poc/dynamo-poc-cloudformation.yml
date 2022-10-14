@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: AWS CloudFormation Template To Create a DynamoDB
+
+Parameters:
+  HashKeyElementName:
+    Type: String
+    Default: id
+    Description: Hash Key Name
+  HashKeyElementType:
+    Type: String
+    Default: S
+    Description: Hash Key Type
+Resources:
+  SATable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: storedog-sentiment-v2
+      AttributeDefinitions:
+        - 
+          AttributeName: !Ref HashKeyElementName
+          AttributeType: !Ref HashKeyElementType
+      KeySchema:
+        - 
+          AttributeName: !Ref HashKeyElementName
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5 
+Outputs:
+  DynamoTable:
+    Description: Table Created using this template.
+    Value: !Ref SATable
