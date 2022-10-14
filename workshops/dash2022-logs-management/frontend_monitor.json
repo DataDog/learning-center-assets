@@ -1,0 +1,24 @@
+{
+	"name": "Service store-frontend has a high error rate on env:logs-workshop",
+	"type": "query alert",
+	"query": "sum(last_5m):( sum:trace.rack.request.errors{env:logs-workshop,service:store-frontend}.as_count() / sum:trace.rack.request.hits{env:logs-workshop,service:store-frontend}.as_count() ) > 0.05",
+	"message": "`store-frontend` error rate is too high.",
+	"tags": [
+		"service:store-frontend",
+		"env:logs-workshop"
+	],
+	"options": {
+		"thresholds": {
+			"critical": 0.05,
+			"warning": 0.01
+		},
+		"notify_audit": false,
+		"require_full_window": false,
+		"notify_no_data": false,
+		"renotify_interval": 0,
+		"silenced": {},
+		"include_tags": true
+	},
+	"priority": null,
+	"restricted_roles": null
+}
