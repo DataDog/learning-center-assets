@@ -1,0 +1,126 @@
+enterprise:
+  api_key: "${DD_API_KEY}"
+  configuration_key: "${OP_CONFIGURATION_KEY}"
+  site: "datadoghq.com"
+api:
+  enabled: true
+  address: 0.0.0.0:8686
+  playground: false
+
+sources:
+  datadog_agent:
+    address: 0.0.0.0:8282
+    type: datadog_agent
+    multiple_outputs: true
+
+transforms:
+  # This step exists because the logs originate from services started by systemd,
+  # and the Datadog Agent adds this metadata when it reads from journald.
+  # We recommend using this as your input for downstream processing steps, so
+  # you can avoid having to deal with the extra overhead.
+  remove_journald:
+    type: remap
+    inputs:
+      - datadog_agent.logs
+    source: |-
+      msg, err = parse_json(.message)
+      if err == null {
+        . |= object!(msg)
+        del(.journald)
+      }
+
+# transforms:
+  # This step attempts to parse the messages as Apache Common Format
+  # logs, and adds whatever it is able to parse as metadata to the
+  # log.
+  #
+  # We are explicit about error handling here so we can make sure
+  # that we leave non-HTTP messages alone, or so we can add
+  # additional formats that we want to try easily onto the end.
+  parse_logs:
+    type: remap
+    inputs:
+      - remove_journald
+    source: |-
+      msg, err = parse_apache_log(.message, format:"common")
+      if err == null {
+        .http = msg
+      }
+
+# transforms:
+  # This will allow us to differentiate our downstream steps depending
+  # on what parsing succeeded previously, since we don't want non-HTTP
+  # logs to go through the same filtering and other steps that we're
+  # going to be setting up.
+  route_log_type:
+    type: route
+    inputs:
+      - parse_logs
+    route:
+      http: "exists(.http)"
+
+# transforms:
+  # This step can replace the existing deal_with_useless_http_logs.
+  # Anything that would have failed the condition previously is
+  # now sampled aggressively before being forwarded.
+  #
+  # This configuration will allow 1% of 200 OK logs through.
+  deal_with_useless_http_logs:
+    type: sample
+    inputs:
+      - route_log_type.http
+    exclude: ".http.status > 200 ?? true"
+    rate: 100
+
+# transforms:
+  # This will show errors properly categorized in the Log Explorer,
+  # instead of always showing up as `INFO`
+  set_http_status:
+    type: remap
+    inputs:
+      - deal_with_useless_http_logs
+    source: |-
+      if exists(.http) {
+        s, err = (.http.status > 200)
+        if err == null && s {
+          .status = "error"
+        }
+      }
+
+# transforms:
+  http_log_metrics:
+    type: log_to_metric
+    inputs:
+      - route_log_type.http
+    metrics:
+      - type: counter
+        field: status
+        name: http.response_code
+        namespace: storedog
+        tags:
+          status: "{{http.status}}"
+          path: "{{http.path}}"
+
+# transforms:
+  cardinality_control:
+    type: tag_cardinality_limit
+    inputs:
+      - http_log_metrics
+    limit_exceeded_action: drop_tag
+    mode: probabilistic
+    value_limit: 100
+
+sinks:
+  datadog_logs:
+    type: datadog_logs
+    inputs:
+      - set_http_status
+      - route_log_type._unmatched
+    default_api_key: ${DD_API_KEY}
+    compression: gzip
+  datadog_metrics:
+    type: datadog_metrics
+    inputs:
+      - datadog_agent.metrics
+      - cardinality_control
+    default_api_key: ${DD_API_KEY}

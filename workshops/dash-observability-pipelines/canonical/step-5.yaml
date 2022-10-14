@@ -14,55 +14,71 @@ sources:
     multiple_outputs: true
 
 transforms:
-  parse_logs:
+  # This step exists because the logs originate from services started by systemd,
+  # and the Datadog Agent adds this metadata when it reads from journald.
+  # We recommend using this as your input for downstream processing steps, so
+  # you can avoid having to deal with the extra overhead.
+  remove_journald:
     type: remap
     inputs:
       - datadog_agent.logs
     source: |-
-      # This additional unwrapping is needed because of the journald source of the logs.
-      # We are explicit about error handling here so we can make sure that we leave non-HTTP
-      # messages alone.
       msg, err = parse_json(.message)
       if err == null {
         . |= object!(msg)
-
-        msg, err = parse_apache_log(.message, format:"common")
-        if err == null {
-          .http = msg
-        }
+        del(.journald)
       }
-  
-  # Pull out AWS VPC flow logs
-  parse_vpc_logs:
+
+# transforms:
+  # This step attempts to parse the messages as Apache Common Format
+  # logs, and adds whatever it is able to parse as metadata to the
+  # log.
+  #
+  # We are explicit about error handling here so we can make sure
+  # that we leave non-HTTP messages alone, or so we can add
+  # additional formats that we want to try easily onto the end.
+  parse_logs:
     type: remap
     inputs:
-      - parse_logs
+      - remove_journald
     source: |-
-      msg, err = parse_aws_vpc_flow_log(.message)
+      msg, err = parse_apache_log(.message, format:"common")
       if err == null {
-        .vpc = msg
+        .http = msg
       }
 
-  pass_logs:
+# transforms:
+  # This will allow us to differentiate our downstream steps depending
+  # on what parsing succeeded previously, since we don't want non-HTTP
+  # logs to go through the same filtering and other steps that we're
+  # going to be setting up.
+  route_log_type:
     type: route
     inputs:
-      - parse_vpc_logs
+      - parse_logs
     route:
       http: "exists(.http)"
-      vpc: "exists(.vpc)"
 
-  # HTTP lane
-  sample_useless_http_logs:
+# transforms:
+  # This step can replace the existing deal_with_useless_http_logs.
+  # Anything that would have failed the condition previously is
+  # now sampled aggressively before being forwarded.
+  #
+  # This configuration will allow 1% of 200 OK logs through.
+  deal_with_useless_http_logs:
     type: sample
     inputs:
-      - pass_logs.http
+      - route_log_type.http
     exclude: ".http.status > 200 ?? true"
     rate: 100
 
+# transforms:
+  # This will show errors properly categorized in the Log Explorer,
+  # instead of always showing up as `INFO`
   set_http_status:
     type: remap
     inputs:
-      - sample_useless_http_logs
+      - deal_with_useless_http_logs
     source: |-
       if exists(.http) {
         s, err = (.http.status > 200)
@@ -71,10 +87,11 @@ transforms:
         }
       }
 
+# transforms:
   http_log_metrics:
     type: log_to_metric
     inputs:
-      - set_http_status
+      - route_log_type.http
     metrics:
       - type: counter
         field: status
@@ -84,6 +101,7 @@ transforms:
           status: "{{http.status}}"
           path: "{{http.path}}"
 
+# transforms:
   cardinality_control:
     type: tag_cardinality_limit
     inputs:
@@ -92,61 +110,12 @@ transforms:
     mode: probabilistic
     value_limit: 100
 
-  # VPC Flow Logs.
-  filter_vpc_logs:
-    type: route
-    inputs:
-      - pass_logs.vpc
-    route:
-      #accept: '(.vpc.action == "ACCEPT")'
-      reject: '(.vpc.action == "REJECT")'
-
-  vpc_log_metrics:
-    type: log_to_metric
-    inputs:
-      - pass_logs.vpc
-    metrics:
-      - type: counter
-        field: status
-        name: network.connections
-        namespace: storedog
-        tags:
-          status: "{{vpc.action}}"
-
-  # Everything else.
-  remove_cc:
-    type: remap
-    inputs:
-      - pass_logs._unmatched
-    source: |-
-      msg, err = redact(.message, filters:[r'\d{13, 16}'])
-      if err == null {
-        .message = msg
-        .redacted = true
-      }
-
-  redacted:
-    type: route
-    inputs:
-      - remove_cc
-    route:
-      yes: "exists(.redacted)"
-
-  redacted_metrics:
-    type: log_to_metric
-    inputs:
-      - redacted.yes
-    metrics:
-      - type: counter
-        field: status
-        name: redacted
-        namespace: security
-
+# transforms:
   tag_logs:
     type: remap
     inputs:
       - set_http_status
-      - remove_cc
+      - route_log_type._unmatched
     source: |-
       # Parse the received `.ddtags` field so we can more easily access the contained tags.
       .ddtags = parse_key_value!(.ddtags, key_value_delimiter: ":", field_delimiter: ",")
@@ -158,11 +127,11 @@ transforms:
       # Re-encode Datadog tags in the format the intakes expect.
       .ddtags = encode_key_value(.ddtags, key_value_delimiter: ":", field_delimiter: ",")
 
+# transforms:
   tag_metrics:
     type: remap
     inputs:
       - cardinality_control
-      - redacted_metrics
       - datadog_agent.metrics
     source: |-
       # Add some tags so that we can positively identify that data has passed through OP.
@@ -181,15 +150,3 @@ sinks:
     inputs:
       - tag_metrics
     default_api_key: ${DD_API_KEY}
-  minio:
-    type: aws_s3
-    inputs:
-      - datadog_agent.logs
-    auth:
-      access_key_id: minioadmin
-      secret_access_key: minioadmin
-    bucket: lab
-    region: us-east-1
-    endpoint: "http://localhost:9000"
-    encoding:
-      codec: json
