@@ -1,5 +1,4 @@
 {
-	"id": 99657040,
 	"name": "Service discounts-service has a high error rate on env:logs-workshop",
 	"type": "query alert",
 	"query": "sum(last_5m):( sum:trace.flask.request.errors{env:logs-workshop,service:discounts-service}.as_count() / sum:trace.flask.request.hits{env:logs-workshop,service:discounts-service}.as_count() ) > 0.05",

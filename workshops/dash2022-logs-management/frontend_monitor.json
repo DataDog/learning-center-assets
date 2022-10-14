@@ -1,5 +1,4 @@
 {
-	"id": 99657004,
 	"name": "Service store-frontend has a high error rate on env:logs-workshop",
 	"type": "query alert",
 	"query": "sum(last_5m):( sum:trace.rack.request.errors{env:logs-workshop,service:store-frontend}.as_count() / sum:trace.rack.request.hits{env:logs-workshop,service:store-frontend}.as_count() ) > 0.05",
