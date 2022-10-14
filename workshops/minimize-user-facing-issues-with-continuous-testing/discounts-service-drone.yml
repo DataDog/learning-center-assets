@@ -1,0 +1,63 @@
+---
+kind: pipeline
+type: docker
+name: build
+
+steps:
+  - name: docker
+    image: plugins/docker
+    settings:
+      username: labuser
+      repo: registry:5000/labuser/discounts-service
+      tags: latest
+      registry: registry:5000
+      insecure: true
+---
+kind: pipeline
+type: exec
+name: deploy-staging
+
+platform:
+  os: linux
+  arch: amd64
+
+clone:
+  skip_verify: true
+
+steps:
+  - name: pull
+    commands:
+    - cd /root/lab/storedog
+    - docker-compose pull discounts
+  - name: restart
+    commands:
+    - cd /root/lab/storedog
+    - docker-compose up -d --no-deps discounts-staging
+
+depends_on:
+  - build
+---
+kind: pipeline
+type: exec
+name: deploy-production
+
+platform:
+  os: linux
+  arch: amd64
+
+clone:
+  skip_verify: true
+
+steps:
+  - name: pull
+    commands:
+    - cd /root/lab/storedog
+    - docker-compose pull discounts
+  - name: restart
+    commands:
+    - cd /root/lab/storedog
+    - docker-compose up -d --no-deps discounts
+
+depends_on:
+  - deploy-staging
+

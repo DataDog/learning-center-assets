@@ -1,0 +1,139 @@
+[
+    {
+        "name": "datadog-agent",
+        "image": "public.ecr.aws/datadog/agent:latest",
+        "cpu": 100,
+        "memory": 512,
+        "essential": true,
+        "privileged": true,
+        "portMappings": [
+            {
+                "hostPort": 8126,
+                "protocol": "tcp",
+                "containerPort": 8126
+            },
+            {
+                "hostPort": 8125,
+                "protocol": "tcp",
+                "containerPort": 8125
+            }
+        ],
+        "mountPoints": [
+            {
+                "containerPath": "/var/run/docker.sock",
+                "sourceVolume": "docker_sock",
+                "readOnly": true
+            },
+            {
+                "containerPath": "/host/proc",
+                "sourceVolume": "proc",
+                "readOnly": true
+            },
+            {
+                "containerPath": "/host/sys/fs/cgroup",
+                "sourceVolume": "cgroup",
+                "readOnly": true
+            },
+            {
+                "containerPath": "/etc/passwd",
+                "sourceVolume": "passwd",
+                "readOnly": true
+            },
+            {
+                "containerPath": "/etc/group",
+                "sourceVolume": "group",
+                "readOnly": true
+            },
+            {
+                "containerPath": "/host/root",
+                "sourceVolume": "host",
+                "readOnly": true
+            },
+            {
+                "containerPath": "/sys/kernel/debug",
+                "sourceVolume": "kerneldebug",
+                "readOnly": false
+            },
+            {
+                "containerPath": "/host/sys/kernel/security",
+                "sourceVolume": "kernelsecurity",
+                "readOnly": false
+            },
+            {
+                "containerPath": "/host/root/etc/os-release",
+                "sourceVolume": "osrelease",
+                "readOnly": true
+            }
+        ],
+        "environment": [
+            {
+                "name": "DD_ECS_COLLECT_RESOURCE_TAGS_EC2",
+                "value": "true"
+            },
+            {
+                "name": "SD_BACKEND",
+                "value": "docker"
+            },
+            {
+                "name": "DD_APM_NON_LOCAL_TRAFFIC",
+                "value": "true"
+            },
+            {
+                "name": "DD_API_KEY",
+                "value": "${ddApiKey}"
+            },
+            {
+                "name": "DD_PROCESS_AGENT_ENABLED",
+                "value": "true"
+            },
+            {
+                "name": "DD_SYSTEM_PROBE_ENABLED",
+                "value": "true"
+            },
+            {
+                "name": "DD_SYSTEM_PROBE_SERVICE_MONITORING_ENABLED",
+                "value": "true"
+            },
+            {
+                "name": "DD_COMPLIANCE_CONFIG_ENABLED",
+                "value": "true"
+            },
+            {
+                "name": "DD_APM_ENABLED",
+                "value": "true"
+            },
+            {
+                "name": "DD_LOGS_ENABLED",
+                "value": "true"
+            },
+            {
+                "name": "DD_TAGS",
+                "value": "'env:development'"
+            },
+            {
+                "name": "DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL",
+                "value": "true"
+            },
+            {
+                "name": "DD_DOGSTATSD_NON_LOCAL_TRAFFIC",
+                "value": "true"
+            },
+            {
+                "name": "DD_RUNTIME_SECURITY_CONFIG_ENABLED",
+                "value": "true"
+            },
+            {
+                "name": "DD_RUNTIME_SECURITY_CONFIG_NETWORK_ENABLED",
+                "value": "true"
+            },
+            {
+                "name": "HOST_ROOT",
+                "value": "/host/root"
+            },
+            {
+                "name": "DD_CONTAINER_EXCLUDE",
+                "value": "image:amazon/amazon-ecs-agent"
+            }
+        ]
+    }
+]

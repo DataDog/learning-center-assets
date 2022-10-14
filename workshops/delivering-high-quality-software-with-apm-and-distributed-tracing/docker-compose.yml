@@ -45,9 +45,6 @@ services:
       - agent
       - db
     labels:
-      com.datadoghq.tags.env: 'apm-workshop'
-      com.datadoghq.tags.service: 'discounts-service'
-      com.datadoghq.tags.version: '2.0'
       my.custom.label.team: 'discounts'
       com.datadoghq.ad.logs: '[{"source": "python", "service": "discounts-service"}]'
   frontend:
@@ -70,9 +67,6 @@ services:
       - discounts
       - advertisements
     labels:
-      com.datadoghq.tags.env: 'apm-workshop'
-      com.datadoghq.tags.service: 'store-frontend'
-      com.datadoghq.tags.version: '2.0'
       my.custom.label.team: 'frontend'
       com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-frontend"}]'
   advertisements:
@@ -104,9 +98,6 @@ services:
       - agent
       - db
     labels:
-      com.datadoghq.tags.env: 'apm-workshop'
-      com.datadoghq.tags.service: 'advertisements-service'
-      com.datadoghq.tags.version: '2.0'
       my.custom.label.team: 'advertisements'
       com.datadoghq.ad.logs: '[{"source": "python", "service": "advertisements-service"}]'
   db:
@@ -118,9 +109,6 @@ services:
     ports:
       - '5432:5432'
     labels:
-      com.datadoghq.tags.env: 'apm-workshop'
-      com.datadoghq.tags.service: 'database'
-      com.datadoghq.tags.version: '11.12'
       my.custom.label.team: 'database'
       com.datadoghq.ad.check_names: '["postgres"]'
       com.datadoghq.ad.init_configs: '[{}]'
