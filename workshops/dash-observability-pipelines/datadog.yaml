@@ -1,0 +1,2 @@
+api_key: ${DD_API_KEY}
+logs_enabled: true
