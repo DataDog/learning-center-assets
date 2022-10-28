@@ -5,7 +5,7 @@ services:
     environment:
       - DD_API_KEY
       - DD_APM_ENABLED=true
-  # add agent env variables
+      # add agent env variables
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
       - DD_TAGS='env:intro-to-logs'
