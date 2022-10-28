@@ -16,7 +16,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /proc/:/host/proc/:ro
       - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
-  # add agent log labels
+    # add agent log labels
   discounts:
     environment:
       - FLASK_APP=discounts.py
