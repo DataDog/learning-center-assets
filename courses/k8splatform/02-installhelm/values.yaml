@@ -110,7 +110,7 @@ clusterAgent:
   enabled: false
   image:
     repository: datadog/cluster-agent
-    tag: 1.5.2
+    tag: 1.20.0
     pullPolicy: IfNotPresent
     # pullSecrets:
     #   - name: "<REG_SECRET>"
