@@ -11,3 +11,7 @@ spec:
     appSecret:
       secretName: datadog-secret
       keyName: app-key
+  agent:
+    env:
+      - name: DD_KUBELET_TLS_VERIFY
+        value: 'false'
