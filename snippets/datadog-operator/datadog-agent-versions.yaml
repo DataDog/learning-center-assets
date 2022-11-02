@@ -14,6 +14,9 @@ spec:
   agent:
     image:
       name: 'datadog/agent:7.35.0'
+    env:
+      - name: DD_KUBELET_TLS_VERIFY
+        value: 'false'
   clusterAgent:
     image:
       name: 'datadog/cluster-agent:1.15.0'
