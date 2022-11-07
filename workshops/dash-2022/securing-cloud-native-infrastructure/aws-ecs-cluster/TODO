@@ -1,0 +1,1 @@
+- Pass ECR image names as parameters instead of hardcoding (esp. account IDs)

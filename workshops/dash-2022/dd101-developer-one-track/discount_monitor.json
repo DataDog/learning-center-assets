@@ -1,0 +1,28 @@
+{
+  "name": "Resource get_/discount has a high average latency on env:dd101-dev",
+  "type": "metric alert",
+  "query": "avg(last_1m):avg:trace.flask.request{env:dd101-dev,resource_name:get_/discount,service:discounts-service} > 1",
+  "message": "`discounts-service` throughput deviated too much from its usual value.",
+  "tags": [
+    "service:discounts-service",
+    "env:dd101-dev",
+    "resource_name:get_/discount"
+  ],
+  "options": {
+    "notify_audit": false,
+    "locked": false,
+    "timeout_h": 0,
+    "require_full_window": false,
+    "notify_no_data": false,
+    "renotify_interval": "0",
+    "renotify_occurrences": null,
+    "renotify_statuses": null,
+    "escalation_message": "",
+    "no_data_timeframe": null,
+    "include_tags": true,
+    "thresholds": {
+      "critical": 1
+    }
+  },
+  "priority": null
+}

@@ -1,0 +1,179 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: AWS CloudFormation workshop - Helper scripts (uksb-1q9p31idr).
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: 'Amazon EC2 Configuration'
+        Parameters:
+          - AmiID
+    ParameterLabels:
+      AmiID:
+        default: 'Amazon Machine Image ID'
+
+Parameters:
+  AvailabilityZone:
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: us-west-2a
+
+  AmiID:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Description: 'The ID of the AMI.'
+    Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
+
+  InstanceType:
+    Type: String
+    Description: 'EC2 instance type'
+    Default: t2.small
+
+  AwsAccessKeyId:
+    Type: String
+
+  AwsSecretAccessKey:
+    Type: String
+
+  DatadogApiKey:
+    Type: String
+
+Resources:
+  SSMIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+  WebServerInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - !Ref SSMIAMRole
+
+  WebServerInstance:
+    Type: AWS::EC2::Instance
+    Metadata:
+      AWS::CloudFormation::Init:
+        config:
+          files:
+            /etc/cfn/cfn-hup.conf:
+              content: !Sub |
+                [main]
+                stack=${AWS::StackId}
+                region=${AWS::Region}
+                interval=1
+            /etc/cfn/hooks.d/cfn-auto-reloader.conf: 
+              content: !Sub |
+                [cfn-auto-reloader-hook]
+                triggers=post.update
+                path=Resources.WebServerInstance.Metadata.AWS::CloudFormation::Init
+                action=/opt/aws/bin/cfn-init --stack ${AWS::StackName} --resource WebServerInstance --region ${AWS::Region}
+                runas=root
+            /root/datadog-agent-append.yaml:
+              content: |
+                hostname: saa-server
+                logs_enabled: true
+                process_config:
+                  process_collection:
+                    enabled: true
+                tags:
+                  - env:intro-aws-2
+            /root/datadog-agent-saa-conf.yaml:
+              content: |
+                logs:
+                  - type: file
+                    path: "/opt/saa/saa.log"
+                    service: "sentiment-analysis-api"
+                    source: "nodejs"
+                    tags:
+                      - env:intro-aws-2
+          services:
+            sysvinit:
+              cfn-hup:
+                enabled: true
+                ensureRunning: true
+                files:
+                  - /etc/cfn/cfn-hup.conf
+                  - /etc/cfn/hooks.d/cfn-auto-reloader.conf
+    Properties:
+      AvailabilityZone: !Ref AvailabilityZone
+      ImageId: !Ref AmiID
+      InstanceType: !Ref InstanceType
+      SecurityGroupIds:
+        - !Ref WebServerSecurityGroup
+      IamInstanceProfile: !Ref WebServerInstanceProfile  
+      Tags:
+        - Key: Name
+          Value: 'sa-api'
+      UserData:
+        Fn::Base64:
+          !Sub |
+            #!/bin/bash -xe
+            # Update aws-cfn-bootstrap to the latest
+            yum install -y aws-cfn-bootstrap
+            # Call cfn-init script to install files and packages
+            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource WebServerInstance --region ${AWS::Region}
+            /opt/aws/bin/cfn-signal --exit-code $? --stack ${AWS::StackName} --resource WebServerInstance --region ${AWS::Region}
+            # Install node LTS
+            curl -sL https://rpm.nodesource.com/setup_16.x | bash -
+            yum install -y nodejs
+            curl -L -o /tmp/saa.tgz https://github.com/stevedatadog/sentiment-analysis-api/tarball/v1.0.0
+            mkdir -p /opt/saa && cd $_
+            tar --strip-components=1 -xzvf /tmp/saa.tgz
+            npm install
+            npm install -g pm2
+            export SAA_LISTEN_PORT=80
+            export AWS_ACCESS_KEY_ID=${AwsAccessKeyId}
+            export AWS_SECRET_ACCESS_KEY=${AwsSecretAccessKey}
+            pm2 start npm --name "ssa-server" -- start
+            # Datadog Agent : install
+            DD_AGENT_MAJOR_VERSION=7 DD_API_KEY=${DatadogApiKey} DD_SITE="datadoghq.com" bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script.sh)"
+            # Datadog Agent : configure
+            cat /root/datadog-agent-append.yaml >> /etc/datadog-agent/datadog.yaml
+            mkdir -p /etc/datadog-agent/conf.d/saa.d
+            cp /root/datadog-agent-saa-conf.yaml /etc/datadog-agent/conf.d/saa.d/conf.yaml
+            # Datadog Agent : restart
+            systemctl restart datadog-agent
+    CreationPolicy:
+      ResourceSignal:
+        Count: 1
+        Timeout: PT10M
+
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: 'Enable HTTP access via port 80'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+  WebServerEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      InstanceId: !Ref WebServerInstance
+
+Outputs:
+  WebServerPublicDNS:
+    Description: 'Public DNS of EC2 instance'
+    Value: !GetAtt WebServerInstance.PublicDnsName
+
+  WebServerElasticIP:
+    Description: 'Elastic IP assigned to EC2'
+    Value: !Ref WebServerEIP
+
+  WebsiteURL:
+    Value: !Sub http://${WebServerEIP}
+    Description: Application URL
+

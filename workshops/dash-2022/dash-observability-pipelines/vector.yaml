@@ -1,0 +1,43 @@
+enterprise:
+  api_key: "${DD_API_KEY}"
+  configuration_key: "${OP_CONFIGURATION_KEY}"
+  site: "datadoghq.com"
+api:
+  enabled: true
+  address: 0.0.0.0:8686
+  playground: false
+
+sources:
+  datadog_agent:
+    address: 0.0.0.0:8282
+    type: datadog_agent
+    multiple_outputs: true
+
+transforms:
+  # This step exists because the logs originate from services started by systemd,
+  # and the Datadog Agent adds this metadata when it reads from journald.
+  # We recommend using this as your input for downstream processing steps, so
+  # you can avoid having to deal with the extra overhead.
+  remove_journald:
+    type: remap
+    inputs:
+      - datadog_agent.logs
+    source: |-
+      msg, err = parse_json(.message)
+      if err == null {
+        . |= object!(msg)
+        del(.journald)
+      }
+
+sinks:
+  datadog_logs:
+    type: datadog_logs
+    inputs:
+      - remove_journald
+    default_api_key: ${DD_API_KEY}
+    compression: gzip
+  datadog_metrics:
+    type: datadog_metrics
+    inputs:
+      - datadog_agent.metrics
+    default_api_key: ${DD_API_KEY}

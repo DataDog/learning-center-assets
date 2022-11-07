@@ -1,0 +1,61 @@
+enterprise:
+  api_key: "${DD_API_KEY}"
+  configuration_key: "${OP_CONFIGURATION_KEY}"
+  site: "datadoghq.com"
+api:
+  enabled: true
+  address: 0.0.0.0:8686
+  playground: false
+
+sources:
+  datadog_agent:
+    address: 0.0.0.0:8282
+    type: datadog_agent
+    multiple_outputs: true
+
+transforms:
+  # This step exists because the logs originate from services started by systemd,
+  # and the Datadog Agent adds this metadata when it reads from journald.
+  # We recommend using this as your input for downstream processing steps, so
+  # you can avoid having to deal with the extra overhead.
+  remove_journald:
+    type: remap
+    inputs:
+      - datadog_agent.logs
+    source: |-
+      msg, err = parse_json(.message)
+      if err == null {
+        . |= object!(msg)
+        del(.journald)
+      }
+
+# transforms:
+  # This step attempts to parse the messages as Apache Common Format
+  # logs, and adds whatever it is able to parse as metadata to the
+  # log.
+  #
+  # We are explicit about error handling here so we can make sure
+  # that we leave non-HTTP messages alone, or so we can add
+  # additional formats that we want to try easily onto the end.
+  parse_logs:
+    type: remap
+    inputs:
+      - remove_journald
+    source: |-
+      msg, err = parse_apache_log(.message, format:"common")
+      if err == null {
+        .http = msg
+      }
+
+sinks:
+  datadog_logs:
+    type: datadog_logs
+    inputs:
+      - parse_logs
+    default_api_key: ${DD_API_KEY}
+    compression: gzip
+  datadog_metrics:
+    type: datadog_metrics
+    inputs:
+      - datadog_agent.metrics
+    default_api_key: ${DD_API_KEY}
