@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  javaapp:
+    image: ghcr.io/datadog/vulnerable-java-application
+    environment:
+      - DD_AGENT_HOST=datadog-agent
+      - DD_TRACE_AGENT_PORT=8126
+      - DD_ENV=dev
+      - DD_APPSEC_ENABLED=true
+    env_file:
+      - ../env
+    depends_on:
+      - datadog-agent
+    ports:
+      - "8000:8000"
+  datadog-agent:
+    image: datadog/agent
+    environment:
+      - DD_APM_ENABLED=true
+      - DD_APM_NON_LOCAL_TRAFFIC=true
+      - DD_LOGS_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+    env_file:
+      - ../env
+    ports:
+      - "8126:8126"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro

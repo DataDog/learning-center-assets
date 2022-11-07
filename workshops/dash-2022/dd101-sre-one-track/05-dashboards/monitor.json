@@ -1,0 +1,24 @@
+{
+	"name": "Discounts service request time",
+	"type": "query alert",
+	"query": "avg(last_5m):avg:trace.flask.request{service:discounts-service} > 2",
+	"message": "Investigate the source. Usually good info in [APM](https://app.datadoghq.com/apm/service/discounts-service/flask.request?env=dd101-sre&topGraphs=latency%3Alatency%2CbreakdownAs%3Apercentage%2Cerrors%3Acount%2Chits%3Acount&start=1634557418637&end=1634561018637&paused=false)\n\nContact @4csmdcohft@dev.datadogtraining.com  after triage.",
+	"tags": [],
+	"options": {
+		"notify_audit": false,
+		"locked": false,
+		"silenced": {},
+		"include_tags": true,
+		"thresholds": {
+			"critical": 2,
+			"warning": 1.5
+		},
+		"require_full_window": false,
+		"new_host_delay": 300,
+		"notify_no_data": false,
+		"renotify_interval": 0,
+		"escalation_message": ""
+	},
+	"priority": null,
+	"classification": "apm"
+}

@@ -1,0 +1,9 @@
+[Unit]
+Description=Generates synthetic logs from an HTTP service.
+
+[Service]
+ExecStart=/root/lab/bin/storedog-gen
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

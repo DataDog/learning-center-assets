@@ -1,0 +1,164 @@
+{
+	"status": "paused",
+	"tags": [],
+	"locations": [
+		"aws:ca-central-1",
+		"aws:us-east-1",
+		"aws:eu-north-1",
+		"aws:eu-west-1",
+		"aws:eu-west-3",
+		"aws:eu-west-2",
+		"azure:eastus",
+		"aws:ap-south-1",
+		"aws:us-west-2",
+		"aws:us-west-1",
+		"aws:sa-east-1",
+		"aws:us-east-2",
+		"aws:af-south-1",
+		"aws:ap-northeast-1",
+		"aws:ap-northeast-2",
+		"aws:eu-central-1",
+		"aws:ap-southeast-2",
+		"aws:ap-east-1",
+		"aws:ap-southeast-1"
+	],
+	"message": "",
+	"name": "Cool Bits User Flow API",
+	"type": "api",
+	"subtype": "multi",
+	"config": {
+		"steps": [
+			{
+				"retry": {
+					"count": 0,
+					"interval": 300
+				},
+				"name": "Get Cool Bits Product",
+				"request": {
+					"url": "{{ STOREDOG_API_URL }}/api/v2/storefront/products/cool-bits",
+					"method": "GET",
+					"httpVersion": "http1"
+				},
+				"subtype": "http",
+				"allowFailure": false,
+				"extractedValues": [],
+				"isCritical": true,
+				"id": "4ny-9ht-atm",
+				"assertions": [
+					{
+						"operator": "lessThan",
+						"type": "responseTime",
+						"target": 5000
+					},
+					{
+						"operator": "is",
+						"type": "statusCode",
+						"target": 200
+					},
+					{
+						"operator": "is",
+						"property": "content-type",
+						"type": "header",
+						"target": "application/vnd.api+json; charset=utf-8"
+					}
+				]
+			},
+			{
+				"retry": {
+					"count": 0,
+					"interval": 300
+				},
+				"name": "Request on {{ STOREDOG_API_URL }}/api/v2/storefront/cart",
+				"request": {
+					"url": "{{ STOREDOG_API_URL }}/api/v2/storefront/cart",
+					"method": "POST",
+					"httpVersion": "http1"
+				},
+				"subtype": "http",
+				"allowFailure": false,
+				"extractedValues": [],
+				"isCritical": true,
+				"id": "x6j-4vp-ajf",
+				"assertions": [
+					{
+						"operator": "lessThan",
+						"type": "responseTime",
+						"target": 5000
+					},
+					{
+						"operator": "is",
+						"type": "statusCode",
+						"target": 201
+					},
+					{
+						"operator": "is",
+						"property": "content-type",
+						"type": "header",
+						"target": "application/vnd.api+json; charset=utf-8"
+					}
+				]
+			},
+			{
+				"retry": {
+					"count": 0,
+					"interval": 300
+				},
+				"name": "Add to Cart",
+				"request": {
+					"bodyType": "application/json",
+					"url": "{{ STOREDOG_API_URL }}/api/v2/storefront/cart/add_item",
+					"headers": {
+						"content-type": "application/json"
+					},
+					"method": "POST",
+					"httpVersion": "http1"
+				},
+				"subtype": "http",
+				"allowFailure": false,
+				"extractedValues": [],
+				"isCritical": true,
+				"id": "vqu-jpc-x4n",
+				"assertions": [
+					{
+						"operator": "lessThan",
+						"type": "responseTime",
+						"target": 2000
+					},
+					{
+						"operator": "is",
+						"type": "statusCode",
+						"target": 200
+					},
+					{
+						"operator": "is",
+						"property": "content-type",
+						"type": "header",
+						"target": "application/vnd.api+json; charset=utf-8"
+					},
+					{
+						"operator": "validatesJSONPath",
+						"type": "body",
+						"target": {
+							"operator": "is",
+							"targetValue": "1",
+							"jsonPath": "$.data.attributes.item_count"
+						}
+					}
+				]
+			}
+		],
+		"configVariables": []
+	},
+	"options": {
+		"monitor_options": {
+			"renotify_interval": 0
+		},
+		"retry": {
+			"count": 0,
+			"interval": 300
+		},
+		"min_location_failed": 1,
+		"min_failure_duration": 0,
+		"tick_every": 60
+	}
+}
