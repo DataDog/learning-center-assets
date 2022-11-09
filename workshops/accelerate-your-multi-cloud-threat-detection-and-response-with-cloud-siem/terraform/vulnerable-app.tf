@@ -45,6 +45,7 @@ resource "azurerm_container_group" "app" {
     environment_variables = {
       "DD_API_KEY"     = var.ddApiKey,
       "DD_APM_ENABLED" = "true",
+      "DD_HOSTNAME"    = "datadog-agent"
     }
   }
 
@@ -104,6 +105,7 @@ resource "azurerm_role_assignment" "app" {
   role_definition_name = "Disk Snapshot Contributor"
   principal_id         = azurerm_container_group.app.identity[0].principal_id
 }
+
 
 
 
