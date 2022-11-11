@@ -41,8 +41,9 @@ services:
       - DD_ENV=dd101-sre
       - DD_LOGS_INJECTION=true
       - DD_TRACE_SAMPLE_RATE=1
+      - DD_SERVICE_MAPPING=postgres:database
       - DD_PROFILING_ENABLED=true
-      - DD_AGENT_HOST=datadog 
+      - DD_AGENT_HOST=datadog
     image: 'ddtraining/discounts:2.1.4'
     command:
       [
@@ -70,7 +71,7 @@ services:
       - DD_LOGS_INJECTION=true
       - DD_TRACE_SAMPLE_RATE=1
       - DD_PROFILING_ENABLED=true
-      - DD_AGENT_HOST=datadog 
+      - DD_AGENT_HOST=datadog
     image: 'ddtraining/storefront-fixed:2.1.2'
     ports:
       - '3000:3000'
@@ -95,8 +96,9 @@ services:
       - DD_ENV=dd101-sre
       - DD_LOGS_INJECTION=true
       - DD_TRACE_SAMPLE_RATE=1
+      - DD_SERVICE_MAPPING=postgres:database
       - DD_PROFILING_ENABLED=true
-      - DD_AGENT_HOST=datadog 
+      - DD_AGENT_HOST=datadog
     image: 'ddtraining/advertisements:2.1.4'
     command:
       [
