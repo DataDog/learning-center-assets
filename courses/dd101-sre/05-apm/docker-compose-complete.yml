@@ -31,9 +31,7 @@ services:
       - DD_SERVICE_MAPPING=postgres:database
       - DD_PROFILING_ENABLED=true
       - DD_AGENT_HOST=datadog
-    image: 'ddtraining/discounts:2.1.4'
-    entrypoint:
-      []
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/discounts-fixed:2.2.0'
     command:
       [
         sh,
@@ -48,7 +46,7 @@ services:
     labels:
       com.datadoghq.tags.env: 'dd101-sre'
       com.datadoghq.tags.service: 'discounts-service'
-      com.datadoghq.tags.version: '2.1'
+      com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'discounts'
       com.datadoghq.ad.logs: '[{"source": "python", "service": "discounts-service"}]'
   frontend:
@@ -59,7 +57,7 @@ services:
       - DD_TRACE_SAMPLE_RATE=1
       - DD_PROFILING_ENABLED=true
       - DD_AGENT_HOST=datadog
-    image: 'ddtraining/storefront-fixed:2.1.2'
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.0'
     command: sh docker-entrypoint.sh
     ports:
       - '3000:3000'
@@ -70,7 +68,7 @@ services:
     labels:
       com.datadoghq.tags.env: 'dd101-sre'
       com.datadoghq.tags.service: 'store-frontend'
-      com.datadoghq.tags.version: '2.1'
+      com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'frontend'
       com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-frontend"}]'
   advertisements:
@@ -87,9 +85,7 @@ services:
       - DD_SERVICE_MAPPING=postgres:database
       - DD_PROFILING_ENABLED=true
       - DD_AGENT_HOST=datadog
-    image: 'ddtraining/advertisements:2.1.4'
-    entrypoint:
-      []
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0'
     command:
       [
         sh,
@@ -104,7 +100,7 @@ services:
     labels:
       com.datadoghq.tags.env: 'dd101-sre'
       com.datadoghq.tags.service: 'advertisements-service'
-      com.datadoghq.tags.version: '2.1'
+      com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'advertisements'
       com.datadoghq.ad.logs: '[{"source": "python", "service": "advertisements-service"}]'
   db:
