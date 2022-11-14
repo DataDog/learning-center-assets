@@ -21,9 +21,7 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
       - POSTGRES_HOST=db
-    image: 'ddtraining/discounts:2.1.4'
-    entrypoint:
-      []
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/discounts-fixed:2.2.0'
     ports:
       - '5001:5001'
     depends_on:
@@ -32,10 +30,10 @@ services:
     labels:
       com.datadoghq.tags.env: 'dd101-sre'
       com.datadoghq.tags.service: 'discounts-service'
-      com.datadoghq.tags.version: '2.1'
+      com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'discounts'
   frontend:
-    image: 'ddtraining/storefront-fixed:2.1.2'
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/storefront-fixed:2.2.0'
     ports:
       - '3000:3000'
     depends_on:
@@ -45,7 +43,7 @@ services:
     labels:
       com.datadoghq.tags.env: 'dd101-sre'
       com.datadoghq.tags.service: 'store-frontend'
-      com.datadoghq.tags.version: '2.1'
+      com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'frontend'
   advertisements:
     environment:
@@ -54,9 +52,7 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
       - POSTGRES_HOST=db
-    image: 'ddtraining/advertisements:2.1.4'
-    entrypoint:
-      []
+    image: 'public.ecr.aws/x2b9z2t7/ddtraining/advertisements-fixed:2.2.0'
     ports:
       - '5002:5002'
     depends_on:
@@ -65,7 +61,7 @@ services:
     labels:
       com.datadoghq.tags.env: 'dd101-sre'
       com.datadoghq.tags.service: 'advertisements-service'
-      com.datadoghq.tags.version: '2.1'
+      com.datadoghq.tags.version: '2.2.0'
       my.custom.label.team: 'advertisements'
   db:
     image: postgres:11-alpine
