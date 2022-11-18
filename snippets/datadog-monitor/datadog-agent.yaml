@@ -24,7 +24,7 @@ spec:
       - name: DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL
         value: 'true'
     image:
-      name: 'datadog/agent:7.35.0'
+      name: 'datadog/agent:7.40.1'
     apm:
       enabled: true
       hostPort: 8126
@@ -39,7 +39,9 @@ spec:
           effect: NoSchedule
   clusterAgent:
     image:
-      name: 'datadog/cluster-agent:1.12.0'
+      name: 'datadog/cluster-agent:7.5.0'
   features:
     orchestratorExplorer:
+      enabled: true
+    kubeStateMetricsCore:
       enabled: true
