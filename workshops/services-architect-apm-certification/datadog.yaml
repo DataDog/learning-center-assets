@@ -1819,8 +1819,8 @@ logs_enabled: true
 ## Supported syntax is a list of `(<attribute>:)<regexp>`. Currently only the `name` attribute is supported.
 ## When no attribute is present, it defaults to `name:` attribute.
 #
-# autoconfig_exclude_features:
-#  - cloudfoundry
+autoconfig_exclude_features:
+ - tomcat
 #  - containerd
 #  - cri
 #  - docker

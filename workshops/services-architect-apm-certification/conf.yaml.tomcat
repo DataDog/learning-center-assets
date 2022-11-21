@@ -200,6 +200,6 @@
 #
 logs:
   - type: file
-    path: /usr/local/konakart/logs/catalina.log
+    path: /usr/local/konakart/logs/catalina*.log
     source: tomcat
     service: konakart
