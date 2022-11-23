@@ -7,13 +7,13 @@ while true; do
         then
           echo "business-app is already running"
         else
-          /root/lab/business-app -i 1 >> /root/lab/business-app.log &
+          /usr/local/business/bin/business-app -i 1 >> /usr/local/business/logs/business.log &
         fi
         if ps aux | grep -q "[s]ensitive-app"
         then
           echo "sensitive-app is already running"
         else
-          /root/lab/sensitive-app -f sensitive -i 1 >> /root/lab/labsensitive-app.log &
+          /usr/local/sensitive/bin/sensitive-app -f sensitive -i 1 >> /usr/local/sensitive/logs/sensitive.log &
         fi
         break ;;
     --stop ) pkill business-app 
@@ -21,8 +21,8 @@ while true; do
         break ;;
     --restart ) pkill business-app 
         pkill sensitive-app
-        /root/lab/business-app -i 1 >> /root/lab/business-app.log and &
-        /root/lab/sensitive-app -f sensitive -i 1 >> /root/lab/sensitive-app.log &
+        /usr/local/business/bin/business-app -i 1 >> /usr/local/business/logs/business-app.log and &
+        /usr/local/sensitive/bin/sensitive-app -f sensitive -i 1 >> /usr/local/sensitive/logs/sensitive.log &
         break ;;
     * ) echo "script usage: $(basename $0) [--start|stop|restart]"
         break ;;
