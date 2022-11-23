@@ -1,5 +1,0 @@
-logs:
-  - type: file
-    path: /usr/local/konakart/logs/KonaKart.log
-    source: konakart
-    service: konakart
