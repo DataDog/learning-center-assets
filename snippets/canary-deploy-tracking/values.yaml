@@ -7,15 +7,17 @@
 agents:
   image:
     repository: datadog/agent
-    tag: 7.36.0
+    tag: 7.41.0
     pullPolicy: IfNotPresent
+  env:
+    DD_APM_ENABLED: true
 
 # Enable this block to get Kubernetes Beta metrics (https://www.datadoghq.com/blog/explore-kubernetes-resources-with-datadog/)
 clusterAgent:
   enabled: true
   image:
     repository: datadog/cluster-agent
-    tag: 7.36.0
+    tag: 7.41.0
     pullPolicy: IfNotPresent
 
 datadog:
