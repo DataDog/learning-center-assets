@@ -9,8 +9,6 @@ agents:
     repository: datadog/agent
     tag: 7.41.0
     pullPolicy: IfNotPresent
-  env:
-    DD_APM_ENABLED: true
 
 # Enable this block to get Kubernetes Beta metrics (https://www.datadoghq.com/blog/explore-kubernetes-resources-with-datadog/)
 clusterAgent:
