@@ -47,7 +47,7 @@ metadata:
   name: db-password
   labels:
     app: ecommerce
-    service: db
+    service: postgres
 type: Opaque
 data:
   pw: password
@@ -87,28 +87,29 @@ metadata:
     ad.datadoghq.com/postgres.check_names: '["postgres"]'
     ad.datadoghq.com/postgres.init_configs: '[{}]'
     ad.datadoghq.com/postgres.instances: '[{"host": "%%host%%", "port": "%%port%%","username": "datadog","password": "datadog" }]'
-    ad.datadoghq.com/postgres.logs: '[{"source":"postgresql","service":"postgres"}]'
   labels:
-    service: db
+    service: postgres
     app: ecommerce
     tags.datadoghq.com/env: "canary-deployments"
-    tags.datadoghq.com/service: "db"
+    tags.datadoghq.com/service: "postgres"
     tags.datadoghq.com/version: "1.0"
-  name: db
+  name: postgres
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: db
+      service: postgres
       app: ecommerce
   strategy: {}
   template:
     metadata:
+      annotations:
+        ad.datadoghq.com/postgres.logs: '[{"source":"postgresql","service":"postgres"}]'
       labels:
         tags.datadoghq.com/env: "canary-deployments"
-        tags.datadoghq.com/service: "db"
+        tags.datadoghq.com/service: "postgres"
         tags.datadoghq.com/version: "1.0"
-        service: db
+        service: postgres
         app: ecommerce
     spec:
       containers:
@@ -161,8 +162,8 @@ metadata:
   creationTimestamp: null
   labels:
     app: ecommerce
-    service: db
-  name: db
+    service: postgres
+  name: postgres
 spec:
   ports:
     - port: 5432
@@ -170,6 +171,6 @@ spec:
       targetPort: 5432
   selector:
     app: ecommerce
-    service: db
+    service: postgres
 status:
   loadBalancer: {}
