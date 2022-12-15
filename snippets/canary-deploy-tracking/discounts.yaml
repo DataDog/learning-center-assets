@@ -18,6 +18,8 @@ spec:
   template:
     metadata:
       creationTimestamp: null
+      annotations:
+        ad.datadoghq.com/discounts.logs: '[{"source":"python","service":"discounts-service"}]'
       labels:
         service: discounts
         app: ecommerce
