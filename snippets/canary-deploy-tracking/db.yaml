@@ -87,7 +87,7 @@ metadata:
     ad.datadoghq.com/postgres.check_names: '["postgres"]'
     ad.datadoghq.com/postgres.init_configs: '[{}]'
     ad.datadoghq.com/postgres.instances: '[{"host": "%%host%%", "port": "%%port%%","username": "datadog","password": "datadog" }]'
-    ad.datadoghq.com/postgres.logs: '[{"source":"postgres","service":"db"}]'
+    ad.datadoghq.com/postgres.logs: '[{"source":"postgresql","service":"postgres"}]'
   labels:
     service: db
     app: ecommerce
@@ -104,6 +104,8 @@ spec:
   strategy: {}
   template:
     metadata:
+      annotations:
+        ad.datadoghq.com/postgres.logs: '[{"source":"postgresql","service":"postgres"}]'
       labels:
         tags.datadoghq.com/env: "canary-deployments"
         tags.datadoghq.com/service: "db"

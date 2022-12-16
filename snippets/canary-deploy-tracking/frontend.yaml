@@ -21,6 +21,8 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      annotations:
+        ad.datadoghq.com/ecommerce-spree-observability.logs: '[{"source":"ruby","service":"store-frontend"}]'
       labels:
         tags.datadoghq.com/env: "canary-deployments"
         tags.datadoghq.com/service: "store-frontend"
