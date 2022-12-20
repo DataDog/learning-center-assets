@@ -21,7 +21,7 @@ while true; do
         break ;;
     --restart ) pkill business-app 
         pkill sensitive-app
-        /usr/local/business/bin/business-app -i 1 >> /usr/local/business/logs/business-app.log and &
+        /usr/local/business/bin/business-app -i 1 >> /usr/local/business/logs/business.log and &
         /usr/local/sensitive/bin/sensitive-app -f sensitive -i 1 >> /usr/local/sensitive/logs/sensitive.log &
         break ;;
     * ) echo "script usage: $(basename $0) [--start|stop|restart]"
