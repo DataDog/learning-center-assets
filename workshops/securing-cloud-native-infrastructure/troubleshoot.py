@@ -125,7 +125,7 @@ def validateCSPMFindings():
 
     expectedFindings = {
         'IAM policies that allow full "*:*" administrative privileges are not created',
-        'IAM privileged user does have admin permissions to your AWS account',
+        'IAM privileged user does not have admin permissions to your AWS account',
         'EBS volume snapshot is not publicly shared with other AWS accounts',
         'Privileged containers are not used',
     }
