@@ -8,7 +8,7 @@ services:
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_DOCKER_LABELS_AS_TAGS='{"my.custom.label.team":"team"}'
-      - DD_TAGS='${DD_TAGS-env:service-catalog-course}'
+      - DD_TAGS=${DD_TAGS-env:service-catalog-course}
       - DD_HOSTNAME=${DD_HOSTNAME-lab-host}
       - DD_APM_NON_LOCAL_TRAFFIC=true
     ports:
@@ -25,7 +25,7 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
       - POSTGRES_HOST=db
-      - DD_ENV='${DD_ENV}'
+      - DD_ENV=${DD_ENV}
       - DD_SERVICE=store-discounts
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
@@ -56,7 +56,7 @@ services:
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
       - DD_TRACE_ANALYTICS_ENABLED=true
-      - DD_ENV='${DD_ENV}'
+      - DD_ENV=${DD_ENV}
       - DD_SERVICE=store-frontend
       - DD_SITE=datadoghq.com
       - DD_VERSION
@@ -97,7 +97,7 @@ services:
       - NEXT_PUBLIC_SPREE_CLIENT_HOST
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
-      - DD_ENV='${DD_ENV}'
+      - DD_ENV=${DD_ENV}
       - DD_SERVICE=store-backend
       - DD_VERSION=1.0.7
     labels:
@@ -127,7 +127,7 @@ services:
       - NEXT_PUBLIC_SPREE_CLIENT_HOST
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
-      - DD_ENV='${DD_ENV}'
+      - DD_ENV=${DD_ENV}
       - DD_SERVICE=store-worker
       - DD_VERSION=1.0.1
     labels:
@@ -144,7 +144,7 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
       - POSTGRES_HOST=db
-      - DD_ENV='${DD_ENV}'
+      - DD_ENV=${DD_ENV}
       - DD_SERVICE=store-ads
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
