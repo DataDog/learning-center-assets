@@ -29,7 +29,6 @@ services:
       - DD_SERVICE=store-discounts
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
-      - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_PROFILING_ENABLED=true
       - DD_APPSEC_ENABLED=true
     ports:
@@ -56,7 +55,6 @@ services:
     environment:
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
-      - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_ENV=${DD_ENV}
       - DD_SERVICE=store-frontend
       - DD_SITE=datadoghq.com
@@ -155,7 +153,6 @@ services:
       - DD_SERVICE=store-ads
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
-      - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_PROFILING_ENABLED=true
       - DD_APPSEC_ENABLED=true
     ports:
