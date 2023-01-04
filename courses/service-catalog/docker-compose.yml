@@ -187,7 +187,7 @@ services:
       com.datadoghq.ad.init_configs': '[{}]'
       com.datadoghq.ad.instances: '[{"nginx_status_url": "http://%%host%%:81/nginx_status/"}]'
   db:
-    image: postgres:11-alpine
+    image: postgres:13-alpine
     restart: always
     environment:
       - POSTGRES_PASSWORD
