@@ -136,9 +136,9 @@ services:
       - DD_PROFILING_ENABLED=true
       - DD_APPSEC_ENABLED=true
     labels:
-      com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-backend-worker"}]'
+      com.datadoghq.ad.logs: '[{"source": "ruby", "service": "store-worker"}]'
       com.datadoghq.tags.env: '${DD_ENV}'
-      com.datadoghq.tags.service: 'store-backend-worker'
+      com.datadoghq.tags.service: 'store-worker'
       com.datadoghq.tags.version: '1.0.7'
       my.custom.label.team: 'backend'
   advertisements:
@@ -230,20 +230,3 @@ services:
     depends_on:
       - frontend
     command: bash puppeteer.sh
-  attackbox:
-    image: "public.ecr.aws/x2b9z2t7/ddtraining/attackbox:2.2.2"
-    logging:
-      driver: none # this only works when using docker-compose (vs docker compose)
-    environment:
-      - ATTACK_GOBUSTER
-      - ATTACK_HYDRA
-      - ATTACK_GOBUSTER_INTERVAL
-      - ATTACK_HYDRA_INTERVAL
-      - ATTACK_SSH
-      - ATTACK_SSH_INTERVAL
-      - ATTACK_HOST
-      - ATTACK_PORT
-    depends_on:
-      - discounts
-      - frontend
-      - nginx
