@@ -17,7 +17,7 @@
                     "gke-storedog-default-pool-d728ea54-b7f0.datadog-learning"
                 ],
                 "tags": {
-                    "env":                          "prod",
+                    "env":                          "ruby-shop",
                     "cluster-name":                 "storedog-cluster",
                     "host":                         "${instance}",
                     "cloud-provider":               "gcp", 
