@@ -1,11 +1,22 @@
 # Curl command
 echo "creating dashboard 'Storedog SLOs'"
-curl -X POST "https://api.datadoghq.com/api/v1/dashboard" \
+curl -s -X GET "https://api.datadoghq.com/api/v1/dashboard" \
 -H "Accept: application/json" \
 -H "Content-Type: application/json" \
 -H "DD-API-KEY: ${DD_API_KEY}" \
--H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
--d @- << EOF
+-H "DD-APPLICATION-KEY: ${DD_APP_KEY}" | grep Storedog >> /dev/null
+
+RC=$?
+if [ $RC = 0 ]
+then
+        echo "Dashboard already exists"
+else
+	curl -X POST "https://api.datadoghq.com/api/v1/dashboard" \
+	-H "Accept: application/json" \
+	-H "Content-Type: application/json" \
+	-H "DD-API-KEY: ${DD_API_KEY}" \
+	-H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
+	-d @- << EOF
 {
 	"title": "Storedog SLOs",
 	"description": "",
@@ -265,4 +276,5 @@ curl -X POST "https://api.datadoghq.com/api/v1/dashboard" \
 	"reflow_type": "fixed"
 }
 EOF
-echo "done creating dashboard."
+	echo "done creating dashboard."
+end
