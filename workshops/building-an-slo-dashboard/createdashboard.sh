@@ -58,25 +58,51 @@ else
 			"show_title": true,
 			"layout_type": "ordered",
 			"widgets": [{
-				"id": 2040229312110006,
+				"id": 3567145269162582,
 				"definition": {
-					"title": "Saturation",
+					"title": "Latency",
 					"title_size": "16",
 					"title_align": "left",
 					"time": {},
 					"type": "query_value",
 					"requests": [{
+						"formulas": [{
+							"formula": "query1"
+						}],
 						"response_format": "scalar",
 						"queries": [{
+							"data_source": "spans",
 							"name": "query1",
-							"data_source": "metrics",
-							"query": "avg:system.cpu.user{*}",
-							"aggregator": "avg"
+							"search": {
+								"query": "service:store-frontend"
+							},
+							"indexes": ["trace-search"],
+							"compute": {
+								"aggregation": "avg",
+								"metric": "@duration"
+							},
+							"group_by": []
+						}],
+						"conditional_formats": [{
+							"comparator": "<=",
+							"palette": "white_on_green",
+							"value": 2500000000
+						}, {
+							"comparator": "<=",
+							"palette": "white_on_yellow",
+							"value": 4000000000
+						}, {
+							"comparator": ">",
+							"palette": "white_on_red",
+							"value": 4000000000
 						}]
 					}],
 					"autoscale": true,
 					"precision": 2,
 					"timeseries_background": {
+						"yaxis": {
+							"include_zero": true
+						},
 						"type": "area"
 					}
 				},
@@ -87,65 +113,23 @@ else
 					"height": 2
 				}
 			}, {
-				"id": 3567145269162582,
-				"definition": {
-					"title": "Latency",
-					"title_size": "16",
-					"title_align": "left",
-					"time": {},
-					"type": "query_value",
-					"requests": [{
-						"response_format": "scalar",
-						"queries": [{
-							"data_source": "spans",
-							"name": "query1",
-							"search": {
-								"query": ""
-							},
-							"indexes": ["trace-search"],
-							"compute": {
-								"aggregation": "avg",
-								"metric": "@duration"
-							},
-							"group_by": []
-						}],
-						"formulas": [{
-							"formula": "query1"
-						}]
-					}],
-					"autoscale": true,
-					"precision": 2,
-					"timeseries_background": {
-						"type": "area",
-						"yaxis": {
-							"include_zero": true
-						}
-					}
-				},
-				"layout": {
-					"x": 2,
-					"y": 0,
-					"width": 2,
-					"height": 2
-				}
-			}, {
 				"id": 6085708544528828,
 				"definition": {
-					"title": "",
+					"title": "Traffic",
 					"title_size": "16",
 					"title_align": "left",
 					"time": {},
 					"type": "query_value",
 					"requests": [{
-						"response_format": "scalar",
-						"queries": [{
-							"data_source": "metrics",
-							"name": "query1",
-							"query": "sum:trace.rack.request.hits{*}.as_count()",
-							"aggregator": "avg"
-						}],
 						"formulas": [{
 							"formula": "query1"
+						}],
+						"response_format": "scalar",
+						"queries": [{
+							"query": "sum:trace.rack.request.hits{*}.as_count()",
+							"data_source": "metrics",
+							"name": "query1",
+							"aggregator": "avg"
 						}]
 					}],
 					"autoscale": true,
@@ -155,7 +139,100 @@ else
 					}
 				},
 				"layout": {
+					"x": 2,
+					"y": 0,
+					"width": 2,
+					"height": 2
+				}
+			}, {
+				"id": 2040229312110006,
+				"definition": {
+					"title": "Error rate (%)",
+					"title_size": "16",
+					"title_align": "left",
+					"time": {},
+					"type": "query_value",
+					"requests": [{
+						"response_format": "scalar",
+						"queries": [{
+							"query": "sum:trace.rack.request.hits{service:store-frontend}.as_count()",
+							"data_source": "metrics",
+							"name": "query1",
+							"aggregator": "avg"
+						}, {
+							"query": "sum:trace.rack.request.errors{service:store-frontend}.as_count()",
+							"data_source": "metrics",
+							"name": "query2",
+							"aggregator": "avg"
+						}],
+						"formulas": [{
+							"formula": "(query1 - query2) / query1"
+						}],
+						"conditional_formats": [{
+							"comparator": "<=",
+							"palette": "white_on_green",
+							"value": 0.5
+						}, {
+							"comparator": "<=",
+							"palette": "white_on_yellow",
+							"value": 1
+						}, {
+							"comparator": ">",
+							"palette": "white_on_red",
+							"value": 1
+						}]
+					}],
+					"autoscale": false,
+					"custom_unit": "%",
+					"precision": 2,
+					"timeseries_background": {
+						"type": "bars"
+					}
+				},
+				"layout": {
 					"x": 4,
+					"y": 0,
+					"width": 2,
+					"height": 2
+				}
+			}, {
+				"id": 6237340431729618,
+				"definition": {
+					"title": "Saturation (CPU %)",
+					"title_size": "16",
+					"title_align": "left",
+					"time": {},
+					"type": "query_value",
+					"requests": [{
+						"response_format": "scalar",
+						"queries": [{
+							"query": "avg:system.cpu.user{*}",
+							"data_source": "metrics",
+							"name": "query1",
+							"aggregator": "avg"
+						}],
+						"conditional_formats": [{
+							"comparator": "<=",
+							"palette": "white_on_green",
+							"value": 60
+						}, {
+							"comparator": "<=",
+							"palette": "white_on_yellow",
+							"value": 80
+						}, {
+							"comparator": ">",
+							"palette": "white_on_red",
+							"value": 80
+						}]
+					}],
+					"autoscale": true,
+					"precision": 2,
+					"timeseries_background": {
+						"type": "area"
+					}
+				},
+				"layout": {
+					"x": 6,
 					"y": 0,
 					"width": 2,
 					"height": 2
@@ -179,7 +256,6 @@ else
 				"id": 1001066402800514,
 				"definition": {
 					"title": "Store Frontend Performance Overview",
-					"time": {},
 					"type": "trace_service",
 					"env": "ruby-shop",
 					"service": "store-frontend",
@@ -215,12 +291,12 @@ else
 			"title_align": "left",
 			"type": "topology_map",
 			"requests": [{
-				"request_type": "topology",
 				"query": {
+					"data_source": "service_map",
 					"filters": ["env:ruby-shop"],
-					"service": "store-frontend",
-					"data_source": "service_map"
-				}
+					"service": "store-frontend"
+				},
+				"request_type": "topology"
 			}]
 		},
 		"layout": {
@@ -230,19 +306,92 @@ else
 			"height": 4
 		}
 	}, {
+		"id": 8780570855631100,
+		"definition": {
+			"title": "Slowest Resources by Average Latency",
+			"title_size": "16",
+			"title_align": "left",
+			"type": "query_table",
+			"requests": [{
+				"formulas": [{
+					"formula": "query1",
+					"conditional_formats": [],
+					"limit": {
+						"count": 10,
+						"order": "desc"
+					},
+					"cell_display_mode": "bar"
+				}],
+				"response_format": "scalar",
+				"queries": [{
+					"search": {
+						"query": "service:store-frontend -resource_name:\"GET 500\""
+					},
+					"data_source": "spans",
+					"compute": {
+						"metric": "@duration",
+						"aggregation": "avg"
+					},
+					"name": "query1",
+					"indexes": ["trace-search"],
+					"group_by": [{
+						"facet": "resource_name",
+						"sort": {
+							"metric": "@duration",
+							"aggregation": "avg",
+							"order": "desc"
+						},
+						"limit": 10
+					}]
+				}]
+			}],
+			"has_search_bar": "auto"
+		},
+		"layout": {
+			"x": 7,
+			"y": 0,
+			"width": 5,
+			"height": 4
+		}
+	}, {
+		"id": 4070530779538830,
+		"definition": {
+			"title": "Hosts by CPU Utilization",
+			"title_size": "16",
+			"title_align": "left",
+			"type": "hostmap",
+			"requests": {
+				"fill": {
+					"q": "avg:system.cpu.user{*} by {host}"
+				}
+			},
+			"node_type": "host",
+			"no_metric_hosts": true,
+			"no_group_hosts": true,
+			"style": {
+				"palette": "green_to_orange",
+				"palette_flip": false
+			}
+		},
+		"layout": {
+			"x": 0,
+			"y": 4,
+			"width": 4,
+			"height": 4
+		}
+	}, {
 		"id": 4429440597392892,
 		"definition": {
 			"title": "Log Stream",
 			"title_size": "16",
 			"title_align": "left",
-			"time": {},
 			"requests": [{
-				"response_format": "event_list",
 				"query": {
+					"query_string": "service:store-frontend",
 					"data_source": "logs_stream",
-					"query_string": "-service:puppeteer",
 					"indexes": []
 				},
+				"response_format": "event_list",
 				"columns": [{
 					"field": "status_line",
 					"width": "auto"
@@ -253,9 +402,6 @@ else
 					"field": "host",
 					"width": "auto"
 				}, {
-					"field": "service",
-					"width": "auto"
-				}, {
 					"field": "content",
 					"width": "full"
 				}]
@@ -263,9 +409,9 @@ else
 			"type": "list_stream"
 		},
 		"layout": {
-			"x": 7,
-			"y": 0,
-			"width": 4,
+			"x": 4,
+			"y": 4,
+			"width": 8,
 			"height": 4
 		}
 	}],
@@ -273,7 +419,8 @@ else
 	"layout_type": "ordered",
 	"is_read_only": false,
 	"notify_list": [],
-	"reflow_type": "fixed"
+	"reflow_type": "fixed",
+	"id": "h7u-huv-jnm"
 }
 EOF
 	echo "done creating dashboard."
