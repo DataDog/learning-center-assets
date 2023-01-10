@@ -218,6 +218,25 @@ services:
       com.datadoghq.ad.init_configs: '[{}]'
       com.datadoghq.ad.instances: '[{"host":"%%host%%", "port":6379}}]'
       com.datadoghq.ad.logs: '[{"source": "redis", "service": "redis"}]'
+  security:
+    image: 'ghcr.io/datadog/vulnerable-java-application'
+    environment:
+      - DD_ENV='${DD_ENV}'
+      - DD_SERVICE=tester-service
+      - DD_AGENT_HOST=datadog
+      - DD_LOGS_INJECTION=true
+      - DD_PROFILING_ENABLED=true
+      - DD_APPSEC_ENABLED=true
+    ports:
+      - "8000:8000"
+    depends_on:
+      - datadog
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "java", "service": "tester-service"}]'
+      com.datadoghq.tags.env: '${DD_ENV}'
+      com.datadoghq.tags.service: 'tester-service'
+      com.datadoghq.tags.version: '1.0.0'
+      my.custom.label.team: 'security'
   puppeteer:
     image: buildkite/puppeteer:10.0.0
     volumes:
