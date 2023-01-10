@@ -221,7 +221,7 @@ services:
   security:
     image: 'ghcr.io/datadog/vulnerable-java-application'
     environment:
-      - DD_ENV='${DD_ENV}'
+      - DD_ENV=${DD_ENV}
       - DD_SERVICE=tester-service
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
