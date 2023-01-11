@@ -12,7 +12,6 @@ services:
       - DD_HOSTNAME=${DD_HOSTNAME-lab-host}
       - DD_APM_NON_LOCAL_TRAFFIC=true
       - DD_SYSTEM_PROBE_ENABLED=true
-      - DD_PROCESS_AGENT_ENABLED=true
     ports:
       - 127.0.0.1:8126:8126/tcp
     volumes:
