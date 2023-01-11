@@ -21,16 +21,16 @@ services:
       - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
       - /sys/kernel/debug:/sys/kernel/debug
     cap_add:
-    - SYS_ADMIN
-    - SYS_RESOURCE
-    - SYS_PTRACE
-    - NET_ADMIN
-    - NET_BROADCAST
-    - NET_RAW
-    - IPC_LOCK
-    - CHOWN
+      - SYS_ADMIN
+      - SYS_RESOURCE
+      - SYS_PTRACE
+      - NET_ADMIN
+      - NET_BROADCAST
+      - NET_RAW
+      - IPC_LOCK
+      - CHOWN
     security_opt:
-    - apparmor:unconfined
+      - apparmor:unconfined
   discounts:
     image: public.ecr.aws/x2b9z2t7/storedog/discounts:1.0.7
     environment:
