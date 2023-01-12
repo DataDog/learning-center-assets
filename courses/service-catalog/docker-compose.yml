@@ -13,7 +13,10 @@ services:
       - DD_APM_NON_LOCAL_TRAFFIC=true
       - DD_SYSTEM_PROBE_ENABLED=true
       - DD_SYSTEM_PROBE_SERVICE_MONITORING_ENABLED=true
+      - DD_RUNTIME_SECURITY_CONFIG_ENABLED=true
+      - DD_RUNTIME_SECURITY_CONFIG_NETWORK_ENABLED=true
       - HOST_ROOT='/host/root'
+    pid: host
     ports:
       - 127.0.0.1:8126:8126/tcp
     volumes:
@@ -22,6 +25,9 @@ services:
       - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
       - /sys/kernel/debug:/sys/kernel/debug
       - /:/host/root:ro
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+      - /etc/os-release:/etc/os-release
     cap_add:
       - SYS_ADMIN
       - SYS_RESOURCE
