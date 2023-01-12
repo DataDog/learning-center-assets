@@ -40,7 +40,7 @@ services:
     security_opt:
       - apparmor:unconfined
   discounts:
-    image: public.ecr.aws/x2b9z2t7/storedog/discounts:1.0.7
+    image: public.ecr.aws/x2b9z2t7/storedog/discounts:1.0.8
     environment:
       - FLASK_APP=discounts.py
       - FLASK_DEBUG=1
@@ -49,6 +49,7 @@ services:
       - POSTGRES_HOST=db
       - DD_ENV=${DD_ENV}
       - DD_SERVICE=store-discounts
+      - DD_VERSION=1.0.8
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
       - DD_PROFILING_ENABLED=true
@@ -164,7 +165,7 @@ services:
       com.datadoghq.tags.version: '1.0.8'
       my.custom.label.team: 'backend'
   advertisements:
-    image: 'public.ecr.aws/x2b9z2t7/storedog/ads:1.0.7'
+    image: 'public.ecr.aws/x2b9z2t7/storedog/ads:1.0.8'
     environment:
       - FLASK_APP=ads.py
       - FLASK_DEBUG=1
@@ -173,6 +174,7 @@ services:
       - POSTGRES_HOST=db
       - DD_ENV=${DD_ENV}
       - DD_SERVICE=store-ads
+      - DD_VERSION=1.0.8
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
       - DD_PROFILING_ENABLED=true
@@ -188,7 +190,7 @@ services:
       com.datadoghq.ad.logs: '[{"source": "python", "service": "store-ads"}]'
       com.datadoghq.tags.env: '${DD_ENV}'
       com.datadoghq.tags.service: 'store-ads'
-      com.datadoghq.tags.version: '1.0.1'
+      com.datadoghq.tags.version: '1.0.8'
       my.custom.label.team: 'advertisements'
   nginx:
     image: nginx:1.21.4
@@ -245,6 +247,7 @@ services:
     environment:
       - DD_ENV=${DD_ENV}
       - DD_SERVICE=tester-service
+      - DD_VERSION=1.0.0
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
       - DD_PROFILING_ENABLED=true
