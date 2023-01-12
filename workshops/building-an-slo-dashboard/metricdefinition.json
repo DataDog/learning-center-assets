@@ -49,20 +49,24 @@
                         "stepsize":                 0.01
                     }, 
                     {
-                        "name":                     "system.cpu.system",
+                        "name":                     "system.cpu.user",
                         "type":                     "gauge",
                         "generationstrategy":       "random",
-                        "minimum":                  0.05,
-                        "maximum":                  0.95, 
-                        "stepsize":                 0.01
+                        "minimum":                  0.3,
+                        "maximum":                  0.88, 
+                        "stepsize":                 0.037
+                    }, 
+                    {
+                        "name":                     "system.cpu.idle",
+                        "type":                     "gauge",
+                        "generationstrategy":       "calculated",
+                        "formula":                  "1-${system.cpu.user}-${system.cpu.system}"
                     }, 
                     {
                         "name":                     "gcp.gce.instance.cpu.utilization",
                         "type":                     "gauge",
-                        "generationstrategy":       "random",
-                        "minimum":                  0,
-                        "maximum":                  1, 
-                        "stepsize":                 0.02
+                        "generationstrategy":       "calculated",
+                        "formula":                  "${system.cpu.user}+${system.cpu.system}"
                     }, 
                     {
                         "name":                     "gcp.gce.instance.disk.throttled_read_ops_count",
