@@ -2,7 +2,7 @@
 # 
 # Curl command
 echo "creating monitor 'Resource spree::homecontroller_index has a high p99 latency on env:ruby-shop'"
-curl -X POST "https://api.datadoghq.com/api/v1/monitor" \
+curl -X POST "https://api.us5.datadoghq.com/api/v1/monitor" \
 -H "Accept: application/json" \
 -H "Content-Type: application/json" \
 -H "DD-API-KEY: ${DD_API_KEY}" \
