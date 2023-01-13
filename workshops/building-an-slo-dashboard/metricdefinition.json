@@ -1,0 +1,105 @@
+{
+    "sets": [
+            {
+                "name":     "gcp-hosts",
+                "instances":    [
+                    "gke-storedog-default-pool-8e73ab97-ubof.datadog-learning",
+                    "gke-storedog-default-pool-745b3aff-bfd8.datadog-learning",
+                    "gke-storedog-default-pool-6ba2b538-44e8.datadog-learning",
+                    "gke-storedog-default-pool-98b9cd68-6aab.datadog-learning",
+                    "gke-storedog-default-pool-f59d39b7-3d10.datadog-learning",
+                    "gke-storedog-default-pool-a0c4c72d-7057.datadog-learning",
+                    "gke-storedog-default-pool-01183610-5257.datadog-learning",
+                    "gke-storedog-default-pool-a001ec8b-af8e.datadog-learning",
+                    "gke-storedog-default-pool-093a82a4-c5d9.datadog-learning",
+                    "gke-storedog-default-pool-04a60f49-866c.datadog-learning",
+                    "gke-storedog-default-pool-1c350070-2ce0.datadog-learning",
+                    "gke-storedog-default-pool-d728ea54-b7f0.datadog-learning"
+                ],
+                "tags": {
+                    "env":                          "ruby-shop",
+                    "cluster-name":                 "storedog-cluster",
+                    "host":                         "${instance}",
+                    "cloud-provider":               "gcp", 
+                    "region":                       "us-west1",
+                    "zone":                         "us-west1-a",
+                    "availability-zone":            "us-west1-a"
+                },
+                "metrics":  [
+                    {
+                        "name":                     "datadog.agent.running",
+                        "type":                     "gauge",
+                        "generationstrategy":       "static",
+                        "datatype":                 "integer",
+                        "value":                    1
+                    }, 
+                    {
+                        "name":                     "gcp.gce.instance.is_running",
+                        "type":                     "gauge",
+                        "generationstrategy":       "static",
+                        "datatype":                 "integer",
+                        "value":                    1
+                    }, 
+                    {
+                        "name":                     "system.cpu.system",
+                        "type":                     "gauge",
+                        "generationstrategy":       "random",
+                        "minimum":                  0.05,
+                        "maximum":                  0.12, 
+                        "stepsize":                 0.01
+                    }, 
+                    {
+                        "name":                     "system.cpu.user",
+                        "type":                     "gauge",
+                        "generationstrategy":       "random",
+                        "minimum":                  0.3,
+                        "maximum":                  0.88, 
+                        "stepsize":                 0.037
+                    }, 
+                    {
+                        "name":                     "system.cpu.idle",
+                        "type":                     "gauge",
+                        "generationstrategy":       "calculated",
+                        "formula":                  "1-${system.cpu.user}-${system.cpu.system}"
+                    }, 
+                    {
+                        "name":                     "gcp.gce.instance.cpu.utilization",
+                        "type":                     "gauge",
+                        "generationstrategy":       "calculated",
+                        "formula":                  "${system.cpu.user}+${system.cpu.system}"
+                    }, 
+                    {
+                        "name":                     "gcp.gce.instance.disk.throttled_read_ops_count",
+                        "type":                     "gauge",
+                        "generationstrategy":      "random",
+                        "minimum":                  0,
+                        "maximum":                  100000,
+                        "stepsize":                 10
+                    }, 
+                    {
+                        "name":                     "gcp.gce.instance.disk.throttled_write_ops_count",
+                        "type":                     "gauge",
+                        "generationstrategy":       "random",
+                        "minimum":                  0,
+                        "maximum":                  10000,
+                        "stepsize":                 10
+                    },
+                    {
+                        "name":                     "gcp.gce.instance.uptime",
+                        "type":                     "gauge",
+                        "generationstrategy":       "countup",
+                        "value":                    0,
+                        "stepsize":                 15
+                    },
+                    {
+                        "name":                     "gcp.gce.guest.memory.bytes_used",
+                        "type":                     "gauge",
+                        "generationstrategy":       "random",
+                        "minimum":                  898998798,
+                        "maximum":                  68719476736,
+                        "stepsize":                 3878799
+                    }
+                ]
+            }
+        ]
+}
