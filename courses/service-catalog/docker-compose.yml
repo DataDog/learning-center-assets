@@ -49,7 +49,7 @@ services:
       - POSTGRES_HOST=db
       - DD_ENV=${DD_ENV}
       - DD_SERVICE=store-discounts
-      - DD_VERSION=1.0.8
+      # - DD_VERSION=1.0.8
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
       - DD_PROFILING_ENABLED=true
@@ -81,7 +81,7 @@ services:
       - DD_ENV=${DD_ENV}
       - DD_SERVICE=store-frontend
       - DD_SITE=datadoghq.com
-      - DD_VERSION=1.0.8
+      # - DD_VERSION=1.0.8
       - POSTGRES_USERNAME
       - POSTGRES_PASSWORD
       - DD_CLIENT_TOKEN
@@ -123,7 +123,7 @@ services:
       - DD_LOGS_INJECTION=true
       - DD_ENV=${DD_ENV}
       - DD_SERVICE=store-backend
-      - DD_VERSION=1.0.8
+      # - DD_VERSION=1.0.8
       - DD_PROFILING_ENABLED=true
       - DD_APPSEC_ENABLED=true
     labels:
@@ -155,7 +155,7 @@ services:
       - DD_LOGS_INJECTION=true
       - DD_ENV=${DD_ENV}
       - DD_SERVICE=store-worker
-      - DD_VERSION=1.0.8
+      # - DD_VERSION=1.0.8
       - DD_PROFILING_ENABLED=true
       - DD_APPSEC_ENABLED=true
     labels:
@@ -174,7 +174,7 @@ services:
       - POSTGRES_HOST=db
       - DD_ENV=${DD_ENV}
       - DD_SERVICE=store-ads
-      - DD_VERSION=1.0.8
+      # - DD_VERSION=1.0.8
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
       - DD_PROFILING_ENABLED=true
@@ -247,7 +247,7 @@ services:
     environment:
       - DD_ENV=${DD_ENV}
       - DD_SERVICE=tester-service
-      - DD_VERSION=1.0.0
+      # - DD_VERSION=1.0.0
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
       - DD_PROFILING_ENABLED=true
