@@ -1,0 +1,35 @@
+{
+    "data": {
+        "name": "Service store-backend has a high error rate",
+        "tags": [
+            "env:service-catalog-course",
+            "service:store-backend"
+        ],
+        "monitor_tags": [],
+        "thresholds": [
+            {
+                "timeframe": "7d",
+                "target": 99.0,
+                "target_display": "99."
+            }
+        ],
+        "type": "metric",
+        "type_id": 1,
+        "description": "",
+        "timeframe": "7d",
+        "target_threshold": 99.0,
+        "query": {
+            "denominator": "sum:trace.rack.request.hits{env:service-catalog-course,service:store-backend}.as_count() + sum:trace.rack.request.errors{env:service-catalog-course,service:store-backend}.as_count()",
+            "numerator": "sum:trace.rack.request.hits{env:service-catalog-course,service:store-backend}.as_count()"
+        },
+        "creator": {
+            "name": "b9vgkof505",
+            "handle": "b9vgkof505@ddtraining.datadoghq.com",
+            "email": "b9vgkof505@ddtraining.datadoghq.com"
+        },
+        "created_at": 1673634056,
+        "modified_at": 1673634056,
+        "configured_alert_ids": []
+    },
+    "error": null
+}

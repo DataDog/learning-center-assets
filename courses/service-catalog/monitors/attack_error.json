@@ -1,0 +1,23 @@
+{
+	"name": "Service tester-service has a high error rate",
+	"type": "query alert",
+	"query": "sum(last_10m): ( sum:trace.servlet.request.errors{env:service-catalog-course,service:tester-service}.as_count() / sum:trace.servlet.request.hits{env:service-catalog-course,service:tester-service}.as_count() ) > 0.05",
+	"message": "`tester-service` error rate is too high.",
+	"tags": [
+		"service:tester-service",
+		"env:service-catalog-course"
+	],
+	"options": {
+		"thresholds": {
+			"critical": 0.05,
+			"warning": 0.01
+		},
+		"notify_no_data": false,
+		"notify_audit": false,
+		"new_host_delay": 300,
+		"include_tags": true,
+		"silenced": {}
+	},
+	"priority": null,
+	"restricted_roles": null
+}
