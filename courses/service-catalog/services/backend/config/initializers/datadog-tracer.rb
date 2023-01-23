@@ -5,5 +5,4 @@ Datadog.configure do |c|
   c.tracing.instrument :aws, service_name: 'store-backend-aws'
   c.tracing.instrument :dalli, service_name: 'store-backend-memcached'
   c.tracing.instrument :active_support, cache_service: 'store-backend-cache'
-  c.tracing.instrument :sidekiq, tag_args: true
 end
