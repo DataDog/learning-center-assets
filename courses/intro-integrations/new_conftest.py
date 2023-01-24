@@ -11,7 +11,7 @@ INSTANCE = {'url': URL, 'search_string': SEARCH_STRING}
 
 @pytest.fixture(scope='session')
 def dd_environment():
-    compose_file = os.path.join(get_here(), 'docker-compose.yml')
+    compose_file = os.path.join(get_here(), 'docker-compose.yaml')
 
     # This does 3 things:
     #
