@@ -27,3 +27,4 @@ files:
         example: false
     #- template: instances/http
     - template: instances/default
+

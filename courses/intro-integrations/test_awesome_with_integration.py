@@ -40,3 +40,4 @@ def test_service_check(aggregator, instance):
     instance['search_string'] = 'Apache'
     c.check(instance)
     aggregator.assert_service_check('awesome.search', AwesomeCheck.WARNING)
+

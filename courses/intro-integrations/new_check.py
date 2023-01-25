@@ -30,3 +30,4 @@ class AwesomeCheck(AgentCheck):
             # search_string was not found
             else:
                 self.service_check('awesome.search', self.WARNING)
+

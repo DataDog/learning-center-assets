@@ -9,3 +9,4 @@
       "description": "Returns `CRITICAL` if the check can't access the page, `WARNING` if the search string was not found, or `OK` otherwise."
     }
   ]
+

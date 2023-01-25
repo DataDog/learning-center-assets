@@ -25,3 +25,4 @@ def test_config():
 
     # this should not fail
     c.check({'url': 'http://foobar', 'search_string': 'foo'})
+
