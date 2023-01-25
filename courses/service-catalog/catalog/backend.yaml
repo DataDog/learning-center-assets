@@ -1,0 +1,49 @@
+schema-version: v2
+dd-service: store-backend
+team: backend
+contacts:
+  - name: Team Slack channel
+    type: slack
+    contact: https://datadoghq.slack.com/archives/CAN0MS5K6
+  - name: Team email
+    type: email
+    contact: eng-backend@company.com
+links:
+  - name: Storedog 2.0 Dashboard
+    type: dashboard
+    url: https://app.datadoghq.com/dashboard/c8a-88c-e4b/storedog-20
+  - name: Postgres - Overview
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/235/postgres---overview
+  - name: Postgres - Metrics
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/17/postgres---metrics
+  - name: Common Operations
+    type: runbook
+    url: https://datadoghq.atlassian.net/wiki/
+  - name: Disabling Deployments
+    type: runbook
+    url: https://datadoghq.atlassian.net/wiki/
+  - name: Rolling Back Deployments
+    type: runbook
+    url: https://datadoghq.atlassian.net/wiki/
+  - name: store-backend Notebooks
+    type: doc
+    url: https://app.datadoghq.com/notebook/list?query=store-backend
+  - name: Service Documentation
+    type: wiki
+    url: https://datadoghq.atlassian.net/wiki/
+repos:
+  - name: Source
+    provider: github
+    url: https://github.com/DataDog/storedog/tree/main/services/backend
+docs:
+  - name: Architecture overview
+    provider: google drive
+    url: https://gdrive/mydoc
+  - name: Service Documentation
+    provider: link
+    url: https://docs.datadoghq.com/
+tags: []
+integrations:
+    pagerduty: https://my-org.pagerduty.com/service-directory/Pstore-backend
