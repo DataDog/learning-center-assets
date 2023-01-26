@@ -11,6 +11,7 @@ services:
       - DD_TAGS=${DD_TAGS-env:service-catalog-course}
       - DD_HOSTNAME=${DD_HOSTNAME-lab-host}
       - DD_APM_NON_LOCAL_TRAFFIC=true
+      - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
       - DD_SYSTEM_PROBE_ENABLED=true
       - DD_SYSTEM_PROBE_SERVICE_MONITORING_ENABLED=true
       - DD_RUNTIME_SECURITY_CONFIG_ENABLED=true
@@ -18,7 +19,8 @@ services:
       - HOST_ROOT='/host/root'
     pid: host
     ports:
-      - 127.0.0.1:8126:8126/tcp
+      - 8126:8126/tcp
+      - 8125:8125/udp
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /proc/:/host/proc/:ro
@@ -202,15 +204,15 @@ services:
     depends_on:
       - frontend
     volumes:
-      - /root/nginx-default.conf:/etc/nginx/conf.d/default.conf
-      - /root/nginx-status.conf:/etc/nginx/conf.d/status.conf
+      - /root/default.conf:/etc/nginx/conf.d/default.conf
+      - /root/status.conf:/etc/nginx/conf.d/status.conf
     labels:
       com.datadog.tags.env: '${DD_ENV}'
       com.datadog.tags.service: 'store-nginx'
       com.datadog.tags.version: '1.21.4'
       com.datadoghq.ad.logs: '[{"source": "nginx", "service": "webserver"}]'
       com.datadoghq.ad.check_names: '["nginx"]'
-      com.datadoghq.ad.init_configs': '[{}]'
+      com.datadoghq.ad.init_configs: '[{}]'
       com.datadoghq.ad.instances: '[{"nginx_status_url": "http://%%host%%:81/nginx_status/"}]'
   db:
     image: postgres:13-alpine
@@ -228,7 +230,7 @@ services:
       com.datadoghq.ad.check_names: '["postgres"]'
       com.datadoghq.ad.init_configs: '[{}]'
       com.datadoghq.ad.instances: '[{"host":"%%host%%", "port":5432,"username":"datadog","password":"datadog"}]'
-      com.datadoghq.ad.logs: '[{"source": "postgresql", "service": "database"}]'
+      com.datadoghq.ad.logs: '[{"source": "postgresql", "service": "postgres"}]'
     volumes:
       - /root/restore.sql:/docker-entrypoint-initdb.d/restore.sql
   redis:
@@ -242,7 +244,7 @@ services:
       my.custom.label.team: 'database'
       com.datadoghq.ad.check_names: '["redisdb"]'
       com.datadoghq.ad.init_configs: '[{}]'
-      com.datadoghq.ad.instances: '[{"host":"%%host%%", "port":6379}}]'
+      com.datadoghq.ad.instances: '[{"host":"%%host%%", "port":6379}]'
       com.datadoghq.ad.logs: '[{"source": "redis", "service": "redis"}]'
   security:
     image: 'ghcr.io/datadog/vulnerable-java-application'

@@ -327,7 +327,7 @@ integrations:
     pagerduty: https://my-org.pagerduty.com/service-directory/Pstore-nginx
 ---
 schema-version: v2
-dd-service: database
+dd-service: postgres
 team: database
 contacts:
   - name: Team Slack channel
@@ -377,7 +377,7 @@ integrations:
     pagerduty: https://my-org.pagerduty.com/service-directory/Pdatabase
 ---
 schema-version: v2
-dd-service: redis
+dd-service: store-worker-redis
 team: database
 contacts:
   - name: Team Slack channel
@@ -437,6 +437,9 @@ contacts:
     type: email
     contact: eng-security@company.com
 links:
+  - name: JVM Metrics
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/256/jvm-metrics
   - name: Application Security
     type: link
     url: https://app.datadoghq.com/security/appsec
