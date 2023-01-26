@@ -61,7 +61,7 @@ links:
   - name: store-discounts Notebooks
     type: doc
     url: https://app.datadoghq.com/notebook/list?query=store-discounts
-  - name: Service Documentation
+  - name: Service Wiki
     type: wiki
     url: https://company.atlassian.net/wiki/
 repos:
@@ -114,7 +114,7 @@ links:
   - name: store-frontend Notebooks
     type: doc
     url: https://app.datadoghq.com/notebook/list?query=store-frontend
-  - name: Service Documentation
+  - name: Service Wiki
     type: wiki
     url: https://company.atlassian.net/wiki/
 repos:
@@ -164,7 +164,7 @@ links:
   - name: store-backend Notebooks
     type: doc
     url: https://app.datadoghq.com/notebook/list?query=store-backend
-  - name: Service Documentation
+  - name: Service Wiki
     type: wiki
     url: https://company.atlassian.net/wiki/
 repos:
@@ -211,7 +211,7 @@ links:
   - name: store-worker Notebooks
     type: doc
     url: https://app.datadoghq.com/notebook/list?query=store-worker
-  - name: Service Documentation
+  - name: Service Wiki
     type: wiki
     url: https://company.atlassian.net/wiki/
 repos:
@@ -258,7 +258,7 @@ links:
   - name: store-ads Notebooks
     type: doc
     url: https://app.datadoghq.com/notebook/list?query=store-ads
-  - name: Service Documentation
+  - name: Service Wiki
     type: wiki
     url: https://company.atlassian.net/wiki/
 repos:
@@ -308,7 +308,7 @@ links:
   - name: Nginx Notebooks
     type: doc
     url: https://app.datadoghq.com/notebook/list?query=store-nginx
-  - name: Service Documentation
+  - name: Service Wiki
     type: wiki
     url: https://company.atlassian.net/wiki/
 repos:
@@ -358,7 +358,7 @@ links:
   - name: Database Notebooks
     type: doc
     url: https://app.datadoghq.com/notebook/list?query=database
-  - name: Service Documentation
+  - name: Service Wiki
     type: wiki
     url: https://company.atlassian.net/wiki/
 repos:
@@ -377,7 +377,7 @@ integrations:
     pagerduty: https://my-org.pagerduty.com/service-directory/Pdatabase
 ---
 schema-version: v2
-dd-service: store-worker-redis
+dd-service: redis
 team: database
 contacts:
   - name: Team Slack channel
@@ -387,15 +387,9 @@ contacts:
     type: email
     contact: eng-database@company.com
 links:
-  - name: Storedog 2.0 Dashboard
+  - name: Redis - Overview
     type: dashboard
-    url: https://app.datadoghq.com/dashboard/c8a-88c-e4b/storedog-20
-  - name: Postgres - Overview
-    type: dashboard
-    url: https://app.datadoghq.com/dash/integration/235/postgres---overview
-  - name: Postgres - Metrics
-    type: dashboard
-    url: https://app.datadoghq.com/dash/integration/17/postgres---metrics
+    url: https://app.datadoghq.com/dash/integration/15/redis---overview
   - name: Common Operations
     type: runbook
     url: https://company.atlassian.net/wiki/
@@ -408,7 +402,7 @@ links:
   - name: Database Notebooks
     type: doc
     url: https://app.datadoghq.com/notebook/list?query=database
-  - name: Service Documentation
+  - name: Service Wiki
     type: wiki
     url: https://company.atlassian.net/wiki/
 repos:
@@ -499,7 +493,7 @@ links:
   - name: Puppeteer Notebooks
     type: doc
     url: https://app.datadoghq.com/notebook/list?query=puppeteer
-  - name: Service Documentation
+  - name: Service wiki
     type: wiki
     url: https://company.atlassian.net/wiki/
 repos:
