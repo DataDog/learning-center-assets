@@ -1,7 +1,7 @@
 ---
 schema-version: v2
 dd-service: agent
-team: backend
+team: datadog
 contacts:
   - name: Datadog Public Slack
     type: slack
