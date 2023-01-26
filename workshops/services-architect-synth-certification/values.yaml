@@ -411,7 +411,7 @@ datadog:
     # datadog.apm.portEnabled -- Enable APM over TCP communication (port 8126 by default)
 
     ## ref: https://docs.datadoghq.com/agent/kubernetes/apm/
-    portEnabled: false
+    portEnabled: true
 
     # datadog.apm.enabled -- Enable this to enable APM and tracing, on port 8126
     # DEPRECATED. Use datadog.apm.portEnabled instead
