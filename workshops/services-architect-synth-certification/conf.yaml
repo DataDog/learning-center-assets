@@ -1,5 +1,0 @@
-logs:
-  - type: file
-    path: /root/lab/logs/petclinic.log
-    source: java
-    service: petclinic
