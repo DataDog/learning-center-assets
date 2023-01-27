@@ -13,9 +13,6 @@ spec:
         command: ["cp"]
         args: ["/certs/registry.crt", "/tmp-certs"]
         volumeMounts:
-        - mountPath: /home/dir
-          name: cert-dir
-        volumeMounts:
           - name: certs
             mountPath: /certs
             readOnly: true
