@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swagstore-registry
+  labels:
+    app: swagstore-registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swagstore-registry
+  template:
+    metadata:
+      labels:
+        app: swagstore-registry
+    spec:
+      volumes:
+      - name: certs
+        secret:
+          secretName: certs
+          optional: false
+      - name: registry
+        hostPath:
+          path: /srv/registry
+          type: DirectoryOrCreate
+
+      containers:
+        - image: registry:2.8.1
+          name: swagstore-registry
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: REGISTRY_HTTP_TLS_CERTIFICATE
+            value: "/certs/registry.crt"
+          - name: REGISTRY_HTTP_TLS_KEY
+            value: "/certs/registry.key"
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+          - name: certs
+            mountPath: /certs
+            readOnly: true
+          - name: registry
+            mountPath: /var/lib/registry
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: swagstore-registry
+  name: swagstore-registry
+spec:
+  ports:
+  - port: 5000
+    nodePort: 31443
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: swagstore-registry
+  type: NodePort
