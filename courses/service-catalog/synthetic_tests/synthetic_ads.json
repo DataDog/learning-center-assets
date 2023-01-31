@@ -1,0 +1,88 @@
+{
+    "status": "live",
+    "public_id": "9xh-e8n-scw",
+    "tags": [
+        "service:store-ads",
+        "team:advertisements",
+        "env:service-catalog-course"
+    ],
+    "locations": [
+        "aws:us-west-2",
+        "aws:eu-west-3"
+    ],
+    "message": "```\n{{#is_alert}}\n# The Storedog ads service is taking longer than expected to load\nReview the current state and [declare an Incident](https://app.datadoghq.com/incidents/new).\n\n## Resources\n- [Ads Service Incident Response doc](https://storedog.atlassian.net/wiki/)\n- [store-ads service ownership details](https://app.datadoghq.com/services?currentTopTab=Ownership&env=service-catalog-course&hostGroup=&selectedService=store-ads)\n\n{{/is_alert}} \n\n{{#is_recovery}}\n# The Storedog ads service has recovered\nReview [Incidents](https://app.datadoghq.com/incidents) and resolve as needed.\n\n## Action needed\n- Create Postmortem Notebook from Incident\n- Schedule Postmortem review\n\n{{/is_recovery}} \n```",
+    "name": "Test ads service response",
+    "monitor_id": 109444402,
+    "type": "api",
+    "created_at": "2023-01-31T18:40:56.303384+00:00",
+    "creator": {
+        "handle": "71zwc7fufy@ddtraining.datadoghq.com",
+        "name": "71zwc7fufy",
+        "email": "71zwc7fufy@ddtraining.datadoghq.com"
+    },
+    "modified_at": "2023-01-31T18:40:56.303384+00:00",
+    "subtype": "http",
+    "config": {
+        "request": {
+            "url": "https://{{ HOSTNAME }}-{{ ADS_PORT }}-{{ PARTICIPANT_ID }}.env.play.instruqt.com/ads",
+            "method": "GET"
+        },
+        "assertions": [
+            {
+                "operator": "lessThan",
+                "type": "responseTime",
+                "target": 1000
+            },
+            {
+                "operator": "is",
+                "type": "statusCode",
+                "target": 200
+            },
+            {
+                "operator": "is",
+                "property": "content-type",
+                "type": "header",
+                "target": "application/json"
+            },
+            {
+                "operator": "validatesJSONPath",
+                "type": "body",
+                "target": {
+                    "operator": "isNot",
+                    "targetValue": "",
+                    "jsonPath": "$[0].id"
+                }
+            }
+        ],
+        "configVariables": [
+            {
+                "type": "global",
+                "id": "0242d134-7e05-4213-b13b-b1ccc7584256",
+                "name": "HOSTNAME"
+            },
+            {
+                "type": "global",
+                "id": "038d07a8-f462-49f3-a44d-7e2a99ea6dc7",
+                "name": "ADS_PORT"
+            },
+            {
+                "type": "global",
+                "id": "20605d48-c72f-4abf-8f4c-2ff3909816bd",
+                "name": "PARTICIPANT_ID"
+            }
+        ]
+    },
+    "options": {
+        "monitor_options": {
+            "include_tags": true,
+            "renotify_interval": 0,
+            "notify_audit": false,
+            "new_host_delay": 300,
+            "on_missing_data": "show_no_data"
+        },
+        "httpVersion": "any",
+        "min_location_failed": 1,
+        "min_failure_duration": 0,
+        "tick_every": 60
+    }
+}

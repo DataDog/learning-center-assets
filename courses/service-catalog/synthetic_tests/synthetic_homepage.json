@@ -1,0 +1,57 @@
+{
+    "status": "live",
+    "tags": [
+        "service:store-backend",
+        "team:backend",
+        "env:service-catalog-course"
+    ],
+    "locations": [
+        "aws:us-east-1",
+        "aws:eu-west-2"
+    ],
+    "message": "{{#is_alert}}\n# The Storedog home page is taking longer than expected to load\nReview the current state and [declare an Incident](https://app.datadoghq.com/incidents/new).\n\n## Resources\n- [Storedog Incident Response doc](https://storedog.atlassian.net/wiki/)\n- [Frontend service ownership details](https://app.datadoghq.com/services?env=service-catalog-course&hostGroup=&lens=Ownership&selectedService=store-frontend)\n\n{{/is_alert}} \n\n{{#is_recovery}}\n# The Storedog homepage has recovered from high latency\nReview [Incidents](https://app.datadoghq.com/incidents) and resolve as needed.\n\n## Action needed\n- Create Postmortem Notebook from Incident\n- Schedule Postmortem review\n\n{{/is_recovery}} ",
+    "name": "Test Storedog home response",
+    "type": "api",
+    "subtype": "http",
+    "config": {
+        "request": {
+            "url": "https://{{ HOSTNAME }}-80-{{ PARTICIPANT_ID }}.env.play.instruqt.com/",
+            "method": "GET"
+        },
+        "assertions": [
+            {
+                "operator": "lessThan",
+                "type": "responseTime",
+                "target": 9000
+            },
+            {
+                "operator": "is",
+                "type": "statusCode",
+                "target": 200
+            }
+        ],
+        "configVariables": [
+            {
+                "type": "global",
+                "name": "HOSTNAME"
+            },
+            {
+                "type": "global",
+                "name": "PARTICIPANT_ID"
+            }
+        ]
+    },
+    "options": {
+        "monitor_options": {
+            "include_tags": true,
+            "renotify_interval": 0,
+            "notify_audit": false,
+            "new_host_delay": 300,
+            "on_missing_data": "show_no_data"
+        },
+        "httpVersion": "any",
+        "min_location_failed": 1,
+        "min_failure_duration": 0,
+        "tick_every": 300
+    }
+}

@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   datadog:
-    image: 'gcr.io/datadoghq/agent:7'
+    image: gcr.io/datadoghq/agent:7
     environment:
       - DD_API_KEY
       - DD_LOGS_ENABLED=true
@@ -247,7 +247,7 @@ services:
       com.datadoghq.ad.instances: '[{"host":"%%host%%", "port":6379}]'
       com.datadoghq.ad.logs: '[{"source": "redis", "service": "redis"}]'
   security:
-    image: 'ghcr.io/datadog/vulnerable-java-application'
+    image: ghcr.io/datadog/vulnerable-java-application:latest
     environment:
       - DD_ENV=${DD_ENV}
       - DD_SERVICE=tester-service
