@@ -6,6 +6,15 @@ spec:
   activeDeadlineSeconds: 100
   template:
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - worker
       restartPolicy: Never
       containers:
       - image: ubuntu
