@@ -15,7 +15,7 @@ DASHBOARD_URL=$(
     -H "Accept: application/json" \
     -H "DD-API-KEY: ${DD_API_KEY}" \
     -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
-    | ${CMD_JQ} --raw-output '.dashboards[].url'
+    | ${CMD_JQ} --raw-output '.dashboards[] | select(.title="Storedog 2.0").url'
 )
 
 # Update service definition with the dashboard url
