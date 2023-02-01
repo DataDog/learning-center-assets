@@ -93,7 +93,7 @@ EOF
 # If a variable exists it will ALWAYS be updated
 for key in ${!GLOBAL_VAR_ARRAY[@]}
 do
-  if [[ ${ALL_GLOBAL_VARS} =~ "${GLOBAL_VAR_ARRAY[${key}]}" ]]
+  if [[ ${ALL_GLOBAL_VARS} =~ "${key}" ]]
   then
     echo "Variable exists: ${MONITOR_ARRAY[${key}]}"
     update_global_var ${key} ${GLOBAL_VAR_ARRAY[${key}]} ${GLOBAL_ID_ARRAY[${key}]}
