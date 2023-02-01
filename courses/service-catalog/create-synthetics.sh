@@ -111,6 +111,28 @@ do
   )
 done
 
+# Update global variable ids in the synthetic test json files
+# Loop over all synthetic test json files
+for file in ${JSON_DIR}/*.json
+do
+  # Create an array for global variables used in the test
+  TEMP_ARRAY=$(
+    ${CMD_JQ} --raw-output '.config.configVariables[].name' ${file}
+  )
+
+  # Loop the temp array and use matching keys for GLOBAL_ID_ARRAY
+  for key in ${TEMP_ARRAY[@]}
+  do
+    # A temp file is needed to hold results before overwrting the file
+    TEMP_FILE=$(mktemp)
+
+    ${CMD_JQ} --arg newid "${GLOBAL_ID_ARRAY[${key}]}" \
+    '(.config.configVariables[] | select(.name=="'${key}'").id) |= $newid' \
+    ${file} > ${TEMP_FILE} && \
+    mv -- "${TEMP_FILE}" ${file}
+  done
+done
+
 # Get a list of all tests
 ALL_MONITORS=$(
     ${CMD_CURL} -X GET "${LIST_TESTS_URL}" \
