@@ -4,8 +4,7 @@
 declare -A MONITOR_ARRAY
 ALL_MONITORS=""
 CMD_JQ="/usr/bin/jq"
-CMD_CURL="/usr/bin/curl"
-CMD_GREP="/usr/bin/grep"
+CMD_CURL="/usr/bin/curl -sS"
 JSON_DIR="/root/slos/" # location of json files
 # API_URL="https://api.datadoghq.com/api/v1/monitor" # alert
 API_URL="https://api.datadoghq.com/api/v1/slo" # slo

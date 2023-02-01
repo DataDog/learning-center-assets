@@ -7,8 +7,7 @@ declare -A GLOBAL_ID_ARRAY
 ALL_GLOBAL_VARS=""
 ALL_MONITORS=""
 CMD_JQ="/usr/bin/jq"
-CMD_CURL="/usr/bin/curl"
-CMD_GREP="/usr/bin/grep"
+CMD_CURL="/usr/bin/curl -sS"
 JSON_DIR="/root/synthetic_tests/" # location of json files
 GLOBAL_VAR_API_URL="https://api.datadoghq.com/api/v1/synthetics/variables"
 LIST_TESTS_URL="https://api.datadoghq.com/api/v1/synthetics/tests" # List all Synthetic tests
