@@ -29,7 +29,7 @@
                 "title_align": "left",
                 "time": {},
                 "type": "slo",
-                "slo_id": "60c114a978925d7d8b714fcc811985f5",
+                "slo_id": "BACKEND_SLO_ID",
                 "view_type": "detail",
                 "view_mode": "overall",
                 "time_windows": [
@@ -53,7 +53,7 @@
                 "title_align": "left",
                 "time": {},
                 "type": "slo",
-                "slo_id": "5f1c07fd5c95537fb36276cd6deecabd",
+                "slo_id": "JAVA_SLO_ID",
                 "view_type": "detail",
                 "view_mode": "overall",
                 "time_windows": [
@@ -102,7 +102,7 @@
                 "title_align": "left",
                 "time": {},
                 "type": "slo",
-                "slo_id": "906b26df17055aec9ba72f47d3365973",
+                "slo_id": "PYTHON_SLO_ID",
                 "view_type": "detail",
                 "view_mode": "component",
                 "time_windows": [
