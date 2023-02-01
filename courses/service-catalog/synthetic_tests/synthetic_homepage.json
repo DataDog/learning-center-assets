@@ -9,7 +9,7 @@
         "aws:us-east-1",
         "aws:eu-west-2"
     ],
-    "message": "{{#is_alert}}\n# The Storedog home page is taking longer than expected to load\nReview the current state and [declare an Incident](https://app.datadoghq.com/incidents/new).\n\n## Resources\n- [Storedog Incident Response doc](https://storedog.atlassian.net/wiki/)\n- [Frontend service ownership details](https://app.datadoghq.com/services?env=service-catalog-course&hostGroup=&lens=Ownership&selectedService=store-frontend)\n\n{{/is_alert}} \n\n{{#is_recovery}}\n# The Storedog homepage has recovered from high latency\nReview [Incidents](https://app.datadoghq.com/incidents) and resolve as needed.\n\n## Action needed\n- Create Postmortem Notebook from Incident\n- Schedule Postmortem review\n\n{{/is_recovery}} ",
+    "message": "{{#is_alert}}\n# The Storedog home page is taking longer than expected to load\nReview the current state and [declare an Incident](https://app.datadoghq.com/incidents/new).\n\n## Resources\n- [Storedog Incident Response doc](https://storedog.atlassian.net/wiki/)\n- [Frontend service ownership details](https://app.datadoghq.com/services?env=service-catalog-course&hostGroup=&lens=Ownership&selectedService=store-frontend)\n\n{{/is_alert}} \n\n{{#is_recovery}}\n# The Storedog homepage has recovered from high latency\nReview [Incidents](https://app.datadoghq.com/incidents) and resolve as needed.\n\n## Action needed\n- Create Postmortem Notebook from Incident\n- Schedule Postmortem review\n\n{{/is_recovery}}",
     "name": "Test Storedog home response",
     "type": "api",
     "subtype": "http",

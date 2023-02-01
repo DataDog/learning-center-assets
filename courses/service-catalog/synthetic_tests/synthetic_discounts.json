@@ -9,7 +9,7 @@
         "aws:ca-central-1",
         "aws:eu-west-1"
     ],
-    "message": "```\n{{#is_alert}}\n# The Storedog discounts service is taking longer than expected to load\nReview the current state and [declare an Incident](https://app.datadoghq.com/incidents/new).\n\n## Resources\n- [Discount Service Incident Response doc](https://storedog.atlassian.net/wiki/)\n- [store-discounts service ownership details](https://app.datadoghq.com/services?currentTopTab=Ownership&env=service-catalog-course&hostGroup=&selectedService=store-discounts)\n\n{{/is_alert}} \n\n{{#is_recovery}}\n# The Storedog discounts service has recovered from high latency\nReview [Incidents](https://app.datadoghq.com/incidents) and resolve as needed.\n\n## Action needed\n- Create Postmortem Notebook from Incident\n- Schedule Postmortem review\n\n{{/is_recovery}} \n```",
+    "message": "{{#is_alert}}\n# The Storedog discounts service is taking longer than expected to load\nReview the current state and [declare an Incident](https://app.datadoghq.com/incidents/new).\n\n## Resources\n- [Discount Service Incident Response doc](https://storedog.atlassian.net/wiki/)\n- [store-discounts service ownership details](https://app.datadoghq.com/services?currentTopTab=Ownership&env=service-catalog-course&hostGroup=&selectedService=store-discounts)\n\n{{/is_alert}} \n\n{{#is_recovery}}\n# The Storedog discounts service has recovered from high latency\nReview [Incidents](https://app.datadoghq.com/incidents) and resolve as needed.\n\n## Action needed\n- Create Postmortem Notebook from Incident\n- Schedule Postmortem review\n\n{{/is_recovery}}",
     "name": "Test discount service reponse",
     "type": "api",
     "subtype": "http",
