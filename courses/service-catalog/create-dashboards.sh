@@ -15,7 +15,7 @@ API_URL="https://api.datadoghq.com/api/v1/dashboard" # dashboard
 for file in ${JSON_DIR}/*.json
 do
   MONITOR_ARRAY+=(
-    [${file}]=$( ${CMD_JQ} '.name' ${file} )
+    [${file}]=$( ${CMD_JQ} '.title' ${file} )
   )
 done
 
