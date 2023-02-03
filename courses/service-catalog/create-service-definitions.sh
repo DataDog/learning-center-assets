@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Declare some variables ahead of time
+DASHBOARD_URL=""
 CMD_JQ="/usr/bin/jq"
 CMD_CURL="/usr/bin/curl -sS"
 CMD_SED="/usr/bin/sed"
