@@ -45,7 +45,7 @@ contacts:
 links:
   - name: Storedog 2.0 Dashboard
     type: dashboard
-    url: https://app.datadoghq.com/dashboard/c8a-88c-e4b/storedog-20
+    url: https://app.datadoghq.com/dashboard/UPDATE_URL
   - name: Continuous Profiler Python overview
     type: dashboard
     url: https://app.datadoghq.com/screen/integration/30396/continuous-profiler-python-overview
@@ -92,7 +92,7 @@ contacts:
 links:
   - name: Storedog 2.0 Dashboard
     type: dashboard
-    url: https://app.datadoghq.com/dashboard/c8a-88c-e4b/storedog-20
+    url: https://app.datadoghq.com/dashboard/UPDATE_URL
   - name: RUM - Performance Overview
     type: dashboard
     url: https://app.datadoghq.com/dash/integration/30292/rum---performance-overview
@@ -145,7 +145,7 @@ contacts:
 links:
   - name: Storedog 2.0 Dashboard
     type: dashboard
-    url: https://app.datadoghq.com/dashboard/c8a-88c-e4b/storedog-20
+    url: https://app.datadoghq.com/dashboard/UPDATE_URL
   - name: Postgres - Overview
     type: dashboard
     url: https://app.datadoghq.com/dash/integration/235/postgres---overview
@@ -195,7 +195,7 @@ contacts:
 links:
   - name: Storedog 2.0 Dashboard
     type: dashboard
-    url: https://app.datadoghq.com/dashboard/c8a-88c-e4b/storedog-20
+    url: https://app.datadoghq.com/dashboard/UPDATE_URL
   - name: Redis - Overview
     type: dashboard
     url: https://app.datadoghq.com/dash/integration/15/redis---overview
@@ -242,7 +242,7 @@ contacts:
 links:
   - name: Storedog 2.0 Dashboard
     type: dashboard
-    url: https://app.datadoghq.com/dashboard/c8a-88c-e4b/storedog-20
+    url: https://app.datadoghq.com/dashboard/UPDATE_URL
   - name: Python Runtime Metrics
     type: dashboard
     url: https://app.datadoghq.com/dash/integration/30267/python-runtime-metrics
@@ -289,7 +289,7 @@ contacts:
 links:
   - name: Storedog 2.0 Dashboard
     type: dashboard
-    url: https://app.datadoghq.com/dashboard/c8a-88c-e4b/storedog-20
+    url: https://app.datadoghq.com/dashboard/UPDATE_URL
   - name: NGINX - Overview
     type: dashboard
     url: https://app.datadoghq.com/dash/integration/21/nginx---overview
@@ -339,7 +339,7 @@ contacts:
 links:
   - name: Storedog 2.0 Dashboard
     type: dashboard
-    url: https://app.datadoghq.com/dashboard/c8a-88c-e4b/storedog-20
+    url: https://app.datadoghq.com/dashboard/UPDATE_URL
   - name: Postgres - Overview
     type: dashboard
     url: https://app.datadoghq.com/dash/integration/235/postgres---overview
@@ -477,7 +477,7 @@ contacts:
 links:
   - name: Storedog 2.0 Dashboard
     type: dashboard
-    url: https://app.datadoghq.com/dashboard/c8a-88c-e4b/storedog-20
+    url: https://app.datadoghq.com/dashboard/UPDATE_URL
   - name: RUM - Performance Overview
     type: dashboard
     url: https://app.datadoghq.com/dash/integration/30292/rum---performance-overview
