@@ -3,7 +3,7 @@
         "type": "incidents",
         "attributes": {
             "title": "High error rate making homepage unuseable",
-            "customer_impacted": true,
+            "customer_impacted": false,
             "fields": {
                 "state": {
                     "type": "dropdown",
@@ -24,7 +24,7 @@
                 "services": {
                     "type": "autocomplete",
                     "value": [
-                        "store-frontend"
+                        "store-backend"
                     ]
                 }
             },

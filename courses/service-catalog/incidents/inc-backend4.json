@@ -4,6 +4,7 @@
         "attributes": {
             "title": "High error rate making homepage unuseable",
             "customer_impacted": true,
+            "customer_impact_scope": "Customers are not able to view some pages on the storefront",
             "fields": {
                 "state": {
                     "type": "dropdown",
@@ -24,7 +25,8 @@
                 "services": {
                     "type": "autocomplete",
                     "value": [
-                        "store-frontend"
+                        "store-frontend",
+                        "store-backend"
                     ]
                 }
             },

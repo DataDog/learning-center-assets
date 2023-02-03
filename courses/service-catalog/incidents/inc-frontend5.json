@@ -4,6 +4,7 @@
         "attributes": {
             "title": "Frontend service high latency causing pages to fail",
             "customer_impacted": true,
+            "customer_impact_scope": "Customers are not able to view some pages on the storefront",
             "fields": {
                 "state": {
                     "type": "dropdown",
@@ -15,7 +16,7 @@
                 },
                 "detection_method": {
                     "type": "dropdown",
-                    "value": "employee"
+                    "value": "customer"
                 },
                 "summary": {
                     "type": "textbox",

@@ -24,7 +24,7 @@
                 "services": {
                     "type": "autocomplete",
                     "value": [
-                        "store-frontend"
+                        "tester-service"
                     ]
                 }
             },
