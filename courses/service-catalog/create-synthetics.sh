@@ -132,6 +132,9 @@ do
   done
 done
 
+# Give global vars time to create
+wait 30
+
 # Get a list of all tests
 ALL_MONITORS=$(
     ${CMD_CURL} -X GET "${LIST_TESTS_URL}" \
