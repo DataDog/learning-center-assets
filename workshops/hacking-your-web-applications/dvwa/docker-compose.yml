@@ -7,7 +7,7 @@ services:
     depends_on:
       - datadog-agent
     ports:
-      - "4000:80"
+      - 4000:80
     labels:
       my.custom.label.team: 'app'
 
@@ -21,7 +21,7 @@ services:
     env_file:
       - ../env
     ports:
-      - "8126:8126"
+      - 8126:8126/tcp
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /proc/:/host/proc/:ro
