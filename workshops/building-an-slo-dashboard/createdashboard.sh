@@ -1,6 +1,8 @@
+#!/bin/sh
+
 # Curl command
 echo "creating dashboard 'Storedog SLOs'"
-curl -s -X GET "https://api.us5.datadoghq.com/api/v1/dashboard" \
+curl -s -X GET "https://api.datadoghq.com/api/v1/dashboard" \
 -H "Accept: application/json" \
 -H "Content-Type: application/json" \
 -H "DD-API-KEY: ${DD_API_KEY}" \
@@ -11,7 +13,7 @@ if [ $RC = 0 ]
 then
         echo "Dashboard already exists"
 else
-	curl -X POST "https://api.us5.datadoghq.com/api/v1/dashboard" \
+	curl -X POST "https://api.datadoghq.com/api/v1/dashboard" \
 	-H "Accept: application/json" \
 	-H "Content-Type: application/json" \
 	-H "DD-API-KEY: ${DD_API_KEY}" \
