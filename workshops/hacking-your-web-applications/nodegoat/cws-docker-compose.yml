@@ -17,36 +17,43 @@ services:
       - datadog-agent
     command: sh -c "until nc -z -w 2 mongo 27017 && echo 'mongo is ready for connections' && node artifacts/db-reset.js && npm start; do sleep 2; done"
     ports:
-      - "4000:4000"
+      - 4000:4000
   datadog-agent:
     image: datadog/agent:7.31.1
     environment:
-    - DD_APM_ENABLED=true
-    - DD_APM_NON_LOCAL_TRAFFIC=true
-    - DD_LOGS_ENABLED=true
-    - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
-    - DD_SYSTEM_PROBE_ENABLED=true
-    - DD_RUNTIME_SECURITY_CONFIG_ENABLED=true
+      - DD_APM_ENABLED=true
+      - DD_APM_NON_LOCAL_TRAFFIC=true
+      - DD_LOGS_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+      - DD_SYSTEM_PROBE_ENABLED=true
+      - DD_RUNTIME_SECURITY_CONFIG_ENABLED=true
+      - DD_RUNTIME_SECURITY_CONFIG_NETWORK_ENABLED=true
+      - HOST_ROOT='/host/root'
+    pid: host
     env_file:
-    - ../env
+      - ../env
     ports:
-    - "8126:8126"
+      - 8126:8126/tcp
     volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-    - /proc/:/host/proc/:ro
-    - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
-    - /var/lib/docker/containers:/var/lib/docker/containers:ro
-    - /etc/passwd:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
-    - /:/host/root:ro
-    - /etc/os-release:/host/etc/os-release
-    - /sys/kernel/debug:/sys/kernel/debug
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /sys/kernel/debug:/sys/kernel/debug
+      - /:/host/root:ro
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+      - /etc/os-release:/etc/os-release
     cap_add:
-    - SYS_ADMIN
-    - SYS_RESOURCE
-    - SYS_PTRACE
-    - NET_ADMIN
-    - IPC_LOCK
+      - SYS_ADMIN
+      - SYS_RESOURCE
+      - SYS_PTRACE
+      - NET_ADMIN
+      - NET_BROADCAST
+      - NET_RAW
+      - IPC_LOCK
+      - CHOWN
+    security_opt:
+      - apparmor:unconfined
   mongo:
     image: mongo:4.4.16
     user: mongodb
