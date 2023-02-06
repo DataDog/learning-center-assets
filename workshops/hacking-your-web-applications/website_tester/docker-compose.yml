@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   javaapp:
-    image: ghcr.io/datadog/vulnerable-java-application
+    image: ghcr.io/datadog/vulnerable-java-application:latest
     environment:
       - DD_AGENT_HOST=datadog-agent
       - DD_TRACE_AGENT_PORT=8126
@@ -15,7 +15,7 @@ services:
     ports:
       - "8000:8000"
   datadog-agent:
-    image: datadog/agent
+    image: datadog/agent:7.31.1
     environment:
       - DD_APM_ENABLED=true
       - DD_APM_NON_LOCAL_TRAFFIC=true
