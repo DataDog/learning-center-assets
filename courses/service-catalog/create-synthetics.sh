@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Declare some variables ahead of time
-declare -A MONITOR_ARRAY
 declare -A GLOBAL_VAR_ARRAY
 declare -A GLOBAL_ID_ARRAY
 ALL_GLOBAL_VARS=""
-ALL_MONITORS=""
+ALL_TESTS=""
+TEST=""
 CMD_JQ="/usr/bin/jq"
 CMD_CURL="/usr/bin/curl -sS"
-JSON_DIR="/root/synthetic_tests/" # location of json files
+JSON_DIR="/root/synthetic_tests" # location of json files
 GLOBAL_VAR_API_URL="https://api.datadoghq.com/api/v1/synthetics/variables"
 LIST_TESTS_URL="https://api.datadoghq.com/api/v1/synthetics/tests" # List all Synthetic tests
 CREATE_API_URL="https://api.datadoghq.com/api/v1/synthetics/tests/api" # Create API test
@@ -25,7 +25,8 @@ ALL_GLOBAL_VARS=$(
     ${CMD_CURL} -X GET "${GLOBAL_VAR_API_URL}" \
     -H "Accept: application/json" \
     -H "DD-API-KEY: ${DD_API_KEY}" \
-    -H "DD-APPLICATION-KEY: ${DD_APP_KEY}"
+    -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
+    | ${CMD_JQ} '.variables[].name'
 )
 
 # get the ids for existing global variables
@@ -94,20 +95,11 @@ for key in ${!GLOBAL_VAR_ARRAY[@]}
 do
   if [[ ${ALL_GLOBAL_VARS} =~ "${key}" ]]
   then
-    echo "Variable exists: ${MONITOR_ARRAY[${key}]}"
+    echo "Variable exists: ${GLOBAL_VAR_ARRAY[${key}]}"
     update_global_var ${key} ${GLOBAL_VAR_ARRAY[${key}]} ${GLOBAL_ID_ARRAY[${key}]}
   else
     create_global_var ${key} ${GLOBAL_VAR_ARRAY[${key}]}
   fi
-done
-
-# Read files in JSON_DIR and use jq to get test name.
-# Then add filename and test name to MONITOR_ARRAY.
-for file in ${JSON_DIR}/*.json
-do
-  MONITOR_ARRAY+=(
-    [${file}]=$( ${CMD_JQ} '.name' ${file} )
-  )
 done
 
 # Update global variable ids in the synthetic test json files
@@ -136,27 +128,30 @@ done
 wait 3
 
 # Get a list of all tests
-ALL_MONITORS=$(
+ALL_TESTS=$(
     ${CMD_CURL} -X GET "${LIST_TESTS_URL}" \
     -H "Content-Type: application/json" \
     -H "DD-API-KEY: ${DD_API_KEY}" \
-    -H "DD-APPLICATION-KEY: ${DD_APP_KEY}"
+    -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
+    | ${CMD_JQ} '.tests[].name'
 )
 
+# Read files in JSON_DIR and use jq to get test name.
 # Check if the test already exists. This avoids duplicates when the lab is ran multiple times.
 # If it doesn't exist, create it.
-for key in ${!MONITOR_ARRAY[@]}
+for file in ${JSON_DIR}/*.json
 do
-  if [[ ${ALL_MONITORS} =~ "${MONITOR_ARRAY[${key}]}" ]]
+  TEST=$( ${CMD_JQ} '.name' ${file} )
+  if [[ ${ALL_TESTS} =~ ${TEST} ]]
   then
-    echo "Monitor exists: ${MONITOR_ARRAY[${key}]}"
+    echo "Test exists: ${TEST}"
   else
     ${CMD_CURL} -X POST "${CREATE_API_URL}" \
     -H "Content-Type: application/json" \
     -H "DD-API-KEY: ${DD_API_KEY}" \
     -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
-    -d @${key}
+    -d @${file}
 
-    echo "Monitor created: ${MONITOR_ARRAY[${key}]}"
+    echo "Test created: ${TEST}"
   fi
 done
