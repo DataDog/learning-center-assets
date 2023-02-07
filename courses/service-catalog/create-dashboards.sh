@@ -25,7 +25,7 @@ do
   DASHBOARD=$( ${CMD_JQ} '.title' ${file} )
   if [[ ${ALL_DASHBOARDS} =~ ${DASHBOARD} ]]
   then
-    echo "DASHBOARD exists: ${DASHBOARD}"
+    echo "Dashboard exists: ${DASHBOARD}"
   else
     ${CMD_CURL} -X POST "${API_URL}" \
     -H "Content-Type: application/json" \
@@ -33,6 +33,6 @@ do
     -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
     -d @${file}
 
-    echo "DASHBOARD created: ${DASHBOARD}"
+    echo "Dashboard created: ${DASHBOARD}"
   fi
 done
