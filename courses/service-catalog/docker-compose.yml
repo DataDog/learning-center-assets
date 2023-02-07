@@ -109,7 +109,7 @@ services:
     ports:
       - '${ADMIN_PORT:-4000}:${ADMIN_PORT:-4000}'
     volumes:
-      - '/root/database.yml:/app/config/database.yml'
+      - '/root/rails_database.yml:/app/config/database.yml'
       - '/root/services/backend/config/initializers/datadog-tracer.rb:/app/config/initializers/datadog-tracer.rb'
     environment:
       - REDIS_URL
@@ -143,7 +143,7 @@ services:
       - backend
       - datadog
     volumes:
-      - '/root/database.yml:/app/config/database.yml'
+      - '/root/rails_database.yml:/app/config/database.yml'
       - '/root/services/worker/config/initializers/datadog-tracer.rb:/app/config/initializers/datadog-tracer.rb'
     environment:
       - REDIS_URL
