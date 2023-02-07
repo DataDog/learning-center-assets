@@ -203,8 +203,8 @@ services:
     depends_on:
       - frontend
     volumes:
-      - /root/default.conf:/etc/nginx/conf.d/default.conf
-      - /root/status.conf:/etc/nginx/conf.d/status.conf
+      - /root/nginx_default.conf:/etc/nginx/conf.d/default.conf
+      - /root/nginx_status.conf:/etc/nginx/conf.d/status.conf
     labels:
       com.datadog.tags.env: '${DD_ENV}'
       com.datadog.tags.service: 'store-nginx'
