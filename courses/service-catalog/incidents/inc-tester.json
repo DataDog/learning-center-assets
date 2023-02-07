@@ -7,7 +7,7 @@
             "fields": {
                 "state": {
                     "type": "dropdown",
-                    "value": "resolved"
+                    "value": "active"
                 },
                 "severity": {
                     "type": "dropdown",
@@ -29,7 +29,7 @@
                 }
             },
             "severity": "SEV-4",
-            "state": "resolved",
+            "state": "active",
             "non_datadog_creator": null,
             "visibility": "organization"
         }

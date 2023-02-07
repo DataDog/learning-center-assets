@@ -2,12 +2,13 @@
     "data": {
         "type": "incidents",
         "attributes": {
-            "title": "Frontend service high latency causing issues",
-            "customer_impacted": false,
+            "title": "Frontend service high latency causing pages to fail",
+            "customer_impacted": true,
+            "customer_impact_scope": "Customers are not able to view some pages on the storefront",
             "fields": {
                 "state": {
                     "type": "dropdown",
-                    "value": "resolved"
+                    "value": "active"
                 },
                 "severity": {
                     "type": "dropdown",
@@ -15,11 +16,11 @@
                 },
                 "detection_method": {
                     "type": "dropdown",
-                    "value": "employee"
+                    "value": "customer"
                 },
                 "summary": {
                     "type": "textbox",
-                    "value": "Noticed that the frontend service had high latency."
+                    "value": "Pages are randomly failing due to high latency."
                 },
                 "services": {
                     "type": "autocomplete",
@@ -29,7 +30,7 @@
                 }
             },
             "severity": "SEV-2",
-            "state": "resolved",
+            "state": "active",
             "non_datadog_creator": null,
             "visibility": "organization"
         }
