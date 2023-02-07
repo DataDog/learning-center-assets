@@ -5,7 +5,7 @@ ALL_MONITORS=""
 MONITOR=""
 CMD_JQ="/usr/bin/jq"
 CMD_CURL="/usr/bin/curl -sS"
-JSON_DIR="/root/monitors/" # location of json files
+JSON_DIR="/root/monitors" # location of json files
 API_URL="https://api.datadoghq.com/api/v1/monitor" # alert
 
 # Get a list of all monitors
