@@ -133,7 +133,7 @@ do
 done
 
 # Give global vars time to create
-wait 30
+wait 3
 
 # Get a list of all tests
 ALL_MONITORS=$(
