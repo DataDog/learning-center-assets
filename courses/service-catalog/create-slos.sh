@@ -27,14 +27,18 @@ do
       -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
       | ${CMD_JQ} --raw-output '.monitors[].id'
     )
+    if [[ ${MONITOR_ID} ]]
+    then
+      # A temp file is needed to hold results before overwrting the file
+      TEMP_FILE=$(mktemp)
 
-    # A temp file is needed to hold results before overwrting the file
-    TEMP_FILE=$(mktemp)
-
-    ${CMD_JQ} --argjson newid ${MONITOR_ID} \
-    '(.monitor_ids[]) |= $newid' ${file} > ${TEMP_FILE} && \
-    mv -- "${TEMP_FILE}" ${file}
-    echo "Monitor id has been updated"
+      ${CMD_JQ} --argjson newid ${MONITOR_ID} \
+      '(.monitor_ids[]) |= $newid' ${file} > ${TEMP_FILE} && \
+      mv -- "${TEMP_FILE}" ${file}
+      echo "Monitor id has been updated"
+    else
+      echo "No matching Monitor was found for SLO: ${file##*/}"
+    fi
   else
     echo "Metric based SLO: ${file##*/}"
   fi
