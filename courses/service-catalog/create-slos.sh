@@ -7,6 +7,38 @@ CMD_JQ="/usr/bin/jq"
 CMD_CURL="/usr/bin/curl -sS"
 JSON_DIR="/root/slos" # location of json files
 API_URL="https://api.datadoghq.com/api/v1/slo" # slo
+MONITOR_SEARCH_URL="https://api.datadoghq.com/api/v1/monitor/search"
+
+# Check for monitor based slo
+for file in ${JSON_DIR}/*.json
+do
+  if $(${CMD_JQ} 'has("monitor_ids")' ${file})
+  then
+    echo "Monitor based SLO: ${file##*/}"
+    # get name of SLO
+    SLO_NAME=$( ${CMD_JQ} --raw-output '.name' ${file} )
+
+    # search monitors for name and get monitor id
+    MONITOR_ID=$( 
+      ${CMD_CURL} -X GET --data-urlencode "query=${SLO_NAME}" \
+      "${MONITOR_SEARCH_URL}" \
+      -H "Accept: application/json" \
+      -H "DD-API-KEY: ${DD_API_KEY}" \
+      -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
+      | ${CMD_JQ} --raw-output '.monitors[].id'
+    )
+
+    # A temp file is needed to hold results before overwrting the file
+    TEMP_FILE=$(mktemp)
+
+    ${CMD_JQ} --argjson newid ${MONITOR_ID} \
+    '(.monitor_ids[]) |= $newid' ${file} > ${TEMP_FILE} && \
+    mv -- "${TEMP_FILE}" ${file}
+    echo "Monitor id has been updated"
+  else
+    echo "Metric based SLO: ${file##*/}"
+  fi
+done
 
 # Get a list of all slos
 ALL_SLOS=$(
