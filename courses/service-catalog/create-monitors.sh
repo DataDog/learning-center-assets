@@ -28,6 +28,7 @@ do
     echo "Monitor exists: ${MONITOR}"
   else
     ${CMD_CURL} -X POST "${API_URL}" \
+    -H "Accept: application/json" \
     -H "Content-Type: application/json" \
     -H "DD-API-KEY: ${DD_API_KEY}" \
     -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
