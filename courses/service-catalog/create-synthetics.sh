@@ -109,7 +109,7 @@ do
 done
 
 # Give global vars time to create
-wait 3
+sleep 3
 
 # Get a list of all tests
 ALL_TESTS=$(
