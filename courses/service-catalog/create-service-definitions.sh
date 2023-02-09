@@ -23,8 +23,8 @@ ${CMD_SED} -i 's+/UPDATE_URL+'${DASHBOARD_URL}'+g' ${SERVICE_FILE}
 
 # Create Service Definitions
 ${CMD_CURL} -X POST "${SERVICE_API_URL}" \
--H "Accept: application/json" \
--H "Content-Type: application/json" \
+-H "Accept: application/yaml" \
+-H "Content-Type: application/yaml" \
 -H "DD-API-KEY: ${DD_API_KEY}" \
 -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
 -T ${SERVICE_FILE}
