@@ -1,5 +1,5 @@
 {
-  "name": "Service store-discounts has a high p90 latency ",
+  "name": "Service store-discounts has a high p90 latency",
   "tags": ["env:service-catalog-course", "service:store-discounts"],
   "monitor_tags": [],
   "thresholds": [
