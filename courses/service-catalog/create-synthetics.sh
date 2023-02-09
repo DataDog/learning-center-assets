@@ -7,7 +7,7 @@ ALL_GLOBAL_VARS=""
 ALL_TESTS=""
 TEST=""
 CMD_JQ="/usr/bin/jq"
-CMD_CURL="/usr/bin/curl -sS"
+CMD_CURL="/usr/bin/curl -sS -L"
 JSON_DIR="/root/synthetic_tests" # location of json files
 GLOBAL_VAR_API_URL="https://api.datadoghq.com/api/v1/synthetics/variables"
 LIST_TESTS_URL="https://api.datadoghq.com/api/v1/synthetics/tests" # List all Synthetic tests
@@ -25,8 +25,7 @@ ALL_GLOBAL_VARS=$(
     ${CMD_CURL} -X GET "${GLOBAL_VAR_API_URL}" \
     -H "Accept: application/json" \
     -H "DD-API-KEY: ${DD_API_KEY}" \
-    -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
-    | ${CMD_JQ} '.variables[].name'
+    -H "DD-APPLICATION-KEY: ${DD_APP_KEY}"
 )
 
 # get the ids for existing global variables
@@ -40,12 +39,20 @@ do
   )
 done
 
-# function to update variable value
-update_global_var() {
+# function to create or update variable value
+create_update_global_var() {
     NAME=$1
     VALUE=$2
     ID=$3
-    ${CMD_CURL} -X PUT "${GLOBAL_VAR_API_URL}/${ID}" \
+    METHOD="POST"
+    ACTION="created"
+    if [[ ! -z ${ID} ]]
+    then
+      METHOD="PUT"
+      ACTION="updated"
+    fi
+    
+    ${CMD_CURL} -X ${METHOD} "${GLOBAL_VAR_API_URL}/${ID}" \
     -H "Accept: application/json" \
     -H "Content-Type: application/json" \
     -H "DD-API-KEY: ${DD_API_KEY}" \
@@ -62,43 +69,20 @@ update_global_var() {
     }
 EOF
 
-    echo "Variable updated: ${NAME} with value: ${VALUE}"
+    echo "Variable ${ACTION}: ${NAME} with value: ${VALUE}"
 }
 
-# function to create new global variable
-create_global_var() {
-    NAME=$1
-    VALUE=$2
-    ${CMD_CURL} -X POST "${GLOBAL_VAR_API_URL}" \
-    -H "Accept: application/json" \
-    -H "Content-Type: application/json" \
-    -H "DD-API-KEY: ${DD_API_KEY}" \
-    -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" \
-    -d @- << EOF
-    {
-      "description": "Instruqt lab ${NAME}",
-      "name": "${NAME}",
-      "tags": [],
-      "value": {
-        "secure": false,
-        "value": "${VALUE}"
-      }
-    }
-EOF
-
-    echo "Variable created: ${NAME} with value: ${VALUE}"
-}
 
 # Check if global variable exists. Create or update as needed
 # If a variable exists it will ALWAYS be updated
 for key in ${!GLOBAL_VAR_ARRAY[@]}
 do
-  if [[ ${ALL_GLOBAL_VARS} =~ "${key}" ]]
+  if [[ ${ALL_GLOBAL_VARS} =~ "$key" ]]
   then
-    echo "Variable exists: ${GLOBAL_VAR_ARRAY[${key}]}"
-    update_global_var ${key} ${GLOBAL_VAR_ARRAY[${key}]} ${GLOBAL_ID_ARRAY[${key}]}
+    echo "Variable exists: $key"
+    create_update_global_var $key ${GLOBAL_VAR_ARRAY[$key]} ${GLOBAL_ID_ARRAY[$key]}
   else
-    create_global_var ${key} ${GLOBAL_VAR_ARRAY[${key}]}
+    create_update_global_var $key ${GLOBAL_VAR_ARRAY[$key]}
   fi
 done
 
@@ -117,8 +101,8 @@ do
     # A temp file is needed to hold results before overwrting the file
     TEMP_FILE=$(mktemp)
 
-    ${CMD_JQ} --arg newid "${GLOBAL_ID_ARRAY[${key}]}" \
-    '(.config.configVariables[] | select(.name=="'${key}'").id) |= $newid' \
+    ${CMD_JQ} --arg newid "${GLOBAL_ID_ARRAY[$key]}" \
+    '(.config.configVariables[] | select(.name=="'$key'").id) |= $newid' \
     ${file} > ${TEMP_FILE} && \
     mv -- "${TEMP_FILE}" ${file}
   done
