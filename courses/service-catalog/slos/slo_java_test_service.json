@@ -1,0 +1,23 @@
+{
+  "name": "Java test service high errors",
+  "tags": ["env:service-catalog-course", "service:tester-service"],
+  "monitor_tags": [],
+  "thresholds": [
+    {
+      "timeframe": "7d",
+      "target": 95.0,
+      "target_display": "95.",
+      "warning": 97.0,
+      "warning_display": "97."
+    }
+  ],
+  "type": "metric",
+  "description": "",
+  "timeframe": "7d",
+  "warning_threshold": 97.0,
+  "target_threshold": 95.0,
+  "query": {
+    "denominator": "sum:trace.servlet.request.hits{service:tester-service}.as_count() + sum:trace.servlet.request.errors{service:tester-service}.as_count()",
+    "numerator": "sum:trace.servlet.request.hits{service:tester-service}.as_count()"
+  }
+}

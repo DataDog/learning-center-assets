@@ -1,0 +1,23 @@
+{
+	"name": "Service store-ads has a high error rate",
+	"type": "query alert",
+	"query": "sum(last_10m): ( sum:trace.flask.request.errors{env:service-catalog-course,service:store-ads}.as_count() / sum:trace.flask.request.hits{env:service-catalog-course,service:store-ads}.as_count() ) > 0.05",
+	"message": "`store-ads` error rate is too high.",
+	"tags": [
+		"service:store-ads",
+		"env:service-catalog-course"
+	],
+	"options": {
+		"thresholds": {
+			"critical": 0.05,
+			"warning": 0.01
+		},
+		"notify_no_data": false,
+		"notify_audit": false,
+		"new_host_delay": 300,
+		"include_tags": true,
+		"silenced": {}
+	},
+	"priority": null,
+	"restricted_roles": null
+}

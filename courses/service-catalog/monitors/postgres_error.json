@@ -1,0 +1,23 @@
+{
+	"name": "Service postgres has a high error rate",
+	"type": "query alert",
+	"query": "sum(last_10m): ( sum:trace.postgres.query.errors{env:service-catalog-course,service:postgres}.as_count() / sum:trace.postgres.query.hits{env:service-catalog-course,service:postgres}.as_count() ) > 0.05",
+	"message": "`postgres` error rate is too high.",
+	"tags": [
+		"service:postgres",
+		"env:service-catalog-course"
+	],
+	"options": {
+		"thresholds": {
+			"critical": 0.05,
+			"warning": 0.01
+		},
+		"notify_no_data": false,
+		"notify_audit": false,
+		"new_host_delay": 300,
+		"include_tags": true,
+		"silenced": {}
+	},
+	"priority": null,
+	"restricted_roles": null
+}

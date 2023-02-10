@@ -1,0 +1,21 @@
+{
+  "name": "Service store-discounts has a high p90 latency",
+  "tags": ["env:service-catalog-course", "service:store-discounts"],
+  "monitor_tags": [],
+  "thresholds": [
+    {
+      "timeframe": "7d",
+      "target": 95.0,
+      "target_display": "95.",
+      "warning": 97.0,
+      "warning_display": "97."
+    }
+  ],
+  "type": "monitor",
+  "type_id": 0,
+  "description": "",
+  "timeframe": "7d",
+  "warning_threshold": 97.0,
+  "target_threshold": 95.0,
+  "monitor_ids": [107809249]
+}

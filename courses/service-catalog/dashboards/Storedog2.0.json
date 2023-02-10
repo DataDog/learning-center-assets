@@ -1,0 +1,1421 @@
+{
+    "title": "Storedog 2.0",
+    "description": null,
+    "widgets": [
+        {
+            "id": 127225620070096,
+            "definition": {
+                "type": "image",
+                "url": "https://www.drupal.org/files/datadog-logo-purple.png",
+                "sizing": "contain",
+                "margin": "md",
+                "has_background": false,
+                "has_border": false,
+                "vertical_align": "center",
+                "horizontal_align": "center"
+            },
+            "layout": {
+                "x": 0,
+                "y": 0,
+                "width": 2,
+                "height": 4
+            }
+        },
+        {
+            "id": 3709819502049624,
+            "definition": {
+                "title": "backend errors",
+                "title_size": "16",
+                "title_align": "left",
+                "time": {},
+                "type": "slo",
+                "slo_id": "BACKEND_SLO_ID",
+                "view_type": "detail",
+                "view_mode": "overall",
+                "time_windows": [
+                    "7d"
+                ],
+                "show_error_budget": true,
+                "global_time_target": "0"
+            },
+            "layout": {
+                "x": 2,
+                "y": 0,
+                "width": 2,
+                "height": 2
+            }
+        },
+        {
+            "id": 2547479167378294,
+            "definition": {
+                "title": "Java errors",
+                "title_size": "16",
+                "title_align": "left",
+                "time": {},
+                "type": "slo",
+                "slo_id": "JAVA_SLO_ID",
+                "view_type": "detail",
+                "view_mode": "overall",
+                "time_windows": [
+                    "7d"
+                ],
+                "show_error_budget": true,
+                "global_time_target": "0"
+            },
+            "layout": {
+                "x": 4,
+                "y": 0,
+                "width": 2,
+                "height": 2
+            }
+        },
+        {
+            "id": 3190452381078902,
+            "definition": {
+                "title": "Monitors Status",
+                "title_size": "13",
+                "title_align": "left",
+                "type": "manage_status",
+                "display_format": "countsAndList",
+                "color_preference": "background",
+                "hide_zero_counts": true,
+                "query": "",
+                "sort": "triggered,desc",
+                "count": 50,
+                "start": 0,
+                "summary_type": "monitors",
+                "show_priority": false,
+                "show_last_triggered": true
+            },
+            "layout": {
+                "x": 6,
+                "y": 0,
+                "width": 6,
+                "height": 4
+            }
+        },
+        {
+            "id": 5891856989062934,
+            "definition": {
+                "title": "",
+                "title_size": "16",
+                "title_align": "left",
+                "time": {},
+                "type": "slo",
+                "slo_id": "PYTHON_SLO_ID",
+                "view_type": "detail",
+                "view_mode": "component",
+                "time_windows": [
+                    "7d"
+                ],
+                "show_error_budget": true,
+                "global_time_target": "0"
+            },
+            "layout": {
+                "x": 2,
+                "y": 2,
+                "width": 4,
+                "height": 2
+            }
+        },
+        {
+            "id": 7135326477249364,
+            "definition": {
+                "title": "Avg Requests per second",
+                "title_size": "16",
+                "title_align": "left",
+                "type": "query_value",
+                "requests": [
+                    {
+                        "conditional_formats": [
+                            {
+                                "comparator": ">",
+                                "palette": "white_on_red",
+                                "value": 15
+                            },
+                            {
+                                "comparator": ">=",
+                                "palette": "white_on_yellow",
+                                "value": 10
+                            },
+                            {
+                                "comparator": "<",
+                                "palette": "white_on_green",
+                                "value": 10
+                            }
+                        ],
+                        "response_format": "scalar",
+                        "queries": [
+                            {
+                                "query": "avg:trace.rack.request.hits{$env,$service}.as_count()",
+                                "data_source": "metrics",
+                                "name": "query1",
+                                "aggregator": "avg"
+                            }
+                        ]
+                    }
+                ],
+                "autoscale": true,
+                "precision": 1
+            },
+            "layout": {
+                "x": 0,
+                "y": 4,
+                "width": 3,
+                "height": 2
+            }
+        },
+        {
+            "id": 7102175102806140,
+            "definition": {
+                "title": "Error Rate %",
+                "title_size": "16",
+                "title_align": "left",
+                "time": {
+                    "live_span": "1d"
+                },
+                "type": "query_value",
+                "requests": [
+                    {
+                        "formulas": [
+                            {
+                                "formula": "query1"
+                            }
+                        ],
+                        "conditional_formats": [
+                            {
+                                "comparator": ">",
+                                "palette": "white_on_red",
+                                "value": 4
+                            },
+                            {
+                                "comparator": ">=",
+                                "palette": "white_on_yellow",
+                                "value": 2
+                            },
+                            {
+                                "comparator": "<",
+                                "palette": "white_on_green",
+                                "value": 2
+                            }
+                        ],
+                        "response_format": "scalar",
+                        "queries": [
+                            {
+                                "query": "avg:trace.rack.request.errors{$env,$service}.as_count()",
+                                "data_source": "metrics",
+                                "name": "query1",
+                                "aggregator": "avg"
+                            }
+                        ]
+                    }
+                ],
+                "autoscale": true,
+                "custom_unit": "%",
+                "custom_links": [
+                    {
+                        "link": "https://app.datadoghq.com/dash/integration/30309/RUM%20-%20Errors?",
+                        "label": "See RUM Errors"
+                    },
+                    {
+                        "link": "https://app.datadoghq.com/rum/analytics?agg_q=%40type&live=1h&query=%40application.id%3A29c524d0-4843-487a-a361-278f9348c8ea",
+                        "label": "Shop.ist Mobile RUM"
+                    }
+                ],
+                "precision": 2
+            },
+            "layout": {
+                "x": 3,
+                "y": 4,
+                "width": 3,
+                "height": 2
+            }
+        },
+        {
+            "id": 2138396838618528,
+            "definition": {
+                "title": "Average Latency",
+                "title_size": "16",
+                "title_align": "left",
+                "time": {
+                    "live_span": "1h"
+                },
+                "type": "query_value",
+                "requests": [
+                    {
+                        "conditional_formats": [
+                            {
+                                "comparator": ">",
+                                "palette": "white_on_red",
+                                "value": 5
+                            },
+                            {
+                                "comparator": ">=",
+                                "palette": "white_on_yellow",
+                                "value": 1
+                            },
+                            {
+                                "comparator": "<",
+                                "palette": "white_on_green",
+                                "value": 1
+                            }
+                        ],
+                        "response_format": "scalar",
+                        "queries": [
+                            {
+                                "query": "avg:trace.rack.request.duration{$env,$service}",
+                                "data_source": "metrics",
+                                "name": "query1",
+                                "aggregator": "min"
+                            }
+                        ]
+                    }
+                ],
+                "autoscale": false,
+                "precision": 2
+            },
+            "layout": {
+                "x": 6,
+                "y": 4,
+                "width": 3,
+                "height": 2
+            }
+        },
+        {
+            "id": 8998220670223674,
+            "definition": {
+                "title": "Furniture Sales Revenue",
+                "title_size": "16",
+                "title_align": "left",
+                "type": "query_value",
+                "requests": [
+                    {
+                        "formulas": [
+                            {
+                                "formula": "15 * query1"
+                            }
+                        ],
+                        "conditional_formats": [
+                            {
+                                "comparator": ">",
+                                "palette": "white_on_green",
+                                "value": 1
+                            }
+                        ],
+                        "response_format": "scalar",
+                        "queries": [
+                            {
+                                "query": "sum:trace.rack.request.hits{$service,$env,resource_name:spree::api::v2::storefront::cartcontroller_create}.as_count()",
+                                "data_source": "metrics",
+                                "name": "query1",
+                                "aggregator": "avg"
+                            }
+                        ]
+                    }
+                ],
+                "autoscale": true,
+                "custom_unit": "$",
+                "precision": 1
+            },
+            "layout": {
+                "x": 9,
+                "y": 4,
+                "width": 3,
+                "height": 2
+            }
+        },
+        {
+            "id": 7115485708669128,
+            "definition": {
+                "title": "Page views",
+                "title_size": "16",
+                "title_align": "left",
+                "show_legend": false,
+                "legend_layout": "auto",
+                "legend_columns": [
+                    "avg",
+                    "min",
+                    "max",
+                    "value",
+                    "sum"
+                ],
+                "type": "timeseries",
+                "requests": [
+                    {
+                        "formulas": [
+                            {
+                                "formula": "query1"
+                            }
+                        ],
+                        "response_format": "timeseries",
+                        "queries": [
+                            {
+                                "search": {
+                                    "query": "@type:view $env $service"
+                                },
+                                "data_source": "rum",
+                                "compute": {
+                                    "aggregation": "count"
+                                },
+                                "name": "query1",
+                                "indexes": [
+                                    "*"
+                                ],
+                                "group_by": []
+                            }
+                        ],
+                        "style": {
+                            "palette": "cool",
+                            "line_type": "solid",
+                            "line_width": "normal"
+                        },
+                        "display_type": "bars"
+                    }
+                ],
+                "yaxis": {
+                    "include_zero": true,
+                    "scale": "linear",
+                    "label": "",
+                    "min": "auto",
+                    "max": "auto"
+                },
+                "markers": []
+            },
+            "layout": {
+                "x": 0,
+                "y": 6,
+                "width": 6,
+                "height": 2
+            }
+        },
+        {
+            "id": 365110679757098,
+            "definition": {
+                "title": "Load time median, p75 and p90",
+                "title_size": "16",
+                "title_align": "left",
+                "show_legend": false,
+                "legend_layout": "auto",
+                "legend_columns": [
+                    "avg",
+                    "min",
+                    "max",
+                    "value",
+                    "sum"
+                ],
+                "type": "timeseries",
+                "requests": [
+                    {
+                        "formulas": [
+                            {
+                                "formula": "query1"
+                            }
+                        ],
+                        "response_format": "timeseries",
+                        "queries": [
+                            {
+                                "search": {
+                                    "query": "@type:view $env $service"
+                                },
+                                "data_source": "rum",
+                                "compute": {
+                                    "metric": "@view.load_event",
+                                    "aggregation": "median"
+                                },
+                                "name": "query1",
+                                "indexes": [
+                                    "*"
+                                ],
+                                "group_by": []
+                            }
+                        ],
+                        "style": {
+                            "palette": "dog_classic",
+                            "line_type": "solid",
+                            "line_width": "normal"
+                        },
+                        "display_type": "line"
+                    },
+                    {
+                        "formulas": [
+                            {
+                                "formula": "query1"
+                            }
+                        ],
+                        "response_format": "timeseries",
+                        "queries": [
+                            {
+                                "search": {
+                                    "query": "@type:view $env $service"
+                                },
+                                "data_source": "rum",
+                                "compute": {
+                                    "metric": "@view.load_event",
+                                    "aggregation": "pc75"
+                                },
+                                "name": "query1",
+                                "indexes": [
+                                    "*"
+                                ],
+                                "group_by": []
+                            }
+                        ],
+                        "style": {
+                            "palette": "dog_classic",
+                            "line_type": "solid",
+                            "line_width": "normal"
+                        },
+                        "display_type": "line"
+                    },
+                    {
+                        "formulas": [
+                            {
+                                "formula": "query1"
+                            }
+                        ],
+                        "response_format": "timeseries",
+                        "queries": [
+                            {
+                                "search": {
+                                    "query": "@type:view $env $service"
+                                },
+                                "data_source": "rum",
+                                "compute": {
+                                    "metric": "@view.load_event",
+                                    "aggregation": "pc90"
+                                },
+                                "name": "query1",
+                                "indexes": [
+                                    "*"
+                                ],
+                                "group_by": []
+                            }
+                        ],
+                        "style": {
+                            "palette": "dog_classic",
+                            "line_type": "solid",
+                            "line_width": "normal"
+                        },
+                        "display_type": "line"
+                    }
+                ],
+                "yaxis": {
+                    "include_zero": true,
+                    "scale": "linear",
+                    "label": "",
+                    "min": "auto",
+                    "max": "auto"
+                },
+                "custom_links": []
+            },
+            "layout": {
+                "x": 6,
+                "y": 6,
+                "width": 6,
+                "height": 2
+            }
+        },
+        {
+            "id": 3364907929990860,
+            "definition": {
+                "title": "Infrastructure & Network",
+                "background_color": "gray",
+                "show_title": true,
+                "type": "group",
+                "layout_type": "ordered",
+                "widgets": [
+                    {
+                        "id": 403247488623104,
+                        "definition": {
+                            "title": "Critical Host CPU",
+                            "title_size": "16",
+                            "title_align": "left",
+                            "type": "hostmap",
+                            "requests": {
+                                "fill": {
+                                    "q": "avg:process.stat.container.io.wbps{$env,$team,$service} by {host}"
+                                }
+                            },
+                            "node_type": "container",
+                            "no_metric_hosts": false,
+                            "no_group_hosts": true,
+                            "group": [],
+                            "scope": [
+                                "$env",
+                                "$team",
+                                "$service"
+                            ],
+                            "style": {
+                                "palette": "YlOrRd",
+                                "palette_flip": false
+                            }
+                        },
+                        "layout": {
+                            "x": 0,
+                            "y": 0,
+                            "width": 6,
+                            "height": 4
+                        }
+                    },
+                    {
+                        "id": 6586264670940338,
+                        "definition": {
+                            "title": "CPU v Mem Scatterplot",
+                            "type": "scatterplot",
+                            "requests": {
+                                "table": {
+                                    "formulas": [
+                                        {
+                                            "formula": "query1",
+                                            "dimension": "x",
+                                            "alias": ""
+                                        },
+                                        {
+                                            "formula": "query2",
+                                            "dimension": "y",
+                                            "alias": ""
+                                        }
+                                    ],
+                                    "response_format": "scalar",
+                                    "queries": [
+                                        {
+                                            "query": "avg:docker.cpu.user{$service,$env} by {service}",
+                                            "data_source": "metrics",
+                                            "name": "query1",
+                                            "aggregator": "avg"
+                                        },
+                                        {
+                                            "query": "avg:docker.mem.rss{$service,$env} by {service}",
+                                            "data_source": "metrics",
+                                            "name": "query2",
+                                            "aggregator": "avg"
+                                        }
+                                    ]
+                                }
+                            },
+                            "xaxis": {
+                                "include_zero": true,
+                                "scale": "linear",
+                                "label": "",
+                                "min": "auto",
+                                "max": "auto"
+                            },
+                            "yaxis": {
+                                "include_zero": true,
+                                "scale": "linear",
+                                "label": "",
+                                "min": "auto",
+                                "max": "auto"
+                            },
+                            "color_by_groups": []
+                        },
+                        "layout": {
+                            "x": 6,
+                            "y": 0,
+                            "width": 6,
+                            "height": 4
+                        }
+                    },
+                    {
+                        "id": 2330464545140464,
+                        "definition": {
+                            "title": "redis network traffic",
+                            "show_legend": false,
+                            "legend_layout": "auto",
+                            "legend_columns": [
+                                "avg",
+                                "min",
+                                "max",
+                                "value",
+                                "sum"
+                            ],
+                            "time": {},
+                            "type": "timeseries",
+                            "requests": [
+                                {
+                                    "formulas": [
+                                        {
+                                            "formula": "query1"
+                                        }
+                                    ],
+                                    "queries": [
+                                        {
+                                            "search": {
+                                                "query": "dest_service:redis"
+                                            },
+                                            "data_source": "network",
+                                            "compute": {
+                                                "metric": "network.bytes_written",
+                                                "aggregation": "sum"
+                                            },
+                                            "name": "query1",
+                                            "indexes": [
+                                                "netflow-search"
+                                            ],
+                                            "group_by": [
+                                                {
+                                                    "facet": "source_service"
+                                                },
+                                                {
+                                                    "facet": "dest_service"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "response_format": "timeseries",
+                                    "style": {
+                                        "palette": "purple",
+                                        "line_type": "solid",
+                                        "line_width": "normal"
+                                    },
+                                    "display_type": "area"
+                                }
+                            ]
+                        },
+                        "layout": {
+                            "x": 0,
+                            "y": 4,
+                            "width": 6,
+                            "height": 2
+                        }
+                    },
+                    {
+                        "id": 7655598733541704,
+                        "definition": {
+                            "title": "Outbound Traffic",
+                            "title_size": "16",
+                            "title_align": "left",
+                            "show_legend": false,
+                            "legend_layout": "auto",
+                            "legend_columns": [
+                                "avg",
+                                "min",
+                                "max",
+                                "value",
+                                "sum"
+                            ],
+                            "time": {},
+                            "type": "timeseries",
+                            "requests": [
+                                {
+                                    "formulas": [
+                                        {
+                                            "formula": "query2"
+                                        }
+                                    ],
+                                    "queries": [
+                                        {
+                                            "search": {
+                                                "query": ""
+                                            },
+                                            "data_source": "network",
+                                            "compute": {
+                                                "metric": "network.bytes_written",
+                                                "aggregation": "sum"
+                                            },
+                                            "name": "query2",
+                                            "indexes": [
+                                                "netflow-search"
+                                            ],
+                                            "group_by": [
+                                                {
+                                                    "facet": "network.source.host",
+                                                    "limit": 100
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "response_format": "timeseries",
+                                    "style": {
+                                        "palette": "purple",
+                                        "line_type": "solid",
+                                        "line_width": "normal"
+                                    },
+                                    "display_type": "area"
+                                }
+                            ],
+                            "yaxis": {
+                                "include_zero": true,
+                                "scale": "linear",
+                                "label": "",
+                                "min": "auto",
+                                "max": "auto"
+                            },
+                            "markers": []
+                        },
+                        "layout": {
+                            "x": 6,
+                            "y": 4,
+                            "width": 6,
+                            "height": 2
+                        }
+                    },
+                    {
+                        "id": 300465730,
+                        "definition": {
+                            "title": "Web workers: Network in / out",
+                            "show_legend": false,
+                            "legend_layout": "auto",
+                            "legend_columns": [
+                                "avg",
+                                "min",
+                                "max",
+                                "value",
+                                "sum"
+                            ],
+                            "type": "timeseries",
+                            "requests": [
+                                {
+                                    "formulas": [
+                                        {
+                                            "formula": "query1",
+                                            "alias": "Network IN"
+                                        }
+                                    ],
+                                    "response_format": "timeseries",
+                                    "on_right_yaxis": false,
+                                    "queries": [
+                                        {
+                                            "query": "sum:system.net.bytes_rcvd{$env,$service}",
+                                            "data_source": "metrics",
+                                            "name": "query1"
+                                        }
+                                    ],
+                                    "style": {
+                                        "palette": "dog_classic",
+                                        "line_type": "solid",
+                                        "line_width": "normal"
+                                    },
+                                    "display_type": "bars"
+                                },
+                                {
+                                    "formulas": [
+                                        {
+                                            "formula": "-query1",
+                                            "alias": "Network OUT"
+                                        }
+                                    ],
+                                    "response_format": "timeseries",
+                                    "on_right_yaxis": false,
+                                    "queries": [
+                                        {
+                                            "query": "sum:system.net.bytes_sent{$env,$service}",
+                                            "data_source": "metrics",
+                                            "name": "query1"
+                                        }
+                                    ],
+                                    "style": {
+                                        "palette": "warm",
+                                        "line_type": "solid",
+                                        "line_width": "normal"
+                                    },
+                                    "display_type": "bars"
+                                }
+                            ],
+                            "yaxis": {
+                                "include_zero": true,
+                                "scale": "linear",
+                                "label": "",
+                                "min": "auto",
+                                "max": "auto"
+                            },
+                            "events": [
+                                {
+                                    "q": "tags:web "
+                                }
+                            ],
+                            "markers": []
+                        },
+                        "layout": {
+                            "x": 0,
+                            "y": 6,
+                            "width": 6,
+                            "height": 2
+                        }
+                    },
+                    {
+                        "id": 5780579719924384,
+                        "definition": {
+                            "title": "DNS Failures",
+                            "title_size": "16",
+                            "title_align": "left",
+                            "show_legend": false,
+                            "legend_layout": "auto",
+                            "legend_columns": [
+                                "avg",
+                                "min",
+                                "max",
+                                "value",
+                                "sum"
+                            ],
+                            "time": {},
+                            "type": "timeseries",
+                            "requests": [
+                                {
+                                    "formulas": [
+                                        {
+                                            "formula": "(failures / req_count) * 100"
+                                        }
+                                    ],
+                                    "response_format": "timeseries",
+                                    "queries": [
+                                        {
+                                            "search": {
+                                                "query": ""
+                                            },
+                                            "data_source": "network",
+                                            "compute": {
+                                                "metric": "network.dns_failures",
+                                                "interval": 300000,
+                                                "aggregation": "sum"
+                                            },
+                                            "name": "failures",
+                                            "indexes": [
+                                                "netflow-l7"
+                                            ],
+                                            "group_by": [
+                                                {
+                                                    "facet": "source_service",
+                                                    "limit": 10,
+                                                    "should_exclude_missing": false
+                                                },
+                                                {
+                                                    "facet": "network.dns_query",
+                                                    "limit": 10,
+                                                    "should_exclude_missing": false
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "search": {
+                                                "query": ""
+                                            },
+                                            "data_source": "network",
+                                            "compute": {
+                                                "metric": "network.dns_total_requests",
+                                                "interval": 300000,
+                                                "aggregation": "sum"
+                                            },
+                                            "name": "req_count",
+                                            "indexes": [
+                                                "netflow-l7"
+                                            ],
+                                            "group_by": [
+                                                {
+                                                    "facet": "source_service",
+                                                    "limit": 10,
+                                                    "should_exclude_missing": false
+                                                },
+                                                {
+                                                    "facet": "network.dns_query",
+                                                    "limit": 10,
+                                                    "should_exclude_missing": false
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "style": {
+                                        "palette": "Reds"
+                                    },
+                                    "display_type": "line"
+                                }
+                            ],
+                            "yaxis": {
+                                "scale": "linear"
+                            }
+                        },
+                        "layout": {
+                            "x": 6,
+                            "y": 6,
+                            "width": 6,
+                            "height": 2
+                        }
+                    },
+                    {
+                        "id": 300465716,
+                        "definition": {
+                            "title": "Disk Used",
+                            "show_legend": false,
+                            "legend_layout": "auto",
+                            "legend_columns": [
+                                "avg",
+                                "min",
+                                "max",
+                                "value",
+                                "sum"
+                            ],
+                            "time": {},
+                            "type": "timeseries",
+                            "requests": [
+                                {
+                                    "formulas": [
+                                        {
+                                            "alias": "Disk used",
+                                            "formula": "forecast(query1 + 50, 'seasonal', 1)"
+                                        }
+                                    ],
+                                    "queries": [
+                                        {
+                                            "query": "avg:system.disk.used{$env,$service}",
+                                            "data_source": "metrics",
+                                            "name": "query1"
+                                        }
+                                    ],
+                                    "response_format": "timeseries",
+                                    "style": {
+                                        "palette": "dog_classic",
+                                        "line_type": "solid",
+                                        "line_width": "normal"
+                                    },
+                                    "display_type": "line"
+                                }
+                            ],
+                            "yaxis": {
+                                "include_zero": false,
+                                "min": "50",
+                                "max": "100"
+                            },
+                            "markers": [
+                                {
+                                    "value": "y > 80",
+                                    "display_type": "error dashed"
+                                }
+                            ]
+                        },
+                        "layout": {
+                            "x": 0,
+                            "y": 8,
+                            "width": 6,
+                            "height": 2
+                        }
+                    },
+                    {
+                        "id": 300465715,
+                        "definition": {
+                            "title": "Memory Used",
+                            "show_legend": false,
+                            "legend_layout": "auto",
+                            "legend_columns": [
+                                "avg",
+                                "min",
+                                "max",
+                                "value",
+                                "sum"
+                            ],
+                            "time": {},
+                            "type": "timeseries",
+                            "requests": [
+                                {
+                                    "formulas": [
+                                        {
+                                            "alias": "Memory used",
+                                            "formula": "anomalies(query1, 'basic', 3)"
+                                        }
+                                    ],
+                                    "queries": [
+                                        {
+                                            "query": "avg:container.memory.usage{$env,$service}",
+                                            "data_source": "metrics",
+                                            "name": "query1"
+                                        }
+                                    ],
+                                    "response_format": "timeseries",
+                                    "style": {
+                                        "palette": "purple",
+                                        "line_type": "solid",
+                                        "line_width": "normal"
+                                    },
+                                    "display_type": "line"
+                                }
+                            ],
+                            "yaxis": {
+                                "include_zero": true,
+                                "scale": "linear",
+                                "label": "",
+                                "min": "auto",
+                                "max": "auto"
+                            },
+                            "markers": [
+                                {
+                                    "value": "y = 1",
+                                    "display_type": "error dashed"
+                                }
+                            ]
+                        },
+                        "layout": {
+                            "x": 6,
+                            "y": 8,
+                            "width": 6,
+                            "height": 2
+                        }
+                    }
+                ]
+            },
+            "layout": {
+                "x": 0,
+                "y": 8,
+                "width": 12,
+                "height": 11
+            }
+        },
+        {
+            "id": 4867607837131212,
+            "definition": {
+                "title": "Databases",
+                "background_color": "vivid_green",
+                "show_title": true,
+                "type": "group",
+                "layout_type": "ordered",
+                "widgets": [
+                    {
+                        "id": 300465737,
+                        "definition": {
+                            "title": "Avg of postgresql.connections by db",
+                            "show_legend": false,
+                            "legend_layout": "auto",
+                            "legend_columns": [
+                                "avg",
+                                "min",
+                                "max",
+                                "value",
+                                "sum"
+                            ],
+                            "time": {},
+                            "type": "timeseries",
+                            "requests": [
+                                {
+                                    "formulas": [
+                                        {
+                                            "alias": "PostgreSQL connections",
+                                            "formula": "query1"
+                                        }
+                                    ],
+                                    "queries": [
+                                        {
+                                            "query": "avg:postgresql.connections{$env,$service} by {db}",
+                                            "data_source": "metrics",
+                                            "name": "query1"
+                                        }
+                                    ],
+                                    "response_format": "timeseries",
+                                    "style": {
+                                        "palette": "dog_classic",
+                                        "line_type": "solid",
+                                        "line_width": "normal"
+                                    },
+                                    "display_type": "bars"
+                                }
+                            ],
+                            "yaxis": {
+                                "include_zero": true,
+                                "scale": "linear",
+                                "label": "",
+                                "min": "auto",
+                                "max": "auto"
+                            },
+                            "markers": []
+                        },
+                        "layout": {
+                            "x": 0,
+                            "y": 0,
+                            "width": 4,
+                            "height": 2
+                        }
+                    },
+                    {
+                        "id": 2705564243866236,
+                        "definition": {
+                            "title": "Redis Commands per second",
+                            "show_legend": false,
+                            "legend_layout": "auto",
+                            "legend_columns": [
+                                "avg",
+                                "min",
+                                "max",
+                                "value",
+                                "sum"
+                            ],
+                            "time": {},
+                            "type": "timeseries",
+                            "requests": [
+                                {
+                                    "formulas": [
+                                        {
+                                            "alias": "Redis commands",
+                                            "formula": "query1"
+                                        }
+                                    ],
+                                    "queries": [
+                                        {
+                                            "query": "sum:trace.redis.command{$env,$service}.as_count()",
+                                            "data_source": "metrics",
+                                            "name": "query1"
+                                        }
+                                    ],
+                                    "response_format": "timeseries",
+                                    "style": {
+                                        "palette": "grey",
+                                        "line_type": "solid",
+                                        "line_width": "normal"
+                                    },
+                                    "display_type": "line"
+                                }
+                            ],
+                            "yaxis": {
+                                "include_zero": true,
+                                "scale": "linear",
+                                "label": "",
+                                "min": "auto",
+                                "max": "auto"
+                            },
+                            "markers": []
+                        },
+                        "layout": {
+                            "x": 4,
+                            "y": 0,
+                            "width": 4,
+                            "height": 2
+                        }
+                    },
+                    {
+                        "id": 8664137194611404,
+                        "definition": {
+                            "title": "Most connected databases",
+                            "type": "toplist",
+                            "requests": [
+                                {
+                                    "formulas": [
+                                        {
+                                            "formula": "query1",
+                                            "limit": {
+                                                "count": 10,
+                                                "order": "desc"
+                                            }
+                                        }
+                                    ],
+                                    "response_format": "scalar",
+                                    "queries": [
+                                        {
+                                            "query": "max:postgresql.connections{*,*} by {db}",
+                                            "data_source": "metrics",
+                                            "name": "query1",
+                                            "aggregator": "avg"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "layout": {
+                            "x": 8,
+                            "y": 0,
+                            "width": 4,
+                            "height": 2
+                        }
+                    },
+                    {
+                        "id": 2863966132846504,
+                        "definition": {
+                            "title": "Mongo request hits",
+                            "show_legend": false,
+                            "legend_layout": "auto",
+                            "legend_columns": [
+                                "avg",
+                                "min",
+                                "max",
+                                "value",
+                                "sum"
+                            ],
+                            "time": {},
+                            "type": "timeseries",
+                            "requests": [
+                                {
+                                    "formulas": [
+                                        {
+                                            "alias": "Requests hits",
+                                            "formula": "query1 * 857"
+                                        }
+                                    ],
+                                    "queries": [
+                                        {
+                                            "query": "sum:trace.pg.exec.prepared.hits{$env,$service}.as_count().rollup(sum)",
+                                            "data_source": "metrics",
+                                            "name": "query1"
+                                        }
+                                    ],
+                                    "response_format": "timeseries",
+                                    "style": {
+                                        "palette": "dog_classic",
+                                        "line_type": "solid",
+                                        "line_width": "normal"
+                                    },
+                                    "display_type": "bars"
+                                }
+                            ],
+                            "yaxis": {
+                                "include_zero": true,
+                                "scale": "linear",
+                                "label": "",
+                                "min": "auto",
+                                "max": "auto"
+                            },
+                            "markers": []
+                        },
+                        "layout": {
+                            "x": 0,
+                            "y": 2,
+                            "width": 4,
+                            "height": 2
+                        }
+                    },
+                    {
+                        "id": 3124272276744120,
+                        "definition": {
+                            "title": "Postgres CPU usage",
+                            "show_legend": false,
+                            "legend_layout": "auto",
+                            "legend_columns": [
+                                "avg",
+                                "min",
+                                "max",
+                                "value",
+                                "sum"
+                            ],
+                            "time": {},
+                            "type": "timeseries",
+                            "requests": [
+                                {
+                                    "formulas": [
+                                        {
+                                            "alias": "CPU usage",
+                                            "formula": "query1"
+                                        }
+                                    ],
+                                    "queries": [
+                                        {
+                                            "query": "avg:docker.cpu.user{$env,service:database}",
+                                            "data_source": "metrics",
+                                            "name": "query1"
+                                        }
+                                    ],
+                                    "response_format": "timeseries",
+                                    "style": {
+                                        "palette": "dog_classic",
+                                        "line_type": "solid",
+                                        "line_width": "normal"
+                                    },
+                                    "display_type": "line"
+                                }
+                            ],
+                            "yaxis": {
+                                "include_zero": true,
+                                "scale": "linear",
+                                "label": "",
+                                "min": "auto",
+                                "max": "auto"
+                            },
+                            "markers": []
+                        },
+                        "layout": {
+                            "x": 4,
+                            "y": 2,
+                            "width": 4,
+                            "height": 2
+                        }
+                    },
+                    {
+                        "id": 2485143253213042,
+                        "definition": {
+                            "title": "Actions",
+                            "title_size": "16",
+                            "title_align": "left",
+                            "type": "query_table",
+                            "requests": [
+                                {
+                                    "formulas": [
+                                        {
+                                            "formula": "query1",
+                                            "cell_display_mode": "bar",
+                                            "limit": {
+                                                "count": 50,
+                                                "order": "desc"
+                                            },
+                                            "alias": "Inserted"
+                                        },
+                                        {
+                                            "formula": "query2",
+                                            "cell_display_mode": "bar",
+                                            "alias": "Updated"
+                                        },
+                                        {
+                                            "formula": "query3",
+                                            "cell_display_mode": "bar",
+                                            "alias": "Deleted"
+                                        }
+                                    ],
+                                    "response_format": "scalar",
+                                    "queries": [
+                                        {
+                                            "query": "avg:postgresql.rows_inserted{*,*} by {db}",
+                                            "data_source": "metrics",
+                                            "name": "query1",
+                                            "aggregator": "sum"
+                                        },
+                                        {
+                                            "query": "avg:postgresql.rows_updated{*,*} by {db}",
+                                            "data_source": "metrics",
+                                            "name": "query2",
+                                            "aggregator": "sum"
+                                        },
+                                        {
+                                            "query": "avg:postgresql.rows_deleted{*,*} by {db}",
+                                            "data_source": "metrics",
+                                            "name": "query3",
+                                            "aggregator": "sum"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "has_search_bar": "auto"
+                        },
+                        "layout": {
+                            "x": 8,
+                            "y": 2,
+                            "width": 4,
+                            "height": 2
+                        }
+                    }
+                ]
+            },
+            "layout": {
+                "x": 0,
+                "y": 19,
+                "width": 12,
+                "height": 5
+            }
+        }
+    ],
+    "template_variables": [
+        {
+            "name": "env",
+            "prefix": "env",
+            "available_values": [],
+            "default": "*"
+        },
+        {
+            "name": "team",
+            "prefix": "team",
+            "available_values": [],
+            "default": "*"
+        },
+        {
+            "name": "service",
+            "prefix": "service",
+            "available_values": [],
+            "default": "*"
+        }
+    ],
+    "layout_type": "ordered",
+    "notify_list": [],
+    "reflow_type": "fixed",
+    "id": "c8a-88c-e4b"
+}

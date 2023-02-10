@@ -1,0 +1,512 @@
+---
+schema-version: v2
+dd-service: agent
+team: datadog
+contacts:
+  - name: Datadog Public Slack
+    type: slack
+    contact: https://datadoghq.slack.com/archives/
+  - name: Technical Support email
+    type: email
+    contact: support@datadoghq.com
+links:
+  - name: System - Metrics
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/1/system---metrics
+  - name: Containers - Overview
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/30657/containers---overview
+repos:
+  - name: Datadog Agent source
+    provider: github
+    url: https://github.com/DataDog/datadog-agent
+docs:
+  - name: Datadog Docs
+    provider: link
+    url: https://docs.datadoghq.com/
+  - name: Agent docs
+    provider: link
+    url: https://docs.datadoghq.com/agent/
+  - name: Docker containers
+    provider: link
+    url: https://docs.datadoghq.com/containers/docker/
+tags: []
+---
+schema-version: v2
+dd-service: store-discounts
+team: discounts
+contacts:
+  - name: Team Slack channel
+    type: slack
+    contact: https://datadoghq.slack.com/archives/CAN0MS5K6
+  - name: Team email
+    type: email
+    contact: eng-discounts@company.com
+links:
+  - name: Storedog 2.0 Dashboard
+    type: dashboard
+    url: https://app.datadoghq.com/UPDATE_URL
+  - name: Continuous Profiler Python overview
+    type: dashboard
+    url: https://app.datadoghq.com/screen/integration/30396/continuous-profiler-python-overview
+  - name: Common Operations
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Disabling Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Rolling Back Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: store-discounts Notebooks
+    type: doc
+    url: https://app.datadoghq.com/notebook/list?query=store-discounts
+  - name: Service Wiki
+    type: wiki
+    url: https://company.atlassian.net/wiki/
+repos:
+  - name: Source
+    provider: github
+    url: https://github.com/DataDog/storedog/tree/main/services/discounts
+docs:
+  - name: Architecture overview
+    provider: google drive
+    url: https://gdrive/mydoc
+  - name: Service Documentation
+    provider: link
+    url: https://docs.datadoghq.com/
+tags: []
+integrations:
+    pagerduty: https://my-org.pagerduty.com/service-directory/Pstore-discounts
+---
+schema-version: v2
+dd-service: store-frontend
+team: frontend
+contacts:
+  - name: Team Slack channel
+    type: slack
+    contact: https://datadoghq.slack.com/archives/CAN0MS5K6
+  - name: Team email
+    type: email
+    contact: eng-frontend@company.com
+links:
+  - name: Storedog 2.0 Dashboard
+    type: dashboard
+    url: https://app.datadoghq.com/UPDATE_URL
+  - name: RUM - Performance Overview
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/30292/rum---performance-overview
+  - name: RUM - Frustration Signals
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/30698/rum---frustration-signals
+  - name: RUM - Errors
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/30309/rum---errors
+  - name: Common Operations
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Disabling Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Rolling Back Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: store-frontend Notebooks
+    type: doc
+    url: https://app.datadoghq.com/notebook/list?query=store-frontend
+  - name: Service Wiki
+    type: wiki
+    url: https://company.atlassian.net/wiki/
+repos:
+  - name: Source
+    provider: github
+    url: https://github.com/DataDog/storedog/tree/main/services/frontend
+docs:
+  - name: Architecture overview
+    provider: google drive
+    url: https://gdrive/mydoc
+  - name: Service Documentation
+    provider: link
+    url: https://docs.datadoghq.com/
+tags: []
+integrations:
+    pagerduty: https://my-org.pagerduty.com/service-directory/Pstore-frontend
+---
+schema-version: v2
+dd-service: store-backend
+team: backend
+contacts:
+  - name: Team Slack channel
+    type: slack
+    contact: https://datadoghq.slack.com/archives/CAN0MS5K6
+  - name: Team email
+    type: email
+    contact: eng-backend@company.com
+links:
+  - name: Storedog 2.0 Dashboard
+    type: dashboard
+    url: https://app.datadoghq.com/UPDATE_URL
+  - name: Postgres - Overview
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/235/postgres---overview
+  - name: Postgres - Metrics
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/17/postgres---metrics
+  - name: Common Operations
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Disabling Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Rolling Back Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: store-backend Notebooks
+    type: doc
+    url: https://app.datadoghq.com/notebook/list?query=store-backend
+  - name: Service Wiki
+    type: wiki
+    url: https://company.atlassian.net/wiki/
+repos:
+  - name: Source
+    provider: github
+    url: https://github.com/DataDog/storedog/tree/main/services/backend
+docs:
+  - name: Architecture overview
+    provider: google drive
+    url: https://gdrive/mydoc
+  - name: Service Documentation
+    provider: link
+    url: https://docs.datadoghq.com/
+tags: []
+integrations:
+    pagerduty: https://my-org.pagerduty.com/service-directory/Pstore-backend
+---
+schema-version: v2
+dd-service: store-worker
+team: backend
+contacts:
+  - name: Team Slack channel
+    type: slack
+    contact: https://datadoghq.slack.com/archives/CAN0MS5K6
+  - name: Team email
+    type: email
+    contact: eng-backend@company.com
+links:
+  - name: Storedog 2.0 Dashboard
+    type: dashboard
+    url: https://app.datadoghq.com/UPDATE_URL
+  - name: Redis - Overview
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/15/redis---overview
+  - name: Common Operations
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Disabling Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Rolling Back Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: store-worker Notebooks
+    type: doc
+    url: https://app.datadoghq.com/notebook/list?query=store-worker
+  - name: Service Wiki
+    type: wiki
+    url: https://company.atlassian.net/wiki/
+repos:
+  - name: Source
+    provider: github
+    url: https://github.com/DataDog/storedog/tree/main/services/backend
+docs:
+  - name: Architecture overview
+    provider: link
+    url: https://gdrive/mydoc
+  - name: Service Documentation
+    provider: link
+    url: https://docs.datadoghq.com/
+tags: []
+integrations:
+    pagerduty: https://my-org.pagerduty.com/service-directory/Pstore-backend
+---
+schema-version: v2
+dd-service: store-ads
+team: advertisements
+contacts:
+  - name: Team Slack channel
+    type: slack
+    contact: https://datadoghq.slack.com/archives/CAN0MS5K6
+  - name: Team email
+    type: email
+    contact: eng-advertisements@company.com
+links:
+  - name: Storedog 2.0 Dashboard
+    type: dashboard
+    url: https://app.datadoghq.com/UPDATE_URL
+  - name: Python Runtime Metrics
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/30267/python-runtime-metrics
+  - name: Common Operations
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Disabling Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Rolling Back Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: store-ads Notebooks
+    type: doc
+    url: https://app.datadoghq.com/notebook/list?query=store-ads
+  - name: Service Wiki
+    type: wiki
+    url: https://company.atlassian.net/wiki/
+repos:
+  - name: Source
+    provider: github
+    url: https://github.com/DataDog/storedog/tree/main/services/ads/python
+docs:
+  - name: Architecture overview
+    provider: google drive
+    url: https://gdrive/mydoc
+  - name: Service Documentation
+    provider: link
+    url: https://docs.datadoghq.com/
+tags: []
+integrations:
+    pagerduty: https://my-org.pagerduty.com/service-directory/Pstore-ads
+---
+schema-version: v2
+dd-service: store-nginx
+team: frontend
+contacts:
+  - name: Team Slack channel
+    type: slack
+    contact: https://datadoghq.slack.com/archives/CAN0MS5K6
+  - name: Team email
+    type: email
+    contact: eng-frontend@company.com
+links:
+  - name: Storedog 2.0 Dashboard
+    type: dashboard
+    url: https://app.datadoghq.com/UPDATE_URL
+  - name: NGINX - Overview
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/21/nginx---overview
+  - name: NGINX - Metrics
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/20/nginx---metrics
+  - name: Common Operations
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Disabling Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Rolling Back Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Nginx Notebooks
+    type: doc
+    url: https://app.datadoghq.com/notebook/list?query=store-nginx
+  - name: Service Wiki
+    type: wiki
+    url: https://company.atlassian.net/wiki/
+repos:
+  - name: Source
+    provider: github
+    url: https://github.com/DataDog/storedog/tree/main/services/nginx
+docs:
+  - name: Architecture overview
+    provider: google drive
+    url: https://gdrive/mydoc
+  - name: Service Documentation
+    provider: link
+    url: https://docs.datadoghq.com/
+tags: []
+integrations:
+    pagerduty: https://my-org.pagerduty.com/service-directory/Pstore-nginx
+---
+schema-version: v2
+dd-service: postgres
+team: database
+contacts:
+  - name: Team Slack channel
+    type: slack
+    contact: https://datadoghq.slack.com/archives/CAN0MS5K6
+  - name: Team email
+    type: email
+    contact: eng-database@company.com
+links:
+  - name: Storedog 2.0 Dashboard
+    type: dashboard
+    url: https://app.datadoghq.com/UPDATE_URL
+  - name: Postgres - Overview
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/235/postgres---overview
+  - name: Postgres - Metrics
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/17/postgres---metrics
+  - name: Common Operations
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Disabling Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Rolling Back Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Database Notebooks
+    type: doc
+    url: https://app.datadoghq.com/notebook/list?query=database
+  - name: Service Wiki
+    type: wiki
+    url: https://company.atlassian.net/wiki/
+repos:
+  - name: Source
+    provider: github
+    url: https://github.com/DataDog/storedog/tree/main/services/backend/db
+docs:
+  - name: Architecture overview
+    provider: google drive
+    url: https://gdrive/mydoc
+  - name: Service Documentation
+    provider: link
+    url: https://docs.datadoghq.com/
+tags: []
+integrations:
+    pagerduty: https://my-org.pagerduty.com/service-directory/Pdatabase
+---
+schema-version: v2
+dd-service: redis
+team: database
+contacts:
+  - name: Team Slack channel
+    type: slack
+    contact: https://datadoghq.slack.com/archives/CAN0MS5K6
+  - name: Team email
+    type: email
+    contact: eng-database@company.com
+links:
+  - name: Redis - Overview
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/15/redis---overview
+  - name: Common Operations
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Disabling Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Rolling Back Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Database Notebooks
+    type: doc
+    url: https://app.datadoghq.com/notebook/list?query=database
+  - name: Service Wiki
+    type: wiki
+    url: https://company.atlassian.net/wiki/
+repos:
+  - name: Source
+    provider: github
+    url: https://github.com/DataDog/storedog/tree/main/services/backend/db
+docs:
+  - name: Architecture overview
+    provider: google drive
+    url: https://gdrive/mydoc
+  - name: Service Documentation
+    provider: link
+    url: https://docs.datadoghq.com/
+tags: []
+integrations:
+    pagerduty: https://my-org.pagerduty.com/service-directory/Pdatabase
+---
+schema-version: v2
+dd-service: tester-service
+team: security
+contacts:
+  - name: Team Slack channel
+    type: slack
+    contact: https://datadoghq.slack.com/archives/CAN0MS5K6
+  - name: Team email
+    type: email
+    contact: eng-security@company.com
+links:
+  - name: JVM Metrics
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/256/jvm-metrics
+  - name: Application Security
+    type: link
+    url: https://app.datadoghq.com/security/appsec
+  - name: Security Signals
+    type: link
+    url: https://app.datadoghq.com/security
+  - name: Sensitive Data Scanner Overview
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/30601/sensitive-data-scanner-overview
+  - name: OWASP - Command Injection
+    type: runbook
+    url: https://owasp.org/www-community/attacks/Command_Injection
+  - name: OWASP - Server-Side Request Forgery (SSRF)
+    type: runbook
+    url: https://owasp.org/Top10/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/
+repos:
+  - name: Source
+    provider: github
+    url: https://github.com/DataDog/vulnerable-java-application
+docs:
+  - name: Architecture overview
+    provider: google drive
+    url: https://gdrive/mydoc
+  - name: Service Documentation
+    provider: link
+    url: https://docs.datadoghq.com/
+tags: []
+integrations:
+    pagerduty: https://my-org.pagerduty.com/service-directory/Psecurity
+---
+schema-version: v2
+dd-service: puppeteer
+team: frontend
+contacts:
+  - name: Team Slack channel
+    type: slack
+    contact: https://datadoghq.slack.com/archives/CAN0MS5K6
+  - name: Team email
+    type: email
+    contact: eng-frontend@company.com
+links:
+  - name: Storedog 2.0 Dashboard
+    type: dashboard
+    url: https://app.datadoghq.com/UPDATE_URL
+  - name: RUM - Performance Overview
+    type: dashboard
+    url: https://app.datadoghq.com/dash/integration/30292/rum---performance-overview
+  - name: Common Operations
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Disabling Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Rolling Back Deployments
+    type: runbook
+    url: https://company.atlassian.net/wiki/
+  - name: Puppeteer Notebooks
+    type: doc
+    url: https://app.datadoghq.com/notebook/list?query=puppeteer
+  - name: Service wiki
+    type: wiki
+    url: https://company.atlassian.net/wiki/
+repos:
+  - name: Source
+    provider: github
+    url: https://github.com/DataDog/storedog/tree/main/services/frontend
+docs:
+  - name: Architecture overview
+    provider: google drive
+    url: https://gdrive/mydoc
+  - name: Service Documentation
+    provider: link
+    url: https://docs.datadoghq.com/
+tags: []
+integrations:
+    pagerduty: https://my-org.pagerduty.com/service-directory/Ppuppeteer

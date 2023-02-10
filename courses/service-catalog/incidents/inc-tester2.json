@@ -1,0 +1,37 @@
+{
+    "data": {
+        "type": "incidents",
+        "attributes": {
+            "title": "Java test service falling over",
+            "customer_impacted": false,
+            "fields": {
+                "state": {
+                    "type": "dropdown",
+                    "value": "stable"
+                },
+                "severity": {
+                    "type": "dropdown",
+                    "value": "SEV-4"
+                },
+                "detection_method": {
+                    "type": "dropdown",
+                    "value": "employee"
+                },
+                "summary": {
+                    "type": "textbox",
+                    "value": "The Java security test box is stuck in a restart loop."
+                },
+                "services": {
+                    "type": "autocomplete",
+                    "value": [
+                        "tester-service"
+                    ]
+                }
+            },
+            "severity": "SEV-4",
+            "state": "stable",
+            "non_datadog_creator": null,
+            "visibility": "organization"
+        }
+    }
+}

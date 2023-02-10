@@ -1,0 +1,38 @@
+{
+    "data": {
+        "type": "incidents",
+        "attributes": {
+            "title": "Frontend service high latency causing pages to fail",
+            "customer_impacted": true,
+            "customer_impact_scope": "Customers are not able to view some pages on the storefront",
+            "fields": {
+                "state": {
+                    "type": "dropdown",
+                    "value": "active"
+                },
+                "severity": {
+                    "type": "dropdown",
+                    "value": "SEV-2"
+                },
+                "detection_method": {
+                    "type": "dropdown",
+                    "value": "customer"
+                },
+                "summary": {
+                    "type": "textbox",
+                    "value": "Pages are randomly failing due to high latency."
+                },
+                "services": {
+                    "type": "autocomplete",
+                    "value": [
+                        "store-frontend"
+                    ]
+                }
+            },
+            "severity": "SEV-2",
+            "state": "active",
+            "non_datadog_creator": null,
+            "visibility": "organization"
+        }
+    }
+}

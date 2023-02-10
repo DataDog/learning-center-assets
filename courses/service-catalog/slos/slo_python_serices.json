@@ -1,0 +1,20 @@
+{
+  "name": "Python service high errors",
+  "tags": ["env:service-catalog-course"],
+  "monitor_tags": [],
+  "thresholds": [
+    {
+      "timeframe": "7d",
+      "target": 99.0,
+      "target_display": "99."
+    }
+  ],
+  "type": "metric",
+  "description": "",
+  "timeframe": "7d",
+  "target_threshold": 99.0,
+  "query": {
+    "denominator": "sum:trace.flask.request.hits{env:service-catalog-course} by {service}.as_count() + sum:trace.flask.request.errors{env:service-catalog-course} by {service}.as_count()",
+    "numerator": "sum:trace.flask.request.hits{env:service-catalog-course} by {service}.as_count()"
+  }
+}
