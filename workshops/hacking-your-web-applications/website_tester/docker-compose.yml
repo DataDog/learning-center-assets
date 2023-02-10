@@ -15,7 +15,7 @@ services:
     ports:
       - 8000:8000
   datadog-agent:
-    image: datadog/agent:7.31.1
+    image: datadog/agent:7.41.1
     environment:
       - DD_APM_ENABLED=true
       - DD_APM_NON_LOCAL_TRAFFIC=true
