@@ -6,7 +6,7 @@ datadog:
     tlsVerify: false
   logs:
     enabled: true
-    contrainerCollectAll: true
+    containerCollectAll: true
   ignoreAutoConfig:
     - etcd
   confd:
