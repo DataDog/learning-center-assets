@@ -1,7 +1,7 @@
 version: '3'
 services:
   datadog:
-    image: 'datadog/agent:7.31.1'
+    image: 'datadog/agent:7.41.1'
     environment:
       - DD_API_KEY
       - DD_HOSTNAME=dd101-sre-host
