@@ -201,6 +201,7 @@ services:
     ports:
       - "80:80"
     depends_on:
+      - datadog
       - frontend
     volumes:
       - "/root/nginx_default.conf:/etc/nginx/conf.d/default.conf"
