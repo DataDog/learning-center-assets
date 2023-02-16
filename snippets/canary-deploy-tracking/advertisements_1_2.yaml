@@ -65,8 +65,6 @@ spec:
                 fieldPath: status.hostIP
           - name: DD_LOGS_INJECTION
             value: "true"
-          - name: DD_ANALYTICS_ENABLED
-            value: "true"
           - name: DD_PROFILING_ENABLED
             value: "true"
         ports:

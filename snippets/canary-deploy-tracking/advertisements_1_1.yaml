@@ -6,7 +6,7 @@ metadata:
     app: ecommerce
     tags.datadoghq.com/env: "canary-deployments"
     tags.datadoghq.com/service: "advertisements"
-    tags.datadoghq.com/version: "1.1"
+    tags.datadoghq.com/version: "1.0"
   name: advertisements-canary
 spec:
   replicas: 1
@@ -25,7 +25,7 @@ spec:
         app: ecommerce
         tags.datadoghq.com/env: "canary-deployments"
         tags.datadoghq.com/service: "advertisements"
-        tags.datadoghq.com/version: "1.1"
+        tags.datadoghq.com/version: "1.0"
     spec:
       containers:
       - image: ddtraining/advertisements-errors:1.0.0
@@ -64,8 +64,6 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: DD_LOGS_INJECTION
-            value: "true"
-          - name: DD_ANALYTICS_ENABLED
             value: "true"
           - name: DD_PROFILING_ENABLED
             value: "true"
