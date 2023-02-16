@@ -169,7 +169,7 @@ services:
       com.datadoghq.tags.version: '1.0.8'
       my.custom.label.team: 'backend'
   advertisements:
-    image: 'public.ecr.aws/x2b9z2t7/storedog/ads:1.0.8'
+    image: public.ecr.aws/x2b9z2t7/storedog/ads:1.0.8
     environment:
       - FLASK_APP=ads.py
       - FLASK_DEBUG=1
