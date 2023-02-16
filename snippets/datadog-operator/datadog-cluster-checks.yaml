@@ -28,7 +28,7 @@ spec:
           effect: NoSchedule
   clusterAgent:
     image:
-      name: 'datadog/cluster-agent:1.15.0'
+      name: 'datadog/cluster-agent:1.20.0'
     config:
       clusterChecksEnabled: true
   clusterChecksRunner:
