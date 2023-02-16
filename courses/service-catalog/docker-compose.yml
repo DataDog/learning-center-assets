@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 services:
   datadog:
     image: gcr.io/datadoghq/agent:7
@@ -19,8 +19,8 @@ services:
       - HOST_ROOT='/host/root'
     pid: host
     ports:
-      - 8126:8126/tcp
-      - 8125:8125/udp
+      - "8126:8126/tcp"
+      - "8125:8125/udp"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /proc/:/host/proc/:ro
@@ -58,7 +58,7 @@ services:
       - DD_PROFILING_ENABLED=true
       - DD_APPSEC_ENABLED=true
     ports:
-      - ${DISCOUNTS_PORT}:${DISCOUNTS_PORT}
+      - "${DISCOUNTS_PORT}:${DISCOUNTS_PORT}"
     depends_on:
       - datadog
       - db
@@ -74,7 +74,7 @@ services:
     volumes:
       - /root/lab/.env:/storedog-app/site/.env.local
     ports:
-      - ${FRONTEND_PORT-3000}:${FRONTEND_PORT-3000}
+      - "${FRONTEND_PORT-3000}:${FRONTEND_PORT-3000}"
     environment:
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
@@ -185,7 +185,7 @@ services:
       - DD_PROFILING_ENABLED=true
       - DD_APPSEC_ENABLED=true
     ports:
-      - ${ADS_PORT}:${ADS_PORT}
+      - "${ADS_PORT}:${ADS_PORT}"
     depends_on:
       - datadog
       - db
@@ -199,7 +199,7 @@ services:
     image: nginx:1.21.4
     restart: always
     ports:
-      - 80:80
+      - "80:80"
     depends_on:
       - frontend
     volumes:
@@ -220,7 +220,7 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
     ports:
-      - 5432:5432
+      - "5432:5432"
     labels:
       com.datadoghq.tags.env: '${DD_ENV}'
       com.datadoghq.tags.service: 'database'
@@ -256,7 +256,7 @@ services:
       - DD_PROFILING_ENABLED=true
       - DD_APPSEC_ENABLED=true
     ports:
-      - 8000:8000
+      - "8000:8000"
     depends_on:
       - datadog
     labels:
