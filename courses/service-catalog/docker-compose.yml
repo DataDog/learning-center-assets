@@ -73,8 +73,8 @@ services:
     command: bash -c "yarn upgrade @datadog/browser-rum && yarn dev"
     volumes:
       - "/root/lab/.env:/storedog-app/site/.env.local"
-    ports:
-      - "${FRONTEND_PORT-3000}:${FRONTEND_PORT-3000}"
+    # ports:
+    #   - "${FRONTEND_PORT-3000}:${FRONTEND_PORT-3000}"
     environment:
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
@@ -106,8 +106,8 @@ services:
       - datadog
       - db
       - redis
-    ports:
-      - ${ADMIN_PORT:-4000}:${ADMIN_PORT:-4000}
+    # ports:
+    #   - ${ADMIN_PORT:-4000}:${ADMIN_PORT:-4000}
     volumes:
       - "/root/rails_database.yml:/app/config/database.yml"
       - "/root/services/backend/config/initializers/datadog-tracer.rb:/app/config/initializers/datadog-tracer.rb"
