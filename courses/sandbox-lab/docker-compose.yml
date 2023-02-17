@@ -4,12 +4,12 @@ services:
     image: gcr.io/datadoghq/agent:7
     environment:
       - DD_API_KEY
+      - DD_HOSTNAME
       - DD_LOGS_ENABLED=true
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_CONTAINER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
-      - DD_TAGS=${DD_TAGS-env:service-catalog-course}
-      - DD_HOSTNAME=${DD_HOSTNAME-lab-host}
+      - DD_TAGS=${DD_TAGS-env:sandbox-lab}
       - DD_APM_NON_LOCAL_TRAFFIC=true
       - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
       - DD_SYSTEM_PROBE_NETWORK_ENABLED=true
@@ -17,10 +17,10 @@ services:
       - DD_RUNTIME_SECURITY_CONFIG_ENABLED=true
       - DD_RUNTIME_SECURITY_CONFIG_NETWORK_ENABLED=true
       - HOST_ROOT='/host/root'
-    pid: host
+    pid: "host"
     ports:
-      - 8126:8126/tcp
-      - 8125:8125/udp
+      - "8126:8126/tcp"
+      - "8125:8125/udp"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /proc/:/host/proc/:ro
@@ -58,7 +58,7 @@ services:
       - DD_PROFILING_ENABLED=true
       - DD_APPSEC_ENABLED=true
     ports:
-      - ${DISCOUNTS_PORT}:${DISCOUNTS_PORT}
+      - "${DISCOUNTS_PORT}:${DISCOUNTS_PORT}"
     depends_on:
       - datadog
       - db
@@ -74,7 +74,7 @@ services:
     volumes:
       - /root/lab/.env:/storedog-app/site/.env.local
     ports:
-      - ${FRONTEND_PORT-3000}:${FRONTEND_PORT-3000}
+      - "${FRONTEND_PORT-3000}:${FRONTEND_PORT-3000}"
     environment:
       - DD_AGENT_HOST=datadog
       - DD_LOGS_INJECTION=true
@@ -103,14 +103,14 @@ services:
     image: public.ecr.aws/x2b9z2t7/storedog/backend:1.0.8
     command: wait-for-it db:5432 -- bundle exec rails s -b 0.0.0.0 -p 4000
     depends_on:
-      - 'db'
-      - 'redis'
-      - 'datadog'
+      - datadog
+      - db
+      - redis
     ports:
       - ${ADMIN_PORT:-4000}:${ADMIN_PORT:-4000}
     volumes:
-      - '/root/rails_database.yml:/app/config/database.yml'
-      - '/root/services/backend/config/initializers/datadog-tracer.rb:/app/config/initializers/datadog-tracer.rb'
+      - /root/rails_database.yml:/app/config/database.yml
+      - /root/services/backend/config/initializers/datadog-tracer.rb:/app/config/initializers/datadog-tracer.rb
     environment:
       - REDIS_URL
       - DB_HOST=db
@@ -143,8 +143,8 @@ services:
       - backend
       - datadog
     volumes:
-      - '/root/rails_database.yml:/app/config/database.yml'
-      - '/root/services/worker/config/initializers/datadog-tracer.rb:/app/config/initializers/datadog-tracer.rb'
+      - /root/rails_database.yml:/app/config/database.yml
+      - /root/services/worker/config/initializers/datadog-tracer.rb:/app/config/initializers/datadog-tracer.rb
     environment:
       - REDIS_URL
       - DB_HOST=db
@@ -169,7 +169,7 @@ services:
       com.datadoghq.tags.version: '1.0.8'
       my.custom.label.team: 'backend'
   advertisements:
-    image: 'public.ecr.aws/x2b9z2t7/storedog/ads:1.0.8'
+    image: public.ecr.aws/x2b9z2t7/storedog/ads:1.0.8
     environment:
       - FLASK_APP=ads.py
       - FLASK_DEBUG=1
@@ -185,7 +185,7 @@ services:
       - DD_PROFILING_ENABLED=true
       - DD_APPSEC_ENABLED=true
     ports:
-      - ${ADS_PORT}:${ADS_PORT}
+      - "${ADS_PORT}:${ADS_PORT}"
     depends_on:
       - datadog
       - db
@@ -199,8 +199,9 @@ services:
     image: nginx:1.21.4
     restart: always
     ports:
-      - 80:80
+      - "80:80"
     depends_on:
+      - datadog
       - frontend
     volumes:
       - /root/nginx_default.conf:/etc/nginx/conf.d/default.conf
@@ -220,7 +221,7 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
     ports:
-      - 5432:5432
+      - "5432:5432"
     labels:
       com.datadoghq.tags.env: '${DD_ENV}'
       com.datadoghq.tags.service: 'database'
@@ -235,7 +236,7 @@ services:
   redis:
     image: redis:6.2-alpine
     volumes:
-      - '/root/redis:/data'
+      - /root/redis:/data
     labels:
       com.datadoghq.tags.env: '${DD_ENV}'
       com.datadoghq.tags.service: 'redis'
@@ -256,7 +257,7 @@ services:
       - DD_PROFILING_ENABLED=true
       - DD_APPSEC_ENABLED=true
     ports:
-      - 8000:8000
+      - "8000:8000"
     depends_on:
       - datadog
     labels:
