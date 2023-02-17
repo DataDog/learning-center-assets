@@ -22,14 +22,14 @@ services:
       - "8126:8126/tcp"
       - "8125:8125/udp"
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "/proc/:/host/proc/:ro"
-      - "/sys/fs/cgroup/:/host/sys/fs/cgroup:ro"
-      - "/sys/kernel/debug:/sys/kernel/debug"
-      - "/:/host/root:ro"
-      - "/etc/passwd:/etc/passwd:ro"
-      - "/etc/group:/etc/group:ro"
-      - "/etc/os-release:/etc/os-release"
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /sys/kernel/debug:/sys/kernel/debug
+      - /:/host/root:ro
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+      - /etc/os-release:/etc/os-release
     cap_add:
       - SYS_ADMIN
       - SYS_RESOURCE
@@ -72,7 +72,7 @@ services:
     image: public.ecr.aws/x2b9z2t7/storedog/frontend:1.0.8
     command: bash -c "yarn upgrade @datadog/browser-rum && yarn dev"
     volumes:
-      - "/root/lab/.env:/storedog-app/site/.env.local"
+      - /root/lab/.env:/storedog-app/site/.env.local
     ports:
       - "${FRONTEND_PORT-3000}:${FRONTEND_PORT-3000}"
     environment:
@@ -109,8 +109,8 @@ services:
     ports:
       - ${ADMIN_PORT:-4000}:${ADMIN_PORT:-4000}
     volumes:
-      - "/root/rails_database.yml:/app/config/database.yml"
-      - "/root/services/backend/config/initializers/datadog-tracer.rb:/app/config/initializers/datadog-tracer.rb"
+      - /root/rails_database.yml:/app/config/database.yml
+      - /root/services/backend/config/initializers/datadog-tracer.rb:/app/config/initializers/datadog-tracer.rb
     environment:
       - REDIS_URL
       - DB_HOST=db
@@ -143,8 +143,8 @@ services:
       - backend
       - datadog
     volumes:
-      - "/root/rails_database.yml:/app/config/database.yml"
-      - "/root/services/worker/config/initializers/datadog-tracer.rb:/app/config/initializers/datadog-tracer.rb"
+      - /root/rails_database.yml:/app/config/database.yml
+      - /root/services/worker/config/initializers/datadog-tracer.rb:/app/config/initializers/datadog-tracer.rb
     environment:
       - REDIS_URL
       - DB_HOST=db
@@ -204,8 +204,8 @@ services:
       - datadog
       - frontend
     volumes:
-      - "/root/nginx_default.conf:/etc/nginx/conf.d/default.conf"
-      - "/root/nginx_status.conf:/etc/nginx/conf.d/status.conf"
+      - /root/nginx_default.conf:/etc/nginx/conf.d/default.conf
+      - /root/nginx_status.conf:/etc/nginx/conf.d/status.conf
     labels:
       com.datadog.tags.env: '${DD_ENV}'
       com.datadog.tags.service: 'store-nginx'
@@ -232,11 +232,11 @@ services:
       com.datadoghq.ad.instances: '[{"host":"%%host%%", "port":5432,"username":"datadog","password":"datadog"}]'
       com.datadoghq.ad.logs: '[{"source": "postgresql", "service": "postgres"}]'
     volumes:
-      - "/root/restore.sql:/docker-entrypoint-initdb.d/restore.sql"
+      - /root/restore.sql:/docker-entrypoint-initdb.d/restore.sql
   redis:
     image: redis:6.2-alpine
     volumes:
-      - "/root/redis:/data"
+      - /root/redis:/data
     labels:
       com.datadoghq.tags.env: '${DD_ENV}'
       com.datadoghq.tags.service: 'redis'
@@ -269,8 +269,8 @@ services:
   puppeteer:
     image: buildkite/puppeteer:10.0.0
     volumes:
-      - "/root/puppeteer.js:/puppeteer.js"
-      - "/root/puppeteer.sh:/puppeteer.sh"
+      - /root/puppeteer.js:/puppeteer.js
+      - /root/puppeteer.sh:/puppeteer.sh
     environment:
       - STOREDOG_URL
       - PUPPETEER_TIMEOUT
