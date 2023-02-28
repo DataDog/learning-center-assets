@@ -2,6 +2,7 @@ enterprise:
   api_key: "${DD_API_KEY}"
   configuration_key: "${OP_CONFIGURATION_KEY}"
   site: "datadoghq.com"
+  
 api:
   enabled: true
   address: 0.0.0.0:8686
