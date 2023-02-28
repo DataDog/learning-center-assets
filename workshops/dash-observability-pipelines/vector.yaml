@@ -25,6 +25,10 @@ transforms:
         . |= object!(msg)
         del(.journald)
       }
+<<<<<<< HEAD
+=======
+
+>>>>>>> eb0d28b107e1ef677c38e846e2132a256cf318bb
 sinks:
   datadog_logs:
     type: datadog_logs
