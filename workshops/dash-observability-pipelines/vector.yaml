@@ -29,6 +29,8 @@ transforms:
         del(.journald)
       }
 
+
+
 sinks:
   datadog_logs:
     type: datadog_logs
