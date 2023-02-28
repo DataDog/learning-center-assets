@@ -14,10 +14,6 @@ sources:
     multiple_outputs: true
 
 transforms:
-  # This step exists because the logs originate from services started by systemd,
-  # and the Datadog Agent adds this metadata when it reads from journald.
-  # We recommend using this as your input for downstream processing steps, so
-  # you can avoid having to deal with the extra overhead.
   remove_journald:
     type: remap
     inputs:
@@ -48,7 +44,7 @@ transforms:
   # << PASTE remove_cc here>>
 
   # << PASTE redacted and redacted_metrics here>>
-  
+
 sinks:
   datadog_logs:
     type: datadog_logs
