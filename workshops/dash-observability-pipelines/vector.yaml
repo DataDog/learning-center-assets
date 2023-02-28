@@ -48,6 +48,7 @@ transforms:
   # << PASTE remove_cc here>>
 
   # << PASTE redacted and redacted_metrics here>>
+
 sinks:
   datadog_logs:
     type: datadog_logs
