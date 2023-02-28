@@ -33,8 +33,6 @@ transforms:
 
   # << PASTE http_log_metrics here>>
 
-  # << PASTE http_log_metrics here>>
-
   # << PASTE cardinality_control here>>
 
   # << PASTE tag_logs here>>
