@@ -29,6 +29,7 @@ transforms:
         . |= object!(msg)
         del(.journald)
       }
+
 sinks:
   datadog_logs:
     type: datadog_logs
@@ -41,3 +42,5 @@ sinks:
     inputs:
       - datadog_agent.metrics
     default_api_key: ${DD_API_KEY}
+
+  # << PASTE minio config here >>
