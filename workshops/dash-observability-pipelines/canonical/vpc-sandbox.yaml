@@ -6,13 +6,13 @@ api:
   enabled: true
   address: 0.0.0.0:8686
   playground: false
-​
+
 sources:
   datadog_agent:
     address: 0.0.0.0:8282
     type: datadog_agent
     multiple_outputs: true
-​
+
 transforms:
   # This step exists because the logs originate from services started by systemd,
   # and the Datadog Agent adds this metadata when it reads from journald.
@@ -28,7 +28,7 @@ transforms:
         . |= object!(msg)
         del(.journald)
       }
-​
+
 # transforms:
   # This step attempts to parse the messages as Apache Common Format
   # logs, and adds whatever it is able to parse as metadata to the
@@ -51,12 +51,7 @@ transforms:
           .vpc = msg
         }
       }
-​
-# transforms:
-  # This will allow us to differentiate our downstream steps depending
-  # on what parsing succeeded previously, since we don't want non-HTTP
-  # logs to go through the same filtering and other steps that we're
-  # going to be setting up.
+
   route_log_type:
     type: route
     inputs:
@@ -64,12 +59,7 @@ transforms:
     route:
       http: "exists(.http)"
       vpc: "exists(.vpc)"
-​
-# transforms:
-  # This step can replace the existing deal_with_useless_http_logs.
-  # Anything that would have failed the condition previously is
-  # now sampled aggressively before being forwarded.
-  #
+
   # This configuration will allow 1% of 200 OK logs through.
   deal_with_useless_http_logs:
     type: sample
@@ -77,8 +67,7 @@ transforms:
       - route_log_type.http
     exclude: ".http.status > 200 ?? true"
     rate: 100
-​
-# transforms:
+
   # This will show errors properly categorized in the Log Explorer,
   # instead of always showing up as `INFO`
   set_http_status:
@@ -92,8 +81,7 @@ transforms:
           .status = "error"
         }
       }
-​
-# transforms:
+
   http_log_metrics:
     type: log_to_metric
     inputs:
@@ -106,8 +94,7 @@ transforms:
         tags:
           status: "{{http.status}}"
           path: "{{http.path}}"
-​
-# transforms:
+
   cardinality_control:
     type: tag_cardinality_limit
     inputs:
@@ -115,8 +102,7 @@ transforms:
     limit_exceeded_action: drop_tag
     mode: probabilistic
     value_limit: 100
-​
-# transforms:
+
   remove_cc:
     type: remap
     inputs:
@@ -127,8 +113,7 @@ transforms:
         .message = msg
         .redacted = true
       }
-    
-# transforms:
+
   vpc_traffic_by_action_port:
     type: log_to_metric
     inputs:
@@ -141,21 +126,20 @@ transforms:
         tags:
           action: "{{vpc.action}}"
           port: "{{vpc.port}}"
-​
+
   vpc_drop_accepted:
     type: filter
     inputs:
       - route_log_type.vpc
     condition: '.vpc.action != "ACCEPT"'
         
-# transforms:
   redacted:
     type: route
     inputs:
       - remove_cc
     route:
       yes: "exists(.redacted)"
-​
+
   redacted_metrics:
     type: log_to_metric
     inputs:
@@ -165,8 +149,7 @@ transforms:
         field: status
         name: redacted
         namespace: security
-​
-# transforms:
+
   tag_logs:
     type: remap
     inputs:
@@ -176,15 +159,12 @@ transforms:
     source: |-
       # Parse the received `.ddtags` field so we can more easily access the contained tags.
       .ddtags = parse_key_value!(.ddtags, key_value_delimiter: ":", field_delimiter: ",")
-​
       # Add some tags so that we can positively identify that data has passed through OP.
       .ddtags.sender = "observability_pipelines"
       .ddtags.op_aggregator = get_hostname!()
-​
       # Re-encode Datadog tags in the format the intakes expect.
       .ddtags = encode_key_value(.ddtags, key_value_delimiter: ":", field_delimiter: ",")
-​
-# transforms:
+
   tag_metrics:
     type: remap
     inputs:
@@ -196,7 +176,7 @@ transforms:
       # Add some tags so that we can positively identify that data has passed through OP.
       .tags.sender = "observability_pipelines"
       .tags.op_aggregator = get_hostname!()
-​
+
 sinks:
   datadog_logs:
     type: datadog_logs
