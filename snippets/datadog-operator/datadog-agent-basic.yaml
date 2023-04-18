@@ -1,17 +1,16 @@
-apiVersion: datadoghq.com/v1alpha1
+apiVersion: datadoghq.com/v2alpha1
 kind: DatadogAgent
 metadata:
   name: datadog
 spec:
-  clusterName: instruqt
-  credentials:
-    apiSecret:
-      secretName: datadog-secret
-      keyName: api-key
-    appSecret:
-      secretName: datadog-secret
-      keyName: app-key
-  agent:
-    env:
-      - name: DD_KUBELET_TLS_VERIFY
-        value: 'false'
+  global:
+    clusterName: instruqt
+    kubelet:
+      tlsVerify: false
+    credentials:
+      apiSecret:
+        secretName: datadog-secret
+        keyName: api-key
+      appSecret:
+        secretName: datadog-secret
+        keyName: app-key

@@ -1,31 +1,33 @@
-apiVersion: datadoghq.com/v1alpha1
+apiVersion: datadoghq.com/v2alpha1
 kind: DatadogAgent
 metadata:
   name: datadog
 spec:
-  clusterName: instruqt
-  credentials:
-    apiSecret:
-      secretName: datadog-secret
-      keyName: api-key
-    appSecret:
-      secretName: datadog-secret
-      keyName: app-key
-  agent:
+  global:
+    clusterName: instruqt
+    kubelet:
+      tlsVerify: false
+    credentials:
+      apiSecret:
+        secretName: datadog-secret
+        keyName: api-key
+      appSecret:
+        secretName: datadog-secret
+        keyName: app-key
+  features:
+    logCollection:
+      enabled: true
+      containerCollectAll: true
     apm:
       enabled: true
-    log:
-      enabled: true
-      logsConfigContainerCollectAll: true
-    env:
-      - name: DD_KUBELET_TLS_VERIFY
-        value: 'false'
-    image:
-      name: 'datadog/agent:7.35.0'
-    config:
+  override:
+    clusterAgent:
+      image:
+        tag: 7.43.1
+    nodeAgent:
+      image:
+        tag: 7.43.1
       tolerations:
-        - key: node-role.kubernetes.io/master
-          effect: NoSchedule
-  clusterAgent:
-    image:
-      name: 'datadog/cluster-agent:1.15.0'
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+          operator: Exists
