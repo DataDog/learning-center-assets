@@ -21,6 +21,7 @@ services:
       - DATADOG_SERVICE=discounts-service
 # add discounts env variables
     image: "ddtraining/discounts:2.1.2"
+# replace discounts run command
     command: flask run --port=5001 --host=0.0.0.0
     ports:
       - "5001:5001"
@@ -53,6 +54,7 @@ services:
       - POSTGRES_HOST=db
 # add ads env variables
     image: "ddtraining/advertisements:2.1.2"
+# replace ads run command
     command: flask run --port=5002 --host=0.0.0.0
     ports:
       - "5002:5002"
