@@ -1,12 +1,3 @@
-enterprise:
-  api_key: "${DD_API_KEY}"
-  configuration_key: "${OP_CONFIGURATION_KEY}"
-  site: "datadoghq.com"
-api:
-  enabled: true
-  address: 0.0.0.0:8686
-  playground: false
-
 sources:
   datadog_agent:
     address: 0.0.0.0:8282
@@ -14,20 +5,16 @@ sources:
     multiple_outputs: true
 
 transforms:
-  # This step exists because the logs originate from services started by systemd,
-  # and the Datadog Agent adds this metadata when it reads from journald.
-  # We recommend using this as your input for downstream processing steps, so
-  # you can avoid having to deal with the extra overhead.
-  remove_journald:
+  # This transform exists because of how the Datadog Agent classifies
+  # logs that it collects from containers. The `status` attribute ends
+  # up overriding whatever other parsing the Datadog backend might do
+  # of the message to determine if it's an error log, for instance.
+  remove_status:
     type: remap
     inputs:
       - datadog_agent.logs
     source: |-
-      msg, err = parse_json(.message)
-      if err == null {
-        . |= object!(msg)
-        del(.journald)
-      }
+      del(.status)
 
 # transforms:
   # This step attempts to parse the messages as Apache Common Format
@@ -40,7 +27,7 @@ transforms:
   parse_logs:
     type: remap
     inputs:
-      - remove_journald
+      - remove_status
     source: |-
       msg, err = parse_apache_log(.message, format:"common")
       if err == null {
