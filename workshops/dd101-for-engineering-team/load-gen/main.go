@@ -52,7 +52,8 @@ func main() {
 				if method == http.MethodGet {
 					retryCount := 3
 					for i := 0; i < retryCount; i++ {
-						resp, err := http.Get(fmt.Sprintf("http://localhost:8000%s", path))
+						// need to change lab-host by a variable from a flag
+						resp, err := http.Get(fmt.Sprintf("http://lab-host:8000%s", path))
 						if err != nil {
 							fmt.Printf("Error requesting %s: %v\n", path, err)
 							if i < retryCount-1 {
@@ -82,7 +83,8 @@ func main() {
 
 					retryCount := 3
 					for i := 0; i < retryCount; i++ {
-						resp, err := http.Post(fmt.Sprintf("http://localhost:8000%s", path), "application/json", bytes.NewReader(bodyBytes))
+						// need to change lab-host by a variable from a flag
+						resp, err := http.Post(fmt.Sprintf("http://lab-host:8000%s", path), "application/json", bytes.NewReader(bodyBytes))
 						if err != nil {
 							fmt.Printf("Error requesting %s: %v\n", path, err)
 							if i < retryCount-1 {
