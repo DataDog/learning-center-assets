@@ -1,0 +1,10 @@
+[Unit]
+Description=Famous Quotes
+
+[Service]
+WorkingDirectory=/root/lab
+ExecStart=/root/lab/famous-quotes
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
