@@ -1,0 +1,491 @@
+{
+	"title": "Storedog Executive Dashboard",
+	"description": "",
+	"widgets": [
+		{
+			"definition": {
+				"title": "KPIs",
+				"type": "group",
+				"background_color": "vivid_green",
+				"show_title": true,
+				"layout_type": "ordered",
+				"widgets": [
+					{
+						"definition": {
+							"title": "Income per minute",
+							"title_size": "16",
+							"title_align": "left",
+							"show_legend": false,
+							"legend_layout": "auto",
+							"legend_columns": [
+								"avg",
+								"min",
+								"max",
+								"value",
+								"sum"
+							],
+							"time": {},
+							"type": "timeseries",
+							"requests": [
+								{
+									"formulas": [
+										{
+											"alias": "Income per minute",
+											"formula": "default_zero(query1) - default_zero(query2)"
+										}
+									],
+									"queries": [
+										{
+											"query": "avg:cartItem.price{*}.rollup(avg, 60)",
+											"data_source": "metrics",
+											"name": "query1"
+										},
+										{
+											"query": "avg:cartItem.cost{*}.rollup(avg, 60)",
+											"data_source": "metrics",
+											"name": "query2"
+										}
+									],
+									"response_format": "timeseries",
+									"style": {
+										"palette": "dog_classic",
+										"line_type": "solid",
+										"line_width": "normal"
+									},
+									"display_type": "line"
+								}
+							],
+							"yaxis": {
+								"scale": "linear",
+								"include_zero": true,
+								"label": "",
+								"min": "auto",
+								"max": "auto"
+							},
+							"markers": [
+								{
+									"label": " Lights stay on ",
+									"value": "y > 8",
+									"display_type": "ok solid"
+								},
+								{
+									"label": " :( ",
+									"value": "0 < y < 8",
+									"display_type": "error solid"
+								}
+							]
+						},
+						"layout": {
+							"x": 0,
+							"y": 0,
+							"width": 9,
+							"height": 3
+						}
+					},
+					{
+						"definition": {
+							"title": "",
+							"title_size": "16",
+							"title_align": "left",
+							"type": "slo",
+							"view_type": "detail",
+							"time_windows": [
+								"7d"
+							],
+							"slo_id": "927de8f4483450d2bab001fedac8f110",
+							"show_error_budget": true,
+							"view_mode": "overall",
+							"global_time_target": "0"
+						},
+						"layout": {
+							"x": 9,
+							"y": 0,
+							"width": 3,
+							"height": 3
+						}
+					}
+				]
+			},
+			"layout": {
+				"x": 0,
+				"y": 0,
+				"width": 12,
+				"height": 4
+			}
+		},
+		{
+			"definition": {
+				"title": "UX and Demographics",
+				"type": "group",
+				"background_color": "blue",
+				"show_title": true,
+				"layout_type": "ordered",
+				"widgets": [
+					{
+						"definition": {
+							"title": "Performance overview of most popular pages",
+							"title_size": "16",
+							"title_align": "left",
+							"type": "query_table",
+							"requests": [
+								{
+									"conditional_formats": [
+										{
+											"metric": "pc75:@view.largest_contentful_paint",
+											"comparator": ">",
+											"palette": "red_on_white",
+											"value": 4000000000
+										},
+										{
+											"metric": "pc75:@view.largest_contentful_paint",
+											"comparator": ">",
+											"palette": "yellow_on_white",
+											"value": 2500000000
+										},
+										{
+											"metric": "pc75:@view.largest_contentful_paint",
+											"comparator": "<=",
+											"palette": "green_on_white",
+											"value": 2500000000
+										},
+										{
+											"metric": "pc75:@view.first_input_delay",
+											"comparator": ">",
+											"palette": "red_on_white",
+											"value": 300000000
+										},
+										{
+											"metric": "pc75:@view.first_input_delay",
+											"comparator": ">",
+											"palette": "yellow_on_white",
+											"value": 100000000
+										},
+										{
+											"metric": "pc75:@view.first_input_delay",
+											"comparator": "<=",
+											"palette": "green_on_white",
+											"value": 100000000
+										},
+										{
+											"metric": "pc75:@view.cumulative_layout_shift",
+											"comparator": ">",
+											"palette": "red_on_white",
+											"value": 0.25
+										},
+										{
+											"metric": "pc75:@view.cumulative_layout_shift",
+											"comparator": ">",
+											"palette": "yellow_on_white",
+											"value": 0.1
+										},
+										{
+											"metric": "pc75:@view.cumulative_layout_shift",
+											"comparator": "<=",
+											"palette": "green_on_white",
+											"value": 0.1
+										}
+									],
+									"rum_query": {
+										"index": "*",
+										"search": {
+											"query": "@type:view $env"
+										},
+										"group_by": [
+											{
+												"facet": "@view.url_path_group",
+												"sort": {
+													"order": "desc",
+													"aggregation": "count"
+												},
+												"limit": 15
+											}
+										],
+										"multi_compute": [
+											{
+												"aggregation": "count"
+											},
+											{
+												"facet": "@view.loading_time",
+												"aggregation": "pc75"
+											},
+											{
+												"facet": "@view.largest_contentful_paint",
+												"aggregation": "pc75"
+											},
+											{
+												"facet": "@view.first_input_delay",
+												"aggregation": "pc75"
+											},
+											{
+												"facet": "@view.cumulative_layout_shift",
+												"aggregation": "pc75"
+											}
+										]
+									},
+									"cell_display_mode": [
+										"bar",
+										"number",
+										"number",
+										"number",
+										"number"
+									]
+								}
+							],
+							"has_search_bar": "never",
+							"custom_links": [
+								{
+									"link": "/dash/integration/rum_errors?tpl_var_pathGroup={{@view.url_path_group.value}}",
+									"label": "Analyze errors for {{@view.url_path_group.value}}"
+								},
+								{
+									"link": "/dash/integration/rum_resources?tpl_var_pathGroup={{@view.url_path_group.value}}",
+									"label": "View resources for {{@view.url_path_group.value}}"
+								}
+							]
+						},
+						"layout": {
+							"x": 0,
+							"y": 0,
+							"width": 6,
+							"height": 4
+						}
+					},
+					{
+						"definition": {
+							"type": "note",
+							"content": "[Complete RUM Performance](https://app.datadoghq.com/dash/integration/30292/rum---performance-overview)",
+							"background_color": "white",
+							"font_size": "18",
+							"text_align": "center",
+							"vertical_align": "center",
+							"show_tick": false,
+							"tick_pos": "50%",
+							"tick_edge": "left",
+							"has_padding": true
+						},
+						"layout": {
+							"x": 6,
+							"y": 0,
+							"width": 2,
+							"height": 4
+						}
+					},
+					{
+						"definition": {
+							"title": "Number of sessions by country",
+							"title_size": "16",
+							"title_align": "left",
+							"type": "geomap",
+							"requests": [
+								{
+									"formulas": [
+										{
+											"formula": "query1",
+											"limit": {
+												"count": 250,
+												"order": "desc"
+											}
+										}
+									],
+									"response_format": "scalar",
+									"queries": [
+										{
+											"search": {
+												"query": "@type:session $env"
+											},
+											"data_source": "rum",
+											"compute": {
+												"aggregation": "count"
+											},
+											"name": "query1",
+											"indexes": [
+												"*"
+											],
+											"group_by": [
+												{
+													"facet": "@geo.country_iso_code",
+													"sort": {
+														"aggregation": "count",
+														"order": "desc"
+													},
+													"limit": 250
+												}
+											]
+										}
+									]
+								}
+							],
+							"style": {
+								"palette": "hostmap_blues",
+								"palette_flip": false
+							},
+							"view": {
+								"focus": "WORLD"
+							}
+						},
+						"layout": {
+							"x": 8,
+							"y": 0,
+							"width": 4,
+							"height": 4
+						}
+					}
+				]
+			},
+			"layout": {
+				"x": 0,
+				"y": 4,
+				"width": 12,
+				"height": 5
+			}
+		},
+		{
+			"definition": {
+				"title": "Systems",
+				"type": "group",
+				"background_color": "purple",
+				"show_title": true,
+				"layout_type": "ordered",
+				"widgets": [
+					{
+						"definition": {
+							"title": "Most CPU-intensive containers",
+							"title_size": "16",
+							"title_align": "left",
+							"time": {},
+							"type": "toplist",
+							"requests": [
+								{
+									"formulas": [
+										{
+											"formula": "query1",
+											"limit": {
+												"count": 5,
+												"order": "desc"
+											}
+										}
+									],
+									"queries": [
+										{
+											"query": "avg:docker.cpu.user{*} by {container_name}",
+											"data_source": "metrics",
+											"name": "query1",
+											"aggregator": "max"
+										}
+									],
+									"response_format": "scalar",
+									"conditional_formats": [
+										{
+											"comparator": ">",
+											"palette": "white_on_red",
+											"value": 75
+										},
+										{
+											"comparator": ">",
+											"palette": "white_on_yellow",
+											"value": 50
+										},
+										{
+											"comparator": ">",
+											"palette": "white_on_green",
+											"value": 0
+										}
+									]
+								}
+							]
+						},
+						"layout": {
+							"x": 0,
+							"y": 0,
+							"width": 5,
+							"height": 3
+						}
+					},
+					{
+						"definition": {
+							"title": "Running containers by image",
+							"title_size": "16",
+							"title_align": "left",
+							"time": {},
+							"type": "toplist",
+							"requests": [
+								{
+									"formulas": [
+										{
+											"formula": "timeshift(query1, 40)",
+										  "limit": {
+											"order": "desc"
+											}
+										}
+									],
+									"queries": [
+										{
+											"query": "sum:docker.containers.running{$env} by {docker_image}.fill(60)",
+											"data_source": "metrics",
+											"name": "query1",
+											"aggregator": "last"
+										}
+									],
+									"response_format": "scalar",
+									"conditional_formats": [
+										{
+											"comparator": ">",
+											"palette": "white_on_green",
+											"value": 0
+										}
+									]
+								}
+							]
+						},
+						"layout": {
+							"x": 5,
+							"y": 0,
+							"width": 5,
+							"height": 3
+						}
+					},
+					{
+						"definition": {
+							"type": "note",
+							"content": "[Complete Docker Performance](https://app.datadoghq.com/screen/integration/52/docker---overview)",
+							"background_color": "white",
+							"font_size": "18",
+							"text_align": "center",
+							"vertical_align": "center",
+							"show_tick": false,
+							"tick_pos": "50%",
+							"tick_edge": "left",
+							"has_padding": true
+						},
+						"layout": {
+							"x": 10,
+							"y": 0,
+							"width": 2,
+							"height": 3
+						}
+					}
+				]
+			},
+			"layout": {
+				"x": 0,
+				"y": 9,
+				"width": 12,
+				"height": 4
+			}
+		}
+	],
+	"template_variables": [
+		{
+			"name": "env",
+			"default": "dd201",
+			"prefix": "env",
+			"available_values": [
+				"dd201"
+			]
+		}
+	],
+	"layout_type": "ordered",
+	"is_read_only": false,
+	"notify_list": [],
+	"reflow_type": "fixed"
+}
