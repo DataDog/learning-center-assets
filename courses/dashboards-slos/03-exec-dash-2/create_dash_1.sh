@@ -1,1 +1,0 @@
-curl -X POST -H "Content-type: application/json" -d @/root/dash-1.json "https://app.datadoghq.com/api/v1/dashboard?api_key=${DD_API_KEY}&application_key=${DD_APP_KEY}" | jq
