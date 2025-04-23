@@ -660,7 +660,7 @@ Resources:
             # Install node LTS
             curl -sL https://rpm.nodesource.com/setup_16.x | bash -
             yum install -y nodejs
-            curl -L -o /tmp/saa.tgz https://github.com/stevedatadog/sentiment-analysis-api/tarball/v1.0.0-no-creds
+            # NOTE: Removed sentiment analysis script
             mkdir -p /opt/saa && cd $_
             tar --strip-components=1 -xzvf /tmp/saa.tgz
             npm install
